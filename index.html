@@ -34,132 +34,60 @@
     }
     </script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: Arial, sans-serif;
-        }
+        /* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
 
-        /* Light Mode (Default) */
-        body {
-            background-color: #f4f4f4;
-            color: #333;
-            transition: 0.3s ease-in-out;
-            text-align: center;
-        }
+/* Centering the Body with Max-Width */
+body {
+    max-width: 900px;
+    margin: 0 auto;
+    background-color: #f4f4f4;
+    color: #333;
+    transition: 0.3s ease-in-out;
+    text-align: center;
+}
 
-        /* Dark Mode */
-        body.dark-mode {
-            background-color: #1e1e1e;
-            color: #f4f4f4;
-        }
+/* Dark Mode */
+body.dark-mode {
+    background-color: #1e1e1e;
+    color: #f4f4f4;
+}
 
-        /* Floating Navbar - Full Width */
-        .floating-navbar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            background: #004AAD;
-            padding: 15px 20px;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-            z-index: 1000;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            border-radius: 0 0 15px 15px;
-        }
+/* Floating Navbar */
+.floating-navbar {
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 900px;
+    background: #004AAD;
+    padding: 15px 20px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 0 0 15px 15px;
+}
 
-        /* Brand Name */
-        .brand-name {
-            font-size: 18px;
-            color: white;
-            font-weight: bold;
-        }
+/* Responsive */
+@media (max-width: 920px) {
+    body {
+        max-width: 100%;
+        padding: 0 10px;
+    }
+    
+    .floating-navbar {
+        max-width: 100%;
+    }
+}
 
-        /* Navbar Icons (Hamburger + Dark Mode) */
-        .nav-icons {
-            display: flex;
-            align-items: center;
-        }
-
-        .nav-icons span {
-            font-size: 24px;
-            color: white;
-            cursor: pointer;
-            margin-left: 15px;
-            transition: 0.3s;
-        }
-
-        #dark-mode-toggle:hover {
-            color: yellow;
-        }
-
-        /* Bio Section */
-        .bio-container {
-            margin-top: 100px;
-            text-align: center;
-        }
-
-        .bio-container img {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 3px solid #004AAD;
-            transition: 0.3s ease-in-out;
-        }
-
-        .bio-container h1 {
-            font-size: 24px;
-            margin: 10px 0;
-        }
-
-        .bio-container p {
-            font-size: 16px;
-            max-width: 400px;
-            margin: auto;
-            color: #555;
-        }
-
-        /* Social Icons */
-        .social-links {
-            margin-top: 15px;
-        }
-
-        .social-links a {
-            display: inline-block;
-            margin: 8px;
-            font-size: 24px;
-            color: #004AAD;
-            transition: 0.3s ease-in-out;
-        }
-
-        .social-links a:hover {
-            color: #003580;
-            transform: scale(1.2);
-        }
-
-        /* Dark Mode for Social Icons */
-        body.dark-mode .bio-container p {
-            color: #ddd;
-        }
-
-        body.dark-mode .social-links a {
-            color: #ddd;
-        }
-
-        body.dark-mode .social-links a:hover {
-            color: yellow;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .floating-navbar {
-                padding: 12px 15px;
-            }
-        }
     </style>
 </head>
 <body>
