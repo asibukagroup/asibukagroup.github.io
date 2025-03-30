@@ -53,12 +53,13 @@
         .bio-container img{width:120px;height:120px;border-radius:50%;object-fit:cover;border:3px solid #004AAD;transition:.3s ease-in-out}
         .bio-container h1{font-size:24px;margin:10px 0}
         .bio-container p{font-size:16px;max-width:400px;margin:auto;color:#555}
-        .social-links{margin-top:15px}
-        .social-links a{display:inline-block;margin:8px;font-size:24px;color:#004AAD;transition:.3s ease-in-out}
-        .social-links a:hover{color:#003580;transform:scale(1.2)}
+        .social-links{margin-top:15px;text-align:center}
+        .social-links a{display:inline-flex;align-items:center;justify-content:center;gap:10px;margin:8px;padding:10px 15px;font-size:18px;font-weight:700;text-decoration:none;color:#fff;background-color:#004AAD;border-radius:8px;transition:.3s ease-in-out;box-shadow:0 2px 5px #0003}
+        .social-links a svg{width:20px;height:20px;fill:currentColor}
+        .social-links a:hover{background-color:#003580;transform:scale(1.1);box-shadow:0 4px 10px #0000004d}
         body.dark-mode .bio-container p{color:#ddd}
-        body.dark-mode .social-links a{color:#ddd}
-        body.dark-mode .social-links a:hover{color:#ff0}
+        body.dark-mode .social-links a{background-color:#222;color:#FFD700}
+        body.dark-mode .social-links a:hover{background-color:#444;color:#ff0}
         /* SECTION */
         section:nth-of-type(odd){background-color:#f4f4f4;color:#333}
         section:nth-of-type(even){background-color:#ddd;color:#222}
