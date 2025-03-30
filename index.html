@@ -164,6 +164,32 @@
                 padding: 12px 15px;
             }
         }
+        section:nth-of-type(odd) {
+    background-color: #f4f4f4;
+    color: #333; /* Dark text for contrast */
+}
+
+section:nth-of-type(even) {
+    background-color: #ddd;
+    color: #222; /* Slightly darker text */
+}
+
+/* Dark Mode Adjustments */
+body.dark-mode section:nth-of-type(odd) {
+    background-color: #2a2a2a;
+    color: #f4f4f4; /* Light text for contrast */
+}
+
+body.dark-mode section:nth-of-type(even) {
+    background-color: #1e1e1e;
+    color: #ddd; /* Softer white */
+}
+
+/* Ensure spacing */
+section {
+    padding: 20px;
+    transition: background-color 0.3s, color 0.3s ease-in-out;
+}
     </style>
 </head>
 <body>
@@ -201,6 +227,13 @@
             </a>
         </div>
     </header>
+    <section>
+        <h2>VISI</h2>
+        <blockquote>Menjadi wadah bagi pengusaha UMKM dan mengembangkan ekonomi rakyat.</blockquote>
+        <h2>MISI</h2>
+        <blockquote>Membangun sebanyak mungkin UMKM dan membuka seluas mungkin lapangan pekerjaan.</blockquote>
+        <blockquote>Mengedukasi masyarakat untuk mengembangkan usaha ke tahap selanjutnya.</blockquote>
+    </section>
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
