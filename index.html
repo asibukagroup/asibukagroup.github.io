@@ -79,5 +79,8 @@
             <a href="https://link4.com" class="link">Link 4</a>
         </div>
     </div>
+    <script>
+        document.addEventListener("DOMContentLoaded",function(){const e=document.querySelectorAll(".dropdown");e.forEach(e=>{e.addEventListener("click",function(e){e.stopPropagation();const n=this.querySelector(".dropdown-menu");n.style.display="block"===n.style.display?"none":"block"})}),document.addEventListener("click",function(){document.querySelectorAll(".dropdown-menu").forEach(e=>{e.style.display="none"})})});
+    </script>
 </body>
 </html>
