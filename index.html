@@ -265,6 +265,9 @@ cite {
         font-size: 2rem;
     }
 }
+        /* Slider */
+        .slider-container{position:relative;max-width:900px;margin:40px auto;overflow:hidden;border-radius:10px;box-shadow:0 4px 10px #0000001a}.slider-wrapper{display:flex;transition:transform .5s ease-in-out}.slide{min-width:100%;padding:20px;text-align:center;font-size:20px;color:#fff;display:flex;align-items:center;justify-content:center;height:300px}.prev,.next{position:absolute;top:50%;transform:translateY(-50%);background:#00000080;color:#fff;border:none;padding:10px 15px;cursor:pointer;font-size:24px;transition:.3s;border-radius:50%}.prev:hover,.next:hover{background:#000c}.prev{left:10px}.next{right:10px}@media (max-width: 768px){.slide{font-size:18px;height:250px}}
+        
     </style>
 </head>
 <body>
@@ -306,8 +309,16 @@ cite {
         <h2>VISI</h2>
         <blockquote>Menjadi wadah bagi pengusaha UMKM dan mengembangkan ekonomi rakyat.</blockquote>
         <h2>MISI</h2>
+        <div class="slider-container">
+        <div class="slider-wrapper">
         <blockquote>Membangun sebanyak mungkin UMKM dan membuka seluas mungkin lapangan pekerjaan.</blockquote>
         <blockquote>Mengedukasi masyarakat untuk mengembangkan usaha ke tahap selanjutnya.</blockquote>
+            </div>
+
+        <!-- Navigation Buttons -->
+        <button class="prev" onclick="prevSlide()">&#10094;</button>
+        <button class="next" onclick="nextSlide()">&#10095;</button>
+    </div>
     </section>
 
     <script>
@@ -331,6 +342,33 @@ cite {
                 }
             });
         });
+        let currentIndex = 0;
+        const slides = document.querySelectorAll(".slide");
+        const totalSlides = slides.length;
+        const sliderWrapper = document.querySelector(".slider-wrapper");
+
+        function showSlide(index) {
+            if (index < 0) {
+                currentIndex = totalSlides - 1;
+            } else if (index >= totalSlides) {
+                currentIndex = 0;
+            } else {
+                currentIndex = index;
+            }
+            const offset = -currentIndex * 100 + "%";
+            sliderWrapper.style.transform = "translateX(" + offset + ")";
+        }
+
+        function prevSlide() {
+            showSlide(currentIndex - 1);
+        }
+
+        function nextSlide() {
+            showSlide(currentIndex + 1);
+        }
+
+        // Auto-slide every 5 seconds
+        setInterval(nextSlide, 5000);
     </script>
 </body>
 </html>
