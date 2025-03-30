@@ -34,35 +34,161 @@
     }
     </script>
     <style>
-        *{margin:0;padding:0;box-sizing:border-box}body{font-family:Arial,sans-serif;background-color:#f0f0f0;display:flex;justify-content:center;align-items:center;height:100vh;color:#333}h2{font-size:20px;color:#004AAD;margin-bottom:15px;position:relative;display:inline-block;padding-bottom:8px}h2::after{content:"";position:absolute;left:50%;bottom:0;width:80%;height:3px;background:linear-gradient(to right,transparent,#004AAD,transparent);transform:translateX(-50%)}.container{text-align:center;background-color:#fff;border-radius:10px;padding:20px;box-shadow:0 4px 10px #0000001a;max-width:400px;width:100%}.bio{margin-bottom:20px}.profile-pic{width:120px;height:120px;border-radius:50%;object-fit:cover;margin-bottom:10px}h1{font-size:24px;margin-bottom:10px;color:#004AAD}.bio-description{font-size:16px;color:#666;margin-bottom:15px}.social-icons{display:flex;justify-content:center;gap:15px;margin-bottom:20px}.icon{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;background-color:#ddd;border-radius:50%;transition:transform .3s ease,background-color .3s ease}.icon svg{width:24px;height:24px;fill:#004AAD;transition:fill .3s ease}.icon:hover{background-color:#004AAD;transform:scale(1.1)}.icon:hover svg{fill:#fff}.links{display:flex;flex-direction:column;gap:10px}.link{text-decoration:none;padding:10px;background-color:#004AAD;color:#fff;border-radius:5px;font-size:16px;transition:background-color .3s ease,transform .3s ease}.link:hover{background-color:#003580;transform:translateY(-2px)}*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}.floating-navbar{position:fixed;top:15px;left:50%;transform:translateX(-50%);background:#004AAD;padding:10px 20px;border-radius:10px;box-shadow:0 4px 10px #0000001a;z-index:1000;display:flex;align-items:center;justify-content:space-between;width:90%;max-width:600px}.brand-name{color:#fff;font-size:18px;font-weight:700}.menu-toggle{font-size:24px;color:#fff;cursor:pointer;display:none}.nav-menu{list-style:none;display:flex;gap:20px}.nav-menu li{position:relative}.nav-menu a{text-decoration:none;color:#fff;font-size:16px;padding:10px;display:block;transition:.3s}.nav-menu a:hover{background:#003580;border-radius:5px}.dropdown-menu{position:absolute;top:100%;left:0;background:#fff;width:150px;border-radius:5px;display:none;box-shadow:0 4px 10px #0000001a}.dropdown-menu li{display:block}.dropdown-menu a{color:#004AAD;padding:10px;transition:.3s}.dropdown-menu a:hover{background:#f0f0f0}.content{padding:100px 20px;text-align:center}@media (max-width: 768px){.floating-navbar{width:90%;max-width:100%;padding:10px}.brand-name{font-size:16px}.menu-toggle{display:block}.nav-menu{display:none;flex-direction:column;background:#004AAD;position:absolute;top:60px;right:10px;width:200px;border-radius:10px;text-align:center;padding:10px 0;box-shadow:0 4px 10px #0000001a}.nav-menu.active{display:flex}.dropdown-menu{position:static;display:none;background:#003580;width:100%;border-radius:0;box-shadow:none}.dropdown-menu a{color:#fff}}
+        *{margin:0;padding:0;box-sizing:border-box}body{font-family:Arial,sans-serif;background-color:#f0f0f0;display:flex;justify-content:center;align-items:center;height:100vh;color:#333}h2{font-size:20px;color:#004AAD;margin-bottom:15px;position:relative;display:inline-block;padding-bottom:8px}h2::after{content:"";position:absolute;left:50%;bottom:0;width:80%;height:3px;background:linear-gradient(to right,transparent,#004AAD,transparent);transform:translateX(-50%)}.container{text-align:center;background-color:#fff;border-radius:10px;padding:20px;box-shadow:0 4px 10px #0000001a;max-width:400px;width:100%}.bio{margin-bottom:20px}.profile-pic{width:120px;height:120px;border-radius:50%;object-fit:cover;margin-bottom:10px}h1{font-size:24px;margin-bottom:10px;color:#004AAD}.bio-description{font-size:16px;color:#666;margin-bottom:15px}.social-icons{display:flex;justify-content:center;gap:15px;margin-bottom:20px}.icon{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;background-color:#ddd;border-radius:50%;transition:transform .3s ease,background-color .3s ease}.icon svg{width:24px;height:24px;fill:#004AAD;transition:fill .3s ease}.icon:hover{background-color:#004AAD;transform:scale(1.1)}.icon:hover svg{fill:#fff}.links{display:flex;flex-direction:column;gap:10px}.link{text-decoration:none;padding:10px;background-color:#004AAD;color:#fff;border-radius:5px;font-size:16px;transition:background-color .3s ease,transform .3s ease}.link:hover{background-color:#003580;transform:translateY(-2px)}
+        /* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+/* Floating Navbar */
+.floating-navbar {
+    position: fixed;
+    top: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #004AAD;
+    padding: 10px 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 90%;
+    max-width: 600px;
+}
+
+/* Brand Name */
+.brand-name {
+    font-size: 18px;
+    color: white;
+    font-weight: bold;
+}
+
+/* Hamburger Menu */
+.menu-toggle {
+    font-size: 24px;
+    color: white;
+    cursor: pointer;
+}
+
+/* Sidebar */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: -250px;
+    width: 250px;
+    height: 100%;
+    background: #004AAD;
+    padding-top: 60px;
+    transition: left 0.3s ease-in-out;
+    z-index: 1001;
+}
+
+.sidebar.active {
+    left: 0;
+}
+
+/* Sidebar Menu */
+.nav-menu {
+    list-style: none;
+    padding: 0;
+}
+
+.nav-menu li {
+    padding: 15px 20px;
+}
+
+.nav-menu a {
+    text-decoration: none;
+    color: white;
+    font-size: 18px;
+    display: block;
+    transition: 0.3s;
+}
+
+.nav-menu a:hover {
+    background: #003580;
+}
+
+/* Dropdown Menu */
+.dropdown-menu {
+    display: none;
+    background: #003580;
+    padding-left: 20px;
+}
+
+.dropdown:hover .dropdown-menu {
+    display: block;
+}
+
+/* Overlay */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    visibility: hidden;
+    transition: 0.3s;
+    z-index: 1000;
+}
+
+.overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Content */
+.content {
+    padding: 100px 20px;
+    text-align: center;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .floating-navbar {
+        width: 90%;
+        max-width: 100%;
+    }
+}
+
     </style>
 </head>
 <body>
-    <!-- Floating Navbar with Schema.org -->
-    <nav class="floating-navbar" itemscope itemtype="https://schema.org/SiteNavigationElement">
-        
-        <!-- Brand Name on the Left -->
+    <nav class="floating-navbar">
+        <!-- Left Side: Brand Name -->
         <div class="brand-name">ASIBUKA Group</div>
 
-        <!-- Hamburger Menu Button on the Right -->
+        <!-- Right Side: Hamburger Menu Button -->
         <div class="menu-toggle" id="menu-toggle">
             ☰
         </div>
+    </nav>
 
-        <ul class="nav-menu" id="nav-menu">
-            <li itemprop="name"><a href="#" itemprop="url">Home</a></li>
-            <li class="dropdown" itemprop="name">
-                <a href="#" itemprop="url">Services ▾</a>
+    <!-- Sidebar Menu -->
+    <aside class="sidebar" id="sidebar">
+        <ul class="nav-menu">
+            <li><a href="#">Home</a></li>
+            <li class="dropdown">
+                <a href="#">Services ▾</a>
                 <ul class="dropdown-menu">
-                    <li itemprop="name"><a href="#" itemprop="url">Web Design</a></li>
-                    <li itemprop="name"><a href="#" itemprop="url">SEO</a></li>
-                    <li itemprop="name"><a href="#" itemprop="url">Marketing</a></li>
+                    <li><a href="#">Web Design</a></li>
+                    <li><a href="#">SEO</a></li>
+                    <li><a href="#">Marketing</a></li>
                 </ul>
             </li>
-            <li itemprop="name"><a href="#" itemprop="url">About</a></li>
-            <li itemprop="name"><a href="#" itemprop="url">Contact</a></li>
+            <li><a href="#">About</a></li>
+            <li><a href="#">Contact</a></li>
         </ul>
-    </nav>
+    </aside>
+
+    <div class="overlay" id="overlay"></div>
     <div class="container">
         <div class="bio">
             <img src="/files/ASIBUKA-Blue.png" alt="ASIBUKA Group" title="ASIBUKA Group" class="profile-pic">
@@ -81,7 +207,9 @@
                 </a>
             </div>
         </div>
-        <h2>Our Projects</h2>
+        <h2>VISI</h2>
+        <blockquote>Menjadi wadah yang mempertemukan pengusaha UMKM dan pemodal di seluruh Indonesia untuk mengembangkan ekonomi rakyat.</blockquote>
+        <h2>Proyek</h2>
         <div class="links">
             <a href="https://link1.com" class="link">Link 1</a>
             <a href="https://link2.com" class="link">Link 2</a>
@@ -90,7 +218,24 @@
         </div>
     </div>
     <script>
-        document.addEventListener("DOMContentLoaded",function(){const e=document.getElementById("menu-toggle"),n=document.getElementById("nav-menu"),t=document.querySelectorAll(".dropdown");e.addEventListener("click",function(){n.classList.toggle("active")}),t.forEach(e=>{e.addEventListener("click",function(e){e.stopPropagation();const n=this.querySelector(".dropdown-menu");n.style.display="block"===n.style.display?"none":"block"})}),document.addEventListener("click",function(){document.querySelectorAll(".dropdown-menu").forEach(e=>{e.style.display="none"})})});
+        document.addEventListener("DOMContentLoaded", function () {
+    const menuToggle = document.getElementById("menu-toggle");
+    const sidebar = document.getElementById("sidebar");
+    const overlay = document.getElementById("overlay");
+
+    // Toggle Sidebar
+    menuToggle.addEventListener("click", function () {
+        sidebar.classList.toggle("active");
+        overlay.classList.toggle("active");
+    });
+
+    // Close Sidebar when clicking outside
+    overlay.addEventListener("click", function () {
+        sidebar.classList.remove("active");
+        overlay.classList.remove("active");
+    });
+});
+
     </script>
 </body>
 </html>
