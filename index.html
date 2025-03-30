@@ -34,261 +34,191 @@
     }
     </script>
     <style>
-        *{margin:0;padding:0;box-sizing:border-box}body{font-family:Arial,sans-serif;background-color:#f0f0f0;display:flex;justify-content:center;align-items:center;height:100vh;color:#333}h2{font-size:20px;color:#004AAD;margin-bottom:15px;position:relative;display:inline-block;padding-bottom:8px}h2::after{content:"";position:absolute;left:50%;bottom:0;width:80%;height:3px;background:linear-gradient(to right,transparent,#004AAD,transparent);transform:translateX(-50%)}.container{text-align:center;background-color:#fff;border-radius:10px;padding:20px;box-shadow:0 4px 10px #0000001a;max-width:400px;width:100%}.bio{margin-bottom:20px}.profile-pic{width:120px;height:120px;border-radius:50%;object-fit:cover;margin-bottom:10px}h1{font-size:24px;margin-bottom:10px;color:#004AAD}.bio-description{font-size:16px;color:#666;margin-bottom:15px}.social-icons{display:flex;justify-content:center;gap:15px;margin-bottom:20px}.icon{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;background-color:#ddd;border-radius:50%;transition:transform .3s ease,background-color .3s ease}.icon svg{width:24px;height:24px;fill:#004AAD;transition:fill .3s ease}.icon:hover{background-color:#004AAD;transform:scale(1.1)}.icon:hover svg{fill:#fff}.links{display:flex;flex-direction:column;gap:10px}.link{text-decoration:none;padding:10px;background-color:#004AAD;color:#fff;border-radius:5px;font-size:16px;transition:background-color .3s ease,transform .3s ease}.link:hover{background-color:#003580;transform:translateY(-2px)}
-        /* General Reset */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: Arial, sans-serif;
-}
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
 
-/* Floating Navbar */
-.floating-navbar {
-    position: fixed;
-    top: 15px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: #004AAD;
-    padding: 10px 20px;
-    border-radius: 10px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-    z-index: 1000;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 90%;
-    max-width: 600px;
-}
+        /* Light Mode (Default) */
+        body {
+            background-color: #f4f4f4;
+            color: #333;
+            transition: 0.3s ease-in-out;
+            text-align: center;
+        }
 
-/* Brand Name */
-.brand-name {
-    font-size: 18px;
-    color: white;
-    font-weight: bold;
-}
+        /* Dark Mode */
+        body.dark-mode {
+            background-color: #1e1e1e;
+            color: #f4f4f4;
+        }
 
-/* Hamburger Menu */
-.menu-toggle {
-    font-size: 24px;
-    color: white;
-    cursor: pointer;
-}
+        /* Floating Navbar - Full Width */
+        .floating-navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: #004AAD;
+            padding: 15px 20px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-radius: 0 0 15px 15px;
+        }
 
-/* Sidebar */
-.sidebar {
-    position: fixed;
-    top: 0;
-    left: -250px;
-    width: 250px;
-    height: 100%;
-    background: #004AAD;
-    padding-top: 60px;
-    transition: left 0.3s ease-in-out;
-    z-index: 1001;
-}
+        /* Brand Name */
+        .brand-name {
+            font-size: 18px;
+            color: white;
+            font-weight: bold;
+        }
 
-.sidebar.active {
-    left: 0;
-}
+        /* Navbar Icons (Hamburger + Dark Mode) */
+        .nav-icons {
+            display: flex;
+            align-items: center;
+        }
 
-/* Sidebar Menu */
-.nav-menu {
-    list-style: none;
-    padding: 0;
-}
+        .nav-icons span {
+            font-size: 24px;
+            color: white;
+            cursor: pointer;
+            margin-left: 15px;
+            transition: 0.3s;
+        }
 
-.nav-menu li {
-    padding: 15px 20px;
-}
+        #dark-mode-toggle:hover {
+            color: yellow;
+        }
 
-.nav-menu a {
-    text-decoration: none;
-    color: white;
-    font-size: 18px;
-    display: block;
-    transition: 0.3s;
-}
+        /* Bio Section */
+        .bio-container {
+            margin-top: 100px;
+            text-align: center;
+        }
 
-.nav-menu a:hover {
-    background: #003580;
-}
+        .bio-container img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #004AAD;
+            transition: 0.3s ease-in-out;
+        }
 
-/* Dropdown Menu */
-.dropdown-menu {
-    display: none;
-    background: #003580;
-    padding-left: 20px;
-}
+        .bio-container h1 {
+            font-size: 24px;
+            margin: 10px 0;
+        }
 
-.dropdown:hover .dropdown-menu {
-    display: block;
-}
+        .bio-container p {
+            font-size: 16px;
+            max-width: 400px;
+            margin: auto;
+            color: #555;
+        }
 
-/* Overlay */
-.overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    opacity: 0;
-    visibility: hidden;
-    transition: 0.3s;
-    z-index: 1000;
-}
+        /* Social Icons */
+        .social-links {
+            margin-top: 15px;
+        }
 
-.overlay.active {
-    opacity: 1;
-    visibility: visible;
-}
+        .social-links a {
+            display: inline-block;
+            margin: 8px;
+            font-size: 24px;
+            color: #004AAD;
+            transition: 0.3s ease-in-out;
+        }
 
-/* Content */
-.content {
-    padding: 100px 20px;
-    text-align: center;
-}
+        .social-links a:hover {
+            color: #003580;
+            transform: scale(1.2);
+        }
 
-/* Responsive */
-@media (max-width: 768px) {
-    .floating-navbar {
-        width: 90%;
-        max-width: 100%;
-    }
-}
-blockquote {
-    position: relative;
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: #333;
-    padding: 20px;
-    border-left: 5px solid #004AAD;
-    background: #fff;
-    border-radius: 5px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    max-width: 600px;
-}
+        /* Dark Mode for Social Icons */
+        body.dark-mode .bio-container p {
+            color: #ddd;
+        }
 
-/* Quotation Marks */
-blockquote::before, blockquote::after {
-    font-size: 3rem;
-    color: #004AAD;
-    position: absolute;
-    font-family: Georgia, serif;
-}
+        body.dark-mode .social-links a {
+            color: #ddd;
+        }
 
-blockquote::before {
-    content: "“";
-    top: -10px;
-    left: 10px;
-}
+        body.dark-mode .social-links a:hover {
+            color: yellow;
+        }
 
-blockquote::after {
-    content: "”";
-    bottom: -10px;
-    right: 10px;
-}
-
-/* Author Styling */
-cite {
-    display: block;
-    margin-top: 10px;
-    font-size: 1rem;
-    font-style: normal;
-    color: #555;
-    text-align: right;
-}
-
-/* Responsive Design */
-@media (max-width: 480px) {
-    blockquote {
-        font-size: 1.2rem;
-        padding: 15px;
-    }
-
-    blockquote::before, blockquote::after {
-        font-size: 2rem;
-    }
-}
+        /* Responsive */
+        @media (max-width: 768px) {
+            .floating-navbar {
+                padding: 12px 15px;
+            }
+        }
     </style>
 </head>
 <body>
+    <!-- Floating Navbar -->
     <nav class="floating-navbar">
-        <!-- Left Side: Brand Name -->
         <div class="brand-name">ASIBUKA Group</div>
-
-        <!-- Right Side: Hamburger Menu Button -->
-        <div class="menu-toggle" id="menu-toggle">
-            ☰
+        <div class="nav-icons">
+            <span id="dark-mode-toggle">🌙</span>
         </div>
     </nav>
 
-    <!-- Sidebar Menu -->
-    <aside class="sidebar" id="sidebar">
-        <ul class="nav-menu">
-            <li><a href="#">Home</a></li>
-            <li class="dropdown">
-                <a href="#">Services ▾</a>
-                <ul class="dropdown-menu">
-                    <li><a href="#">Web Design</a></li>
-                    <li><a href="#">SEO</a></li>
-                    <li><a href="#">Marketing</a></li>
-                </ul>
-            </li>
-            <li><a href="#">About</a></li>
-            <li><a href="#">Contact</a></li>
-        </ul>
-    </aside>
+    <!-- Bio Link Section -->
+    <section class="bio-container">
+        <img src="/files/ASIBUKA-Blue.png" alt="ASIBUKA Group" title="ASIBUKA Group">
+        <h1>ASIBUKA Group</h1>
+        <p>Welcome to our official bio link. Connect with us on social media.</p>
 
-    <div class="overlay" id="overlay"></div>
-    <div class="container">
-        <div class="bio">
-            <img src="/files/ASIBUKA-Blue.png" alt="ASIBUKA Group" title="ASIBUKA Group" class="profile-pic">
-            <h1>ASIBUKA Group</h1>
-            <p class="bio-description">ASIBUKA Group adalah perusahaan yang bergerak di bidang investasi di bidang UMKM baik offline maupun online, berbasis teknologi ataupun konvensional.</p>
-            <div class="social-icons">
-                <a href="https://twitter.com" class="icon" title="Twitter">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                        <path fill="currentColor" d="M22.46 6c-.77.35-1.6.58-2.46.69a4.27 4.27 0 001.88-2.36 8.4 8.4 0 01-2.67 1.03 4.22 4.22 0 00-7.21 3.86 12 12 0 01-8.71-4.42 4.19 4.19 0 001.3 5.63c-.68-.02-1.33-.21-1.89-.52v.05a4.23 4.23 0 003.37 4.13c-.58.16-1.2.19-1.82.07a4.2 4.2 0 003.93 2.92A8.47 8.47 0 012 18.15 11.9 11.9 0 008.29 20c7.56 0 11.69-6.26 11.69-11.7 0-.18-.01-.37-.02-.55a8.2 8.2 0 002-2.1z"/>
-                    </svg>
-                </a>
-                <a href="https://github.com" class="icon" title="GitHub">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                        <path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12c0 4.42 2.87 8.17 6.84 9.49.5.09.68-.22.68-.49v-1.74c-2.78.6-3.37-1.34-3.37-1.34-.46-1.15-1.13-1.46-1.13-1.46-.93-.64.07-.63.07-.63 1.03.07 1.57 1.07 1.57 1.07.91 1.57 2.37 1.12 2.95.86.09-.66.36-1.12.66-1.38-2.22-.25-4.56-1.11-4.56-4.94 0-1.09.39-1.99 1.03-2.69-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02a9.65 9.65 0 012.5-.34c.85 0 1.7.11 2.5.34 1.9-1.29 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.6 1.03 2.69 0 3.84-2.34 4.69-4.57 4.94.37.32.7.94.7 1.9v2.83c0 .28.18.59.69.49A10.02 10.02 0 0022 12c0-5.52-4.48-10-10-10z"/>
-                    </svg>
-                </a>
-            </div>
+        <div class="social-links">
+            <a href="#" title="Twitter">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M23 3a10.9 10.9 0 01-3.14 1.53A4.48 4.48 0 0011.5 7v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z"/>
+                </svg>
+            </a>
+
+            <a href="#" title="Facebook">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M22 12.07C22 6.48 17.52 2 12 2S2 6.48 2 12.07C2 17.06 5.84 21.12 10.66 22V14.89h-2V12h2V9.8c0-1.93 1.24-3.11 3.05-3.11.87 0 1.62.06 1.84.09v2.13h-1.26c-1 0-1.21.48-1.21 1.18V12h2.44l-.4 2.89h-2.04V22C18.16 21.12 22 17.06 22 12.07z"/>
+                </svg>
+            </a>
+
+            <a href="#" title="Blogger">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M14 10h-4v2h4c1.1 0 2 .9 2 2v4c0 1.1-.9 2-2 2H6c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2h8c1.1 0 2 .9 2 2v2h-2V6H6v12h8v-4h-4v-2h4V10z"/>
+                </svg>
+            </a>
         </div>
-        <h2>VISI</h2>
-        <blockquote>Menjadi wadah yang mempertemukan pengusaha UMKM dan pemodal di seluruh Indonesia untuk mengembangkan ekonomi rakyat.</blockquote>
-        <h2>Proyek</h2>
-        <div class="links">
-            <a href="https://link1.com" class="link">Link 1</a>
-            <a href="https://link2.com" class="link">Link 2</a>
-            <a href="https://link3.com" class="link">Link 3</a>
-            <a href="https://link4.com" class="link">Link 4</a>
-        </div>
-    </div>
+    </section>
+
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-    const menuToggle = document.getElementById("menu-toggle");
-    const sidebar = document.getElementById("sidebar");
-    const overlay = document.getElementById("overlay");
+            const darkModeToggle = document.getElementById("dark-mode-toggle");
+            const body = document.body;
 
-    // Toggle Sidebar
-    menuToggle.addEventListener("click", function () {
-        sidebar.classList.toggle("active");
-        overlay.classList.toggle("active");
-    });
+            if (localStorage.getItem("dark-mode") === "enabled") {
+                body.classList.add("dark-mode");
+                darkModeToggle.textContent = "☀️";
+            }
 
-    // Close Sidebar when clicking outside
-    overlay.addEventListener("click", function () {
-        sidebar.classList.remove("active");
-        overlay.classList.remove("active");
-    });
-});
-
+            darkModeToggle.addEventListener("click", function () {
+                body.classList.toggle("dark-mode");
+                if (body.classList.contains("dark-mode")) {
+                    localStorage.setItem("dark-mode", "enabled");
+                    darkModeToggle.textContent = "☀️";
+                } else {
+                    localStorage.setItem("dark-mode", "disabled");
+                    darkModeToggle.textContent = "🌙";
+                }
+            });
+        });
     </script>
 </body>
 </html>
