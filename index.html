@@ -40,214 +40,44 @@
         /* Dark Mode */
         body.dark-mode{background-color:#1e1e1e;color:#f4f4f4}
         /* Floating Navbar - Full Width */
-        .floating-navbar {
-    position: fixed;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 100%;
-    max-width: 600px;
-    background: #004AAD;
-    padding: 15px 20px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-    z-index: 1000;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    border-radius: 0 0 15px 15px;
-        }
-
-        /* Brand Name */
-        .brand-name {
-            font-size: 18px;
-            color: white;
-            font-weight: bold;
-        }
-
-        /* Navbar Icons (Hamburger + Dark Mode) */
-        .nav-icons {
-            display: flex;
-            align-items: center;
-        }
-
-        .nav-icons span {
-            font-size: 24px;
-            color: white;
-            cursor: pointer;
-            margin-left: 15px;
-            transition: 0.3s;
-        }
-
-        #dark-mode-toggle:hover {
-            color: yellow;
-        }
-
-        /* Bio Section */
-        .bio-container {
-            margin-top: 100px;
-            text-align: center;
-        }
-
-        .bio-container img {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 3px solid #004AAD;
-            transition: 0.3s ease-in-out;
-        }
-
-        .bio-container h1 {
-            font-size: 24px;
-            margin: 10px 0;
-        }
-
-        .bio-container p {
-            font-size: 16px;
-            max-width: 400px;
-            margin: auto;
-            color: #555;
-        }
-
-        /* Social Icons */
-        .social-links {
-            margin-top: 15px;
-        }
-
-        .social-links a {
-            display: inline-block;
-            margin: 8px;
-            font-size: 24px;
-            color: #004AAD;
-            transition: 0.3s ease-in-out;
-        }
-
-        .social-links a:hover {
-            color: #003580;
-            transform: scale(1.2);
-        }
-
-        /* Dark Mode for Social Icons */
-        body.dark-mode .bio-container p {
-            color: #ddd;
-        }
-
-        body.dark-mode .social-links a {
-            color: #ddd;
-        }
-
-        body.dark-mode .social-links a:hover {
-            color: yellow;
-        }
-
-        /* Responsive */
+        .floating-navbar{position:fixed;top:0;left:50%;transform:translateX(-50%);width:100%;max-width:600px;background:#004AAD;padding:15px 20px;box-shadow:0 4px 10px #0000001a;z-index:1000;display:flex;align-items:center;justify-content:space-between;border-radius:0 0 15px 15px}
+        .brand-name{font-size:18px;color:#fff;font-weight:700}
+        .nav-icons{display:flex;align-items:center}
+        .nav-icons span{font-size:24px;color:#fff;cursor:pointer;margin-left:15px;transition:.3s}
+        #dark-mode-toggle:hover{color:#ff0}
         @media (max-width: 768px) {
-            .floating-navbar {
-                padding: 12px 15px;
-            }
+            .floating-navbar{padding:12px 15px}
         }
-        section:nth-of-type(odd) {
-    background-color: #f4f4f4;
-    color: #333; /* Dark text for contrast */
-}
-
-section:nth-of-type(even) {
-    background-color: #ddd;
-    color: #222; /* Slightly darker text */
-}
-
-/* Dark Mode Adjustments */
-body.dark-mode section:nth-of-type(odd) {
-    background-color: #2a2a2a;
-    color: #f4f4f4; /* Light text for contrast */
-}
-
-body.dark-mode section:nth-of-type(even) {
-    background-color: #1e1e1e;
-    color: #ddd; /* Softer white */
-}
-
-/* Ensure spacing */
-section {
-    padding: 20px;
-    transition: background-color 0.3s, color 0.3s ease-in-out;
-}
-        h2 {
-    font-size: 20px;
-    color: #004AAD;
-    margin-bottom: 15px;
-    position: relative;
-    display: inline-block;
-    padding-top: 8px;
-    padding-bottom: 8px;
-}
-
-h2::after {
-    content: "";
-    position: absolute;
-    left: 50%;
-    bottom: 0;
-    width: 80%;
-    height: 3px;
-    background: linear-gradient(to right, transparent, #004AAD, transparent);
-    transform: translateX(-50%);
-}
-
-        blockquote {
-    position: relative;
-            display:block;
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: #333;
-    padding: 20px;
-    border-left: 5px solid #004AAD;
-    background: #fff;
-    border-radius: 5px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    margin:0 auto;
-}
-
-/* Quotation Marks */
-blockquote::before, blockquote::after {
-    font-size: 3rem;
-    color: #004AAD;
-    position: absolute;
-    font-family: Georgia, serif;
-}
-
-blockquote::before {
-    content: "“";
-    top: -10px;
-    left: 10px;
-}
-
-blockquote::after {
-    content: "”";
-    bottom: -10px;
-    right: 10px;
-}
-
-/* Author Styling */
-cite {
-    display: block;
-    margin-top: 10px;
-    font-size: 1rem;
-    font-style: normal;
-    color: #555;
-    text-align: right;
-}
-
-/* Responsive Design */
-@media (max-width: 480px) {
-    blockquote {
-        font-size: 1.2rem;
-        padding: 15px;
-    }
-
-    blockquote::before, blockquote::after {
-        font-size: 2rem;
-    }
-}
+        /* Bio Section */
+        .bio-container{margin-top:100px;text-align:center}
+        .bio-container img{width:120px;height:120px;border-radius:50%;object-fit:cover;border:3px solid #004AAD;transition:.3s ease-in-out}
+        .bio-container h1{font-size:24px;margin:10px 0}
+        .bio-container p{font-size:16px;max-width:400px;margin:auto;color:#555}
+        .social-links{margin-top:15px}
+        .social-links a{display:inline-block;margin:8px;font-size:24px;color:#004AAD;transition:.3s ease-in-out}
+        .social-links a:hover{color:#003580;transform:scale(1.2)}
+        body.dark-mode .bio-container p{color:#ddd}
+        body.dark-mode .social-links a{color:#ddd}
+        body.dark-mode .social-links a:hover{color:#ff0}
+        /* SECTION */
+        section:nth-of-type(odd){background-color:#f4f4f4;color:#333}
+        section:nth-of-type(even){background-color:#ddd;color:#222}
+        body.dark-mode section:nth-of-type(odd){background-color:#2a2a2a;color:#f4f4f4}
+        body.dark-mode section:nth-of-type(even){background-color:#1e1e1e;color:#ddd}
+        section{padding:20px;transition:background-color 0.3s,color .3s ease-in-out}
+        /* HEADING 2 */
+        h2{font-size:20px;color:#004AAD;margin-bottom:15px;position:relative;display:inline-block;padding-top:8px;padding-bottom:8px}
+        h2::after{content:"";position:absolute;left:50%;bottom:0;width:80%;height:3px;background:linear-gradient(to right,transparent,#004AAD,transparent);transform:translateX(-50%)}
+        /* BLOCKQUOTE */
+       blockquote{position:relative;font-size:1.5rem;font-weight:700;color:#333;padding:20px;border-left:5px solid #004AAD;background:#fff;border-radius:5px;box-shadow:0 4px 10px #0000001a;margin:0 auto}
+       blockquote::before,blockquote::after{font-size:3rem;color:#004AAD;position:absolute;font-family:Georgia,serif}
+       blockquote::before{content:"“";top:-10px;left:10px}
+       blockquote::after{content:"”";bottom:-10px;right:10px}
+       cite{display:block;margin-top:10px;font-size:1rem;font-style:normal;color:#555;text-align:right}
+       @media (max-width: 480px) {
+           blockquote{font-size:1.2rem;padding:15px}
+           blockquote::before,blockquote::after{font-size:2rem}
+       }
         /* Slider */
         .slider-container{position:relative;max-width:900px;margin:40px auto;overflow:hidden;border-radius:10px;box-shadow:0 4px 10px #0000001a}.slider-wrapper{display:flex;transition:transform .5s ease-in-out}.slide{min-width:100%;padding:20px;text-align:center;font-size:20px;color:#fff;display:flex;align-items:center;justify-content:center;height:300px}.prev,.next{position:absolute;top:50%;transform:translateY(-50%);background:#00000080;color:#fff;border:none;padding:10px 15px;cursor:pointer;font-size:24px;transition:.3s;border-radius:50%}.prev:hover,.next:hover{background:#000c}.prev{left:10px}.next{right:10px}@media (max-width: 768px){.slide{font-size:18px;height:250px}}
         
@@ -267,10 +97,9 @@ cite {
         <img src="/files/ASIBUKA-Blue.png" alt="ASIBUKA Group" title="ASIBUKA Group">
         <h1>ASIBUKA Group</h1>
         <p>ASIBUKA Group adalah usaha yang bergerak di bidang investasi di bidang UMKM baik offline maupun online, berbasis teknologi ataupun konvensional.</p>
-
         <div class="social-links">
             <a href="https://blog.asibuka.com" title="Blogger">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M162.4 196c4.8-4.9 6.2-5.1 36.4-5.1 27.2 0 28.1 .1 32.1 2.1 5.8 2.9 8.3 7 8.3 13.6 0 5.9-2.4 10-7.6 13.4-2.8 1.8-4.5 1.9-31.1 2.1-16.4 .1-29.5-.2-31.5-.8-10.3-2.9-14.1-17.7-6.6-25.3zm61.4 94.5c-53.9 0-55.8 .2-60.2 4.1-3.5 3.1-5.7 9.4-5.1 13.9 .7 4.7 4.8 10.1 9.2 12 2.2 1 14.1 1.7 56.3 1.2l47.9-.6 9.2-1.5c9-5.1 10.5-17.4 3.1-24.4-5.3-4.7-5-4.7-60.4-4.7zm223.4 130.1c-3.5 28.4-23 50.4-51.1 57.5-7.2 1.8-9.7 1.9-172.9 1.8-157.8 0-165.9-.1-172-1.8-8.4-2.2-15.6-5.5-22.3-10-5.6-3.8-13.9-11.8-17-16.4-3.8-5.6-8.2-15.3-10-22C.1 423 0 420.3 0 256.3 0 93.2 0 89.7 1.8 82.6 8.1 57.9 27.7 39 53 33.4c7.3-1.6 332.1-1.9 340-.3 21.2 4.3 37.9 17.1 47.6 36.4 7.7 15.3 7-1.5 7.3 180.6 .2 115.8 0 164.5-.7 170.5zm-85.4-185.2c-1.1-5-4.2-9.6-7.7-11.5-1.1-.6-8-1.3-15.5-1.7-12.4-.6-13.8-.8-17.8-3.1-6.2-3.6-7.9-7.6-8-18.3 0-20.4-8.5-39.4-25.3-56.5-12-12.2-25.3-20.5-40.6-25.1-3.6-1.1-11.8-1.5-39.2-1.8-42.9-.5-52.5 .4-67.1 6.2-27 10.7-46.3 33.4-53.4 62.4-1.3 5.4-1.6 14.2-1.9 64.3-.4 62.8 0 72.1 4 84.5 9.7 30.7 37.1 53.4 64.6 58.4 9.2 1.7 122.2 2.1 133.7 .5 20.1-2.7 35.9-10.8 50.7-25.9 10.7-10.9 17.4-22.8 21.8-38.5 3.2-10.9 2.9-88.4 1.7-93.9z"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M162.4 196c4.8-4.9 6.2-5.1 36.4-5.1 27.2 0 28.1 .1 32.1 2.1 5.8 2.9 8.3 7 8.3 13.6 0 5.9-2.4 10-7.6 13.4-2.8 1.8-4.5 1.9-31.1 2.1-16.4 .1-29.5-.2-31.5-.8-10.3-2.9-14.1-17.7-6.6-25.3zm61.4 94.5c-53.9 0-55.8 .2-60.2 4.1-3.5 3.1-5.7 9.4-5.1 13.9 .7 4.7 4.8 10.1 9.2 12 2.2 1 14.1 1.7 56.3 1.2l47.9-.6 9.2-1.5c9-5.1 10.5-17.4 3.1-24.4-5.3-4.7-5-4.7-60.4-4.7zm223.4 130.1c-3.5 28.4-23 50.4-51.1 57.5-7.2 1.8-9.7 1.9-172.9 1.8-157.8 0-165.9-.1-172-1.8-8.4-2.2-15.6-5.5-22.3-10-5.6-3.8-13.9-11.8-17-16.4-3.8-5.6-8.2-15.3-10-22C.1 423 0 420.3 0 256.3 0 93.2 0 89.7 1.8 82.6 8.1 57.9 27.7 39 53 33.4c7.3-1.6 332.1-1.9 340-.3 21.2 4.3 37.9 17.1 47.6 36.4 7.7 15.3 7-1.5 7.3 180.6 .2 115.8 0 164.5-.7 170.5zm-85.4-185.2c-1.1-5-4.2-9.6-7.7-11.5-1.1-.6-8-1.3-15.5-1.7-12.4-.6-13.8-.8-17.8-3.1-6.2-3.6-7.9-7.6-8-18.3 0-20.4-8.5-39.4-25.3-56.5-12-12.2-25.3-20.5-40.6-25.1-3.6-1.1-11.8-1.5-39.2-1.8-42.9-.5-52.5 .4-67.1 6.2-27 10.7-46.3 33.4-53.4 62.4-1.3 5.4-1.6 14.2-1.9 64.3-.4 62.8 0 72.1 4 84.5 9.7 30.7 37.1 53.4 64.6 58.4 9.2 1.7 122.2 2.1 133.7 .5 20.1-2.7 35.9-10.8 50.7-25.9 10.7-10.9 17.4-22.8 21.8-38.5 3.2-10.9 2.9-88.4 1.7-93.9z"/></svg>
             </a>
         </div>
     </header>
@@ -280,9 +109,9 @@ cite {
         <h2>MISI</h2>
         <div class="slider-container">
         <div class="slider-wrapper">
-        <blockquote>Membangun sebanyak mungkin UMKM dan membuka seluas mungkin lapangan pekerjaan.</blockquote>
-        <blockquote>Mengedukasi masyarakat untuk mengembangkan usaha ke tahap selanjutnya.</blockquote>
-        <blockquote>Membantu kreator untuk bisa menghasilkan dari kontennya.</blockquote>
+        <div><blockquote>Membangun sebanyak mungkin UMKM dan membuka seluas mungkin lapangan pekerjaan.</blockquote></div>
+        <div><blockquote>Mengedukasi masyarakat untuk mengembangkan usaha ke tahap selanjutnya.</blockquote></div>
+        <div><blockquote>Membantu kreator untuk bisa menghasilkan dari kontennya.</blockquote></div>
             </div>
 
         <!-- Navigation Buttons -->
