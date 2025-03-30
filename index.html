@@ -34,15 +34,27 @@
     }
     </script>
     <style>
-        *{margin:0;padding:0;box-sizing:border-box}body{font-family:Arial,sans-serif;background-color:#f0f0f0;display:flex;justify-content:center;align-items:center;height:100vh;color:#333}.container{text-align:center;background-color:#fff;border-radius:10px;padding:20px;box-shadow:0 4px 10px #0000001a;max-width:400px;width:100%}.bio{margin-bottom:20px}.profile-pic{width:120px;height:120px;border-radius:50%;object-fit:cover;margin-bottom:10px}h1{font-size:24px;margin-bottom:10px}.bio-description{font-size:16px;color:#666;margin-bottom:20px}.links{display:flex;flex-direction:column;gap:10px}.link{text-decoration:none;padding:10px;background-color:#4CAF50;color:#fff;border-radius:5px;font-size:16px;transition:background-color .3s ease}.link:hover{background-color:#45a049}
+        *{margin:0;padding:0;box-sizing:border-box}body{font-family:Arial,sans-serif;background-color:#f0f0f0;display:flex;justify-content:center;align-items:center;height:100vh;color:#333}.container{text-align:center;background-color:#fff;border-radius:10px;padding:20px;box-shadow:0 4px 10px #0000001a;max-width:400px;width:100%}.bio{margin-bottom:20px}.profile-pic{width:120px;height:120px;border-radius:50%;object-fit:cover;margin-bottom:10px}h1{font-size:24px;margin-bottom:10px}.bio-description{font-size:16px;color:#666;margin-bottom:15px}.social-icons{display:flex;justify-content:center;gap:15px;margin-bottom:20px}.icon{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;background-color:#ddd;border-radius:50%;transition:transform .3s ease,background-color .3s ease}.icon svg{width:24px;height:24px;fill:#333;transition:fill .3s ease}.icon:hover{background-color:#4CAF50;transform:scale(1.1)}.icon:hover svg{fill:#fff}.links{display:flex;flex-direction:column;gap:10px}.link{text-decoration:none;padding:10px;background-color:#4CAF50;color:#fff;border-radius:5px;font-size:16px;transition:background-color .3s ease,transform .3s ease}.link:hover{background-color:#45a049;transform:translateY(-2px)}
     </style>
 </head>
 <body>
     <div class="container">
         <div class="bio">
-            <img src="/files/ASIBUKA-Blue.png" alt="ASIBUKA Group" title='ASIBUKA Group' class="profile-pic">
-            <h1>Your Name</h1>
-            <p class="bio-description">Short description or bio about yourself.</p>
+            <img src="/files/ASIBUKA-Blue.png" alt="ASIBUKA Group" title="ASIBUKA Group" class="profile-pic">
+            <h1>ASIBUKA Group</h1>
+            <p class="bio-description">Short description or bio about ASIBUKA Group.</p>
+            <div class="social-icons">
+                <a href="https://twitter.com" class="icon" title="Twitter">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                        <path fill="currentColor" d="M22.46 6c-.77.35-1.6.58-2.46.69a4.27 4.27 0 001.88-2.36 8.4 8.4 0 01-2.67 1.03 4.22 4.22 0 00-7.21 3.86 12 12 0 01-8.71-4.42 4.19 4.19 0 001.3 5.63c-.68-.02-1.33-.21-1.89-.52v.05a4.23 4.23 0 003.37 4.13c-.58.16-1.2.19-1.82.07a4.2 4.2 0 003.93 2.92A8.47 8.47 0 012 18.15 11.9 11.9 0 008.29 20c7.56 0 11.69-6.26 11.69-11.7 0-.18-.01-.37-.02-.55a8.2 8.2 0 002-2.1z"/>
+                    </svg>
+                </a>
+                <a href="https://github.com" class="icon" title="GitHub">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                        <path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12c0 4.42 2.87 8.17 6.84 9.49.5.09.68-.22.68-.49v-1.74c-2.78.6-3.37-1.34-3.37-1.34-.46-1.15-1.13-1.46-1.13-1.46-.93-.64.07-.63.07-.63 1.03.07 1.57 1.07 1.57 1.07.91 1.57 2.37 1.12 2.95.86.09-.66.36-1.12.66-1.38-2.22-.25-4.56-1.11-4.56-4.94 0-1.09.39-1.99 1.03-2.69-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02a9.65 9.65 0 012.5-.34c.85 0 1.7.11 2.5.34 1.9-1.29 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.6 1.03 2.69 0 3.84-2.34 4.69-4.57 4.94.37.32.7.94.7 1.9v2.83c0 .28.18.59.69.49A10.02 10.02 0 0022 12c0-5.52-4.48-10-10-10z"/>
+                    </svg>
+                </a>
+            </div>
         </div>
         <div class="links">
             <a href="https://link1.com" class="link">Link 1</a>
