@@ -49,7 +49,7 @@
 {% include header.html %}
 {% include nav.html %}
 <section class="top-info">
-<img src="{{ page.thumbnail | default: site.defaults.thumbnail }}" alt="{{ page.title | default: site.defaults.title }}" title="{{ page.title | default: site.defaults.title }}">
+{% if page.url == "/" %}<img src="{{ page.thumbnail | default: site.defaults.thumbnail }}" alt="{{ page.title | default: site.defaults.title }}" title="{{ page.title | default: site.defaults.title }}">{% endif %}
 <h1>{{ page.title | default: site.defaults.title }}</h1>
 <p>{{ page.description | default: site.defaults.description }}</p>
 {% if page.url == "/" %}{% include social-links.html %}{% endif %}
