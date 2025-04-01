@@ -47,12 +47,11 @@
     </script>
 </head>
 <body>
-    {% include header.html %}
-    
-    <main>
-        {{ content }}
-    </main>
-
+{% include header.html %}
+{% include nav.html %}
+<main>
+{{ content }}
+</main>
 {% include footer.html %}
 <script src="{{ site.baseurl }}/assets/js/main.js"></script>
 </body>
