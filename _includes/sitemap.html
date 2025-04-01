@@ -1,0 +1,40 @@
+<div class="filter-container">
+    <label for="filter">Filter by:</label>
+    <select id="filter" class="filter-select">
+      <option value="title">Title</option>
+      <option value="author">Author</option>
+      <option value="date">Date</option>
+      <option value="categories">Categories</option>
+      <option value="tags">Tags</option>
+    </select>
+    <input type="text" id="filterInput" placeholder="Search..." class="filter-input">
+  </div>
+
+  <!-- Posts Table -->
+  <table class="posts-table">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Title</th>
+        <th>Author</th>
+        <th>Date</th>
+        <th>Categories</th>
+        <th>Tags</th>
+      </tr>
+    </thead>
+    <tbody id="postsTableBody">
+      {% assign counter = 1 %}
+      {% for post in site.posts %}
+      <tr class="post-row">
+        <td>{{ counter }}</td>
+        <td>{{ post.title }}</td>
+        <td>{{ post.author | default: "Unknown" }}</td>
+        <td>{{ post.date | date: "%B %d, %Y" }}</td>
+        <td>{{ post.categories | join: ", " }}</td>
+        <td>{{ post.tags | join: ", " }}</td>
+      </tr>
+      {% assign counter = counter | plus: 1 %}
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
