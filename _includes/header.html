@@ -1,14 +1,1 @@
-<header id="site-header" itemscope itemtype="https://schema.org/WPHeader">
-    <div itemprop="publisher" itemscope itemtype="https://schema.org/Organization">
-        <a href="{{ site.url }}" itemprop="url">
-            <img src="{{ site.url }}/assets/img/ASIBUKA-Blue.png" alt="{{ site.title }} logo" itemprop="logo">
-
-        {% if page.url == "/" or page.url == "/index.html" %}
-            <h1 itemprop="name">{{ site.title }}</h1>
-        {% else %}
-            <span itemprop="name" class="site-title">{{ site.title }}</span>
-        {% endif %}
-            
-        </a>
-    </div>
-</header>
+<header class="floating-navbar" itemscope itemtype="https://schema.org/WPHeader"><div class="brand-name" itemscope itemtype="https://schema.org/Organization"><a href='{{ site.url }}' title='{{ site.title }}' itemprop="url"><span itemprop="name">{{ site.title }}</span></a></div><div class="nav-icons"><span id="dark-mode-toggle">🌙</span><button id="hamburger-menu" class="hamburger">&#9776;</button></div></header>
