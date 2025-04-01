@@ -5,6 +5,8 @@ baseurl: ""
 url: "https://asibuka.com"
 author: "ASIBUKA Group"
 thumbnail: "https://asibuka.com/assets/img/ASIBUKA-Blue.png"
+keyword: "ASIBUKA, ASIBUKA Group, Bisnis, Investasi, UMKM"
+robots: "index, follow"
 
 # Navigation links
 nav_links:
