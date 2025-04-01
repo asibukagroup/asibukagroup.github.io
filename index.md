@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Home
+description: ASIBUKA Group adalah usaha yang bergerak di bidang investasi di bidang UMKM baik offline maupun online, berbasis teknologi ataupun konvensional.
 ---
-# Welcome to My Custom Jekyll Theme
-
-This is a simple Jekyll theme created from scratch.
+# ASIBUKA GROUP
+ASIBUKA Group adalah usaha yang bergerak di bidang investasi di bidang UMKM baik offline maupun online, berbasis teknologi ataupun konvensional.
