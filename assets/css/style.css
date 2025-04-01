@@ -5,11 +5,30 @@ body {
     background: #f4f4f4;
 }
 
-header, footer {
+footer {
     background: #333;
     color: white;
     text-align: center;
     padding: 1rem 0;
+}
+#site-header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background: white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    transition: transform 0.3s ease-in-out;
+    z-index: 1000;
+}
+.site-title {
+    display: block;
+    font-size: 2em; /* Same as h1 */
+    font-weight: bold;
+}
+
+.header-hidden {
+    transform: translateY(-100%);
 }
 
 nav ul {
