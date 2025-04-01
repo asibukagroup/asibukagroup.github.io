@@ -17,6 +17,7 @@ body.dark-mode{background-color:#1e1e1e;color:#f4f4f4}
     align-items: center;
     justify-content: space-between;
     border-radius: 0 0 15px 15px;
+    text-transform:capitalize;
 }
 
 /* Hamburger menu on the left */
@@ -62,6 +63,12 @@ body.dark-mode{background-color:#1e1e1e;color:#f4f4f4}
 @media (max-width: 768px) {
     .floating-navbar {
         padding: 12px 15px;
+    }
+    #hamburger-menu{
+        margin-left:1rem
+    }
+    #dark-mode-toggle{
+        margin-right:1rem
     }
 }
         /* Sidebar Menu */
