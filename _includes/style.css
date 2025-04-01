@@ -1,5 +1,5 @@
 /* Light Mode (Default) */
-body{background-color:#f4f4f4;color:#333;transition:.3s ease-in-out;text-align:center;max-width:900px;margin:0 auto}
+body{font-family:Arial,sans-serif;background-color:#f4f4f4;color:#333;transition:.3s ease-in-out;text-align:center;max-width:900px;margin:0 auto}
 /* Dark Mode */
 body.dark-mode{background-color:#1e1e1e;color:#f4f4f4}
 /* Floating Header Navbar */
