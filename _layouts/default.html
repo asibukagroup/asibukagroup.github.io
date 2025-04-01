@@ -31,9 +31,9 @@
     <meta name="twitter:description" content="{{ page.description | default: site.defaults.description }}">
     <meta name="twitter:image" content="{{ page.thumbnail | default: site.defaults.thumbnail }}">
     <!-- Canonical -->
-    <style>{% include style.css %}</style>
     <link rel="canonical" hreflang='{{ page.lang | default: site.defaults.lang }}' href="{{ site.url }}{{ page.url | replace:'index.html','' }}">
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <style>{% include style.css %}</style>
     <!-- Structured Data -->
     <script type="application/ld+json">
     {
