@@ -14,14 +14,25 @@
     <meta property="og:image" content="https://www.asibuka.com/files/ASIBUKA-blue.png">
     <meta property="og:url" content="{{ site.url }}">
     <meta property="og:type" content="website">
-    <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="{{ page.title }}">
     <meta name="twitter:description" content="{{ site.description }}">
     <meta name="twitter:image" content="https://www.asibuka.com/files/ASIBUKA-blue.png">
     <!-- Canonical -->
+    <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
     <link rel="canonical" href="{{ site.url }}">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": "{{ page.title }}",
+      "description": "{{ page.description }}",
+      "url": "{{ page.description }}"
+    }
+    </script>
 </head>
 <body>
     {% include header.html %}
