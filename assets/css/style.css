@@ -1,4 +1,4 @@
-body{background-color:#f4f4f4;color:#333;transition:.3s ease-in-out;text-align:center;margin:0 auto}
+body{background-color:#f4f4f4;color:#333;transition:.3s ease-in-out;margin:0 auto}
 /* Dark Mode */
 body.dark-mode{background-color:#1e1e1e;color:#f4f4f4}
 /* Floating Navbar - Full Width */
@@ -29,6 +29,7 @@ footer {
     color: white;
     text-align: center;
     padding: 1rem 0;
+        max-width:800px;
 }
 
 main {
