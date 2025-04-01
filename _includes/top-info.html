@@ -1,12 +1,6 @@
 <section class="top-info">
-        <img src="{{ page.thumbnail }}" alt="{{ page.title }}" title="{{ page.title }}">
-        <h1>{{ page.title }}</h1>
-        <p>{{ page.description }}</p>
-        <div class="social-links">
-                  {% for site, data in site.social %}
-      <a href="{{ data.url }}" target="_blank" rel="nofollow noopener noreferrer">
-        {{ data.svg | safe }}
-      </a>
-  {% endfor %}
-                </div>
-    </section>
+<img src="{{ page.thumbnail }}" alt="{{ page.title }}" title="{{ page.title }}">
+<h1>{{ page.title }}</h1>
+<p>{{ page.description }}</p>
+{% if page.url == "/" %}{% include social-links.html %}{% endif %}
+</section>
