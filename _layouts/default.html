@@ -1,9 +1,19 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="{{ page.lang }}">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset='UTF-8'>
+    <meta content='IE=EDGE' http-equiv='X-UA-Compatible'>
+    <meta content='width=device-width, initial-scale=1' name='viewport'>
+    <meta content='origin-when-crossorigin' name='referrer'>
+    <meta content='general' name='rating'>
+    <meta content='global' name='distribution'>
+    <meta content='id' name='language'>
+    <meta content='id' name='geo.country'>
+    <meta content='Indonesian' name='geo.placename'>
+    <meta content='global' name='target'>
+    <meta content='global' name='distribution'>
     <title>{{ page.title }}</title>
+    <meta content='{{ page.title }}' name='title'>
     <meta name="description" content="{{ page.description }}">
     <meta name="keywords" content="{{ page.keywords }}">
     <meta name="author" content="{{ page.author }}">
@@ -14,6 +24,8 @@
     <meta property="og:image" content="{{ page.thumbnail }}">
     <meta property="og:url" content="{{ site.url }}{{ page.url | replace:'index.html','' }}">
     <meta property="og:type" content="website">
+    <meta content='{{ page.title }}' property='og:headline'>
+    <meta content='{{ site.title }}' property='og:site_name'>
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="{{ page.title }}">
@@ -21,7 +33,7 @@
     <meta name="twitter:image" content="{{ page.thumbnail }}">
     <!-- Canonical -->
     <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
-    <link rel="canonical" href="{{ site.url }}{{ page.url | replace:'index.html','' }}">
+    <link rel="canonical" hreflang='{{ page.lang }}' href="{{ site.url }}{{ page.url | replace:'index.html','' }}">
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
     <!-- Structured Data -->
     <script type="application/ld+json">
