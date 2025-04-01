@@ -11,5 +11,5 @@ lang: "id"
 # Navigation links
 nav_links:
   Home: "/"
-  About: "/about/"
-  Blog: "/blog/"
+  DMCA: "/dmca/"
+  Kebijakan Privasi: "/kebijakan-privasi/"
