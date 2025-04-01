@@ -31,7 +31,9 @@
     <meta name="twitter:description" content="{{ page.description }}">
     <meta name="twitter:image" content="{{ page.thumbnail }}">
     <!-- Canonical -->
-    <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
+    <style>
+        {% include style.css %}
+    </style>
     <link rel="canonical" hreflang='{{ page.lang }}' href="{{ site.url }}{{ page.url | replace:'index.html','' }}">
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
     <!-- Structured Data -->
