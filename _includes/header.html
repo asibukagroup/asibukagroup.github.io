@@ -1,0 +1,9 @@
+<header>
+    <nav>
+        <ul>
+            {% for link in site.nav_links %}
+                <li><a href="{{ link[1] }}">{{ link[0] }}</a></li>
+            {% endfor %}
+        </ul>
+    </nav>
+</header>
