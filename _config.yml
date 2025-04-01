@@ -1,0 +1,12 @@
+theme_name: ASIBUKA Group Theme
+title: "ASIBUKA Group Theme"
+description: "A Jekyll theme created from scratch by ASIBUKA Group"
+baseurl: ""
+url: "https://asibukagroup.github.io"
+author: "ASIBUKA Group"
+
+# Navigation links
+nav_links:
+  Home: "/"
+  About: "/about/"
+  Blog: "/blog/"
