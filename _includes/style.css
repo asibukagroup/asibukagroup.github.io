@@ -19,31 +19,6 @@ body.dark-mode{background-color:#1e1e1e;color:#f4f4f4}
     border-radius: 0 0 15px 15px;
 }
 
-/* Center brand name */
-.brand-name {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 18px;
-    font-weight: 700;
-    color: #fff;
-    text-decoration: none;
-}
-
-/* Ensure link styling remains */
-.brand-name a {
-    color: #fff;
-    text-decoration: none;
-}
-
-/* Navigation icons */
-.nav-icons {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    justify-content: space-between;
-}
-
 /* Hamburger menu on the left */
 #hamburger-menu {
     font-size: 24px;
@@ -53,15 +28,33 @@ body.dark-mode{background-color:#1e1e1e;color:#f4f4f4}
     cursor: pointer;
 }
 
+/* Centering brand name */
+.brand-name {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 18px;
+    font-weight: 700;
+    color: #fff;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+/* Ensure link styling remains */
+.brand-name a {
+    color: #fff;
+    text-decoration: none;
+}
+
 /* Dark mode toggle on the right */
 #dark-mode-toggle {
     font-size: 24px;
     color: #fff;
     cursor: pointer;
-    margin-left: auto;
     transition: 0.3s;
 }
 
+/* Hover effect */
 #dark-mode-toggle:hover {
     color: #ff0;
 }
