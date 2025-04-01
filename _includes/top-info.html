@@ -3,4 +3,5 @@
 <h1>{{ page.title | default: site.defaults.title }}</h1>
 <p>{{ page.description | default: site.defaults.description }}</p>
 {% if page.url == "/" %}{% include social-links.html %}{% endif %}
+{% if page.collection == 'posts' %}<p><em>Published by {{ page.author | default: site.defaults.author }} on {{ page.date | date: "%B %d, %Y" }}</em></p>{% endif %}
 </section>
