@@ -24,7 +24,7 @@ defaults:
 # Navigation links
 nav_links:
   Home: "/"
-  Hak Cipta: "/dmca/"
+  Hak Cipta: "/hak-cipta/"
   Hubungi Kami: "/contact/"
   Kebijakan Privasi: "/kebijakan-privasi/"
   Laman Diskusi: "/discussion/"
