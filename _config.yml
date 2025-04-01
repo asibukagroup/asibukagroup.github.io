@@ -1,7 +1,7 @@
 theme_name: ASIBUKA Group Theme
-title: "ASIBUKA Group Theme"
-description: "A Jekyll theme created from scratch by ASIBUKA Group"
-baseurl: ""
+title: "ASIBUKA Group"
+description: "ASIBUKA Group adalah usaha yang bergerak di bidang investasi di bidang UMKM baik offline maupun online, berbasis teknologi ataupun konvensional."
+baseurl: "/"
 url: "https://asibukagroup.github.io"
 author: "ASIBUKA Group"
 
