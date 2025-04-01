@@ -55,6 +55,7 @@
 {{ content }}
 </main>
 {% include footer.html %}
-<script>{% include main.js %}{% if page.url == "/peta-situs/" %}{% include sitemap.js %}{% endif %}</script>
+<script>{% include main.js %}
+    {% if page.url == "/peta-situs/" %}{% include sitemap.js %}{% endif %}</script>
 </body>
 </html>
