@@ -7,6 +7,7 @@ url: https://asibuka.com
 thumbnail: https://asibuka.com/assets/img/ASIBUKA-Blue.png
 keywords: ASIBUKA, ASIBUKA Group, Bisnis, Investasi, UMKM
 robots: index, follow
+lang: id
 
 ---
 # ASIBUKA GROUP
