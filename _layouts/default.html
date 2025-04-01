@@ -12,7 +12,7 @@
     <meta property="og:title" content="{{ page.title }}">
     <meta property="og:description" content="{{ page.description }}">
     <meta property="og:image" content="{{ page.thumbnail }}">
-    <meta property="og:url" content="{{ page.url }}">
+    <meta property="og:url" content="{{ site.url }}{{ page.url | replace:'index.html','' }}">
     <meta property="og:type" content="website">
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
@@ -21,7 +21,7 @@
     <meta name="twitter:image" content="{{ page.thumbnail }}">
     <!-- Canonical -->
     <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
-    <link rel="canonical" href="{{ site.url }}">
+    <link rel="canonical" href="{{ site.url }}{{ page.url | replace:'index.html','' }}">
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
     <!-- Structured Data -->
     <script type="application/ld+json">
@@ -30,7 +30,7 @@
       "@type": "WebPage",
       "name": "{{ page.title }}",
       "description": "{{ page.description }}",
-      "url": "{{ page.url }}"
+      "url": "{{ site.url }}{{ page.url | replace:'index.html','' }}"
     }
     </script>
 </head>
