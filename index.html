@@ -111,6 +111,14 @@
         /* FOOTER */
         footer{text-align:center;padding:15px;font-size:16px;background-color:#f4f4f4;color:#333;margin-top:30px}
         body.dark-mode footer{background-color:#222;color:#ddd}
+/* MODALS */
+        label.button{cursor:pointer;background:#004aad;color:#fff;padding:1rem;border-radius:10%;margin:2rem auto}
+.modals{display:none}
+.modal-overlay{display:none;position:fixed;top:0;left:0;width:0;height:0;background-color:rgba(0,0,0,0.5);z-index:1;cursor:pointer}
+.modal-content{background-color:#fff;color:#000;display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:0;height:0;overflow:auto;overscroll-behavior:contain;padding:2rem;z-index:5}
+.modal-close{position:absolute;top:1rem;right:1rem;cursor:pointer;font-size:2rem}
+.modals:checked + .modal .modal-overlay{display:block;width:100%;height:100%;transition:1s}
+.modals:checked + .modal .modal-content{display:block;width:calc(90% - calc(2rem * 2));height:calc(90% - calc(2rem * 2));transition:1s}
     </style>
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4951061355072034" crossorigin="anonymous"></script>
 </head>
@@ -127,6 +135,8 @@
     <aside id="sidebar" class="sidebar">
     <button id="close-sidebar" class="close-btn">&times;</button>
     <ul class="menu">
+        <label for='modal-test' class='button'>Click Me to Open</label>
+<input type='checkbox' id='modal-test' class='modals' />
         <li><a href="#">DMCA</a></li>
         <li><a href="#">Laman Diskusi</a></li>
         <li><a href="#">Keijakan Privasi</a></li>
@@ -200,6 +210,19 @@
     <p>Made with ❤️ by ASIBUKA Group </p>
     <p>All right reserved &copy; 2022-<span id="year"></span></p>
 </footer>
+    
+<div class='modal'>
+  <label for='modal-test' class='modal-overlay'></label>
+  <div class='modal-content'>
+    <label for='modal-test' class='modal-close'>&times;</label>
+    <!-- Add your content inside this container -->
+    <h1>Hello World</h1>
+    <p>You can put paragraph texts here.</p>
+    <p>Paragraph is here.</p>
+    <p>Paragraph is here.</p>
+    <p>You can put other HTML contents here.</p>
+  </div>
+</div>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             const darkModeToggle = document.getElementById("dark-mode-toggle");
