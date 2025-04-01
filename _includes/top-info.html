@@ -1,5 +1,5 @@
 <section class="top-info">
-<img src="{{ page.thumbnail }}" alt="{{ page.title }}" title="{{ page.title }}">
+{% if page.url == "/" %}<img src="{{ page.thumbnail }}" alt="{{ page.title }}" title="{{ page.title }}">{% endif %}
 <h1>{{ page.title }}</h1>
 <p>{{ page.description }}</p>
 {% if page.url == "/" %}{% include social-links.html %}{% endif %}
