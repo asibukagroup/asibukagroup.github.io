@@ -7,7 +7,8 @@ thumbnail: "https://asibuka.com/assets/img/ASIBUKA-Blue.png"
 keywords: "ASIBUKA, ASIBUKA Group, Bisnis, Investasi, UMKM"
 robots: "index, follow"
 lang: "id"
-disqus_shortname: asibukagroup
+disqus_shortname: "asibukagroup"
+permalink: /:title/
 
 # Default Value
 defaults:
@@ -19,7 +20,7 @@ defaults:
   keywords: "ASIBUKA, ASIBUKA Group, Bisnis, Investasi, UMKM"
   robots: "index, follow"
   lang: "id"
-  disqus_shortname: asibukagroup
+  disqus_shortname: "asibukagroup"
 
 # Navigation links
 nav_links:
