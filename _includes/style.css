@@ -1,9 +1,13 @@
 /* CSS Reset */
-*{transition:all .1s;line-height:1.5;scroll-behavior:smooth}html{line-height:1.5;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%}
-/* Light Mode (Default) */
-body{font-family:Arial,sans-serif;background-color:#f4f4f4;color:#333;transition:.3s ease-in-out;max-width:900px;margin:0 auto}
-/* Dark Mode */
+*{transition:.3s ease-in-out;line-height:1.5;scroll-behavior:smooth}
+html{line-height:1.5;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%}
+/* Body */
+body{font-family:Arial,sans-serif;background-color:#f4f4f4;color:#333;max-width:900px;margin:0 auto}
 body.dark-mode{background-color:#1e1e1e;color:#f4f4f4}
+/* A (Hyperlink) */
+a{background-color:transparent;-webkit-text-decoration-skip:objects;text-decoration:none;font-weight:600;color:#012345}
+body.darkmode a{color:#ffffff}
+a:hover,a:focus,body.darkmode a:hover,body.darkmode a:focus{color:#012345}
 /* Floating Header Navbar */
 .floating-navbar{position:fixed;top:0;left:50%;transform:translateX(-50%);width:100%;max-width:900px;background:#004AAD;padding:1rem 0;box-shadow:0 4px 10px #0000001a;z-index:1000;display:flex;align-items:center;justify-content:space-between;border-radius:0 0 15px 15px;text-transform:capitalize}
 #hamburger-menu{font-size:24px;color:#fff;background:none;border:none;cursor:pointer;margin-left:1rem}
