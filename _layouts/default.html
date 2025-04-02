@@ -33,7 +33,7 @@
     <!-- Canonical -->
     <link rel="canonical" hreflang='{{ page.lang | default: site.defaults.lang }}' href="{{ site.url }}{{ page.url | replace:'index.html','' }}">
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
-    <style>{% include style.css %}{% if page.url == "/peta-situs/" %}{% include sitemap.css %}{% endif %}</style>
+    <style>{% include style.css %}{% if page.url contains "peta-situs" %}{% include sitemap.css %}{% endif %}</style>
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4951061355072034" crossorigin="anonymous"></script>
     <!-- Structured Data -->
     <script type="application/ld+json">
@@ -56,6 +56,6 @@
 </main>
 {% include footer.html %}
 <script>{% include main.js %}
-    {% if page.url == "/peta-situs/" %}{% include sitemap.js %}{% endif %}</script>
+    {% if page.url contains "peta-situs" %}{% include sitemap.js %}{% endif %}</script>
 </body>
 </html>
