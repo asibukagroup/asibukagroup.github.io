@@ -54,6 +54,9 @@
 <main>
 {{ content }}
 </main>
+    {% if page.url contains 'iframev=1' %}
+  <p>This is the AMP version is not enabled yet.</p>
+{% endif %}
 {% include footer.html %}
 <script>{% include main.js %}</script>
 </body>
