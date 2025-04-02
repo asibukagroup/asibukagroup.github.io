@@ -54,8 +54,10 @@
 <main>
 {{ content }}
 </main>
-{% if page.url contains 'iframev=1' %}
-  <p>This is the AMP version is not enabled yet.</p>
+{% assign query_params = page.url | split: '?' %}
+{% if query_params.size > 1 and query_params[1] contains 'iframev=1' %}
+  <!-- Elemen yang ingin ditampilkan jika parameter ada -->
+  <div>Ini adalah elemen yang ditampilkan karena parameter iframev=1 ada di URL.</div>
 {% endif %}
 {% include footer.html %}
 <script>{% include main.js %}</script>
