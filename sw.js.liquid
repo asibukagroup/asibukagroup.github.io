@@ -1,8 +1,7 @@
 const CACHE_NAME = "jekyll-pwa-v1";
 
-// Dynamically generate URLs to cache using Jekyll
 const urlsToCache = [
-    "{{ site.baseurl }}/",  // Home Page
+    "{{ site.baseurl }}/",  // Cache homepage
     {% for post in site.posts %}
     "{{ site.baseurl }}{{ post.url }}",
     {% endfor %}
