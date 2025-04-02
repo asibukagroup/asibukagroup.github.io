@@ -1,1 +1,25 @@
-<div class='table-container'><table><thead><tr><th>#</th><th>Judul</th><th>Penulis</th><th>Tanggal</th><th>Kategori</th><th>Tags</th></tr></thead><tbody>{% assign counter = 1 %}{% for post in site.posts %}<tr><td>{{ counter }}</td><td><a href='{{ post.url }}' title='{{ post.title }}'>{{ post.title }}</a></td><td>{{ post.author | default: "Unknown" }}</td><td>{{ post.date | date: "%B %d, %Y" }}</td><td>{{ post.categories | join: ", " }}</td><td>{{ post.tags | join: ", " }}</td></tr>{% assign counter = counter | plus: 1 %}{% endfor %}</tbody></table></div>
+<input type="text" id="filterSitemap" onkeyup="filterSitemap()" placeholder="Search...">
+<div class='table-container'><table id='sitemap'><thead><tr><th>#</th><th>Judul</th><th>Penulis</th><th>Tanggal</th><th>Kategori</th><th>Tags</th></tr></thead><tbody>{% assign counter = 1 %}{% for post in site.posts %}<tr><td>{{ counter }}</td><td><a href='{{ post.url }}' title='{{ post.title }}'>{{ post.title }}</a></td><td>{{ post.author | default: "Unknown" }}</td><td>{{ post.date | date: "%B %d, %Y" }}</td><td>{{ post.categories | join: ", " }}</td><td>{{ post.tags | join: ", " }}</td></tr>{% assign counter = counter | plus: 1 %}{% endfor %}</tbody></table></div>
+<script>
+function filterSitemap() {
+  // Declare variables
+  var input, filter, table, tr, td, i, txtValue;
+  input = document.getElementById("filterSitemap");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("sitemap");
+  tr = table.getElementsByTagName("tr");
+
+  // Loop through all table rows, and hide those who don't match the search query
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[0];
+    if (td) {
+      txtValue = td.textContent || td.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }
+  }
+}
+</script>
