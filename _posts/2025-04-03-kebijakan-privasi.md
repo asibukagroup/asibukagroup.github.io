@@ -16,15 +16,15 @@ Di semua web ASIBUKA, salah satu hal yang kami prioritaskan adalah privasi pengu
 
 Jika kamu ada pertanyaan atau butuh informasi lebih lanjut mengenai Kebijakan Privasi kami, jangan sungkan untuk menghubungi kami. Kamu dapat menemukan informasi detail cara menghubungi kami melalui halaman **[Contact](https://asibuka.com/hubungi-kami/)**.
 
-## _Log Files_
+## Log Files
 ASIBUKA mengikuti prosedur standar dalam menggunakan informasi _log files_. Files ini mulai tercatat semenjak pengunjung memasuki web ini. Semua perusahaan hosting dan beberapa jasa analisa melakukan ini. Informasi yang diakses oleh _log files_ ini berupa alamat internet protokol (IP), jenis browser, dan _Internet Service Provider_ (ISP), tanggal kunjungan, lama kunjungan, sumber kunjungan, dan tujuan saat keluar dari web ASIBUKA, dan kemungkinan jumlah klik dari pengguna. Informasi-informasi ini tidak berhubungan dengan data pribadi pengguna. Tujuan dari pengambilan informasi ini adalah untuk menganalisa trend pasar, administrasi situs, mengidentifikasi kegiatan pengguna selama berada di situs, dan mengumpulkan informasi demografik.
 
-## _Cookies dan Web Beacons_
+## Cookies dan Web Beacons
 Seperti website lainnya, ASIBUKA menggunakan fitur '_cookies_'. _Cookies_ ini bertujuan untuk menyimpan informasi termasuk preferensi pengguna, dan halaman yang pernah diakses atau dikunjungi pengguna. Informasi ini digunakan untuk mengoptimalkan pelayanan dan memaksimalkan pengalaman pengguna dengan mengubah konten di laman situs berdasarkan jenis browser pengunjung dan/atau informasi lainnya dari _Log Files_.
 
 Untuk informasi lebih lanjut mengenai cookies, silahkan dibaca di halaman "**[Apa itu Cookies](https://www.cookieconsent.com/what-are-cookies/)**".
 
-## _Google DoubleClick DART Cookie_
+## Google DoubleClick DART Cookie
 Google adalah salah satu penyedia layanan pihak ketiga di situs ASIBUKA. Google juga menggunakan _cookies_, yang dikenal sebagai _DART cookies_, untuk menyajikan iklan ke pengunjung sesuai dengan referensi situs kunjungan mereka dan beberapa situs lain di internet. Meski bagaimanapun, pengunjung diperbolehkan untuk menolak penggunaan _DART cookies_ dengan mengunjungi _Google ad and content network Privacy Policy_ yang beralamatkan di https://policies.google.com/technologies/ads.
 
 ## Pengiklan Kami
@@ -49,7 +49,7 @@ Hal lain yang menjadi prioritas kami adalah perlindungan terhadap anak saat meng
 
 ASIBUKA tidak dengan sengaja mengumpulkan Informasi Identifikasi Pribadi apapun dari anak-anak di bawah usia 13 tahun. Jika menurut Anda anak Anda memberikan informasi semacam ini di situs web kami, kami sangat menganjurkan Anda untuk segera menghubungi kami dan kami akan melakukan upaya terbaik kami untuk segera menghapusnya dari catatan kami.
 
-## _Online Privacy Policy Only_
+## Online Privacy Policy Only
 Kebijakan Privasi ini hanya berlaku untuk aktivitas daring di situs kami dan berlaku untuk pengunjung situs kami sehubungan dengan informasi yang mereka bagikan dan / atau kumpulkan di ASIBUKA. Kebijakan ini tidak berlaku untuk informasi apa pun yang dikumpulkan secara luring atau melalui saluran selain situs ini.
 
 ## Histats.com
