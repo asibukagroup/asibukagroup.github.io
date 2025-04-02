@@ -22,7 +22,7 @@ ASIBUKA mengikuti prosedur standar dalam menggunakan informasi _log files_. File
 ## Cookies dan Web Beacons
 Seperti website lainnya, ASIBUKA menggunakan fitur '_cookies_'. _Cookies_ ini bertujuan untuk menyimpan informasi termasuk preferensi pengguna, dan halaman yang pernah diakses atau dikunjungi pengguna. Informasi ini digunakan untuk mengoptimalkan pelayanan dan memaksimalkan pengalaman pengguna dengan mengubah konten di laman situs berdasarkan jenis browser pengunjung dan/atau informasi lainnya dari _Log Files_.
 
-Untuk informasi lebih lanjut mengenai cookies, silahkan dibaca di halaman "**[Apa itu Cookies](https://www.cookieconsent.com/what-are-cookies/)**".
+Untuk informasi lebih lanjut mengenai cookies, silahkan dibaca di halaman "**[Apa itu Cookies](/cookies/)**".
 
 ## Google DoubleClick DART Cookie
 Google adalah salah satu penyedia layanan pihak ketiga di situs ASIBUKA. Google juga menggunakan _cookies_, yang dikenal sebagai _DART cookies_, untuk menyajikan iklan ke pengunjung sesuai dengan referensi situs kunjungan mereka dan beberapa situs lain di internet. Meski bagaimanapun, pengunjung diperbolehkan untuk menolak penggunaan _DART cookies_ dengan mengunjungi _Google ad and content network Privacy Policy_ yang beralamatkan di https://policies.google.com/technologies/ads.
