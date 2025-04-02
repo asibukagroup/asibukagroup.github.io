@@ -26,9 +26,8 @@ defaults:
 
 # Navigation links
 nav_links:
-  Home: "/"
   Hak Cipta: "/hak-cipta/"
-  Hubungi Kami: "/contact/"
+  Hubungi Kami: "/hubungi-kami/"
   Kebijakan Privasi: "/kebijakan-privasi/"
   Laman Diskusi: "/diskusi/"
   Peta Situs: "/peta-situs/"
