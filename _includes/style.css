@@ -9,7 +9,7 @@ a{background-color:transparent;-webkit-text-decoration-skip:objects;text-decorat
 body.dark-mode a{color:#ffffff}
 a:hover,a:focus,body.darkmode a:hover,body.darkmode a:focus{color:#012345}
 /* Article */
-section,main,aside,footer{margin:auto .5rem}
+section,main,aside,footer,nav{padding:auto .5rem}
 /* Floating Header Navbar */
 .floating-navbar{position:fixed;top:0;left:50%;transform:translateX(-50%);width:100%;max-width:900px;background:#004AAD;padding:1rem 0;box-shadow:0 4px 10px #0000001a;z-index:1000;display:flex;align-items:center;justify-content:space-between;border-radius:0 0 15px 15px;text-transform:capitalize}
 #hamburger-menu{font-size:24px;color:#fff;background:none;border:none;cursor:pointer;margin-left:1rem}
