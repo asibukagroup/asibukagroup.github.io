@@ -1,7 +1,7 @@
 {
-  "name": "{{ site.title }}",
-  "short_name": "{{ site.title }}",
-  "description": "{{ site.description }}",
+  "name": "ASIBUKA Group",
+  "short_name": "ASIBUKA",
+  "description": "Aplikasi resmi ASIBUKA Group",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
