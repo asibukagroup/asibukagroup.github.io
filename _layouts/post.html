@@ -2,33 +2,6 @@
 layout: default
 ---
 <article>
-  {% if content contains "<h2" %}
-  <div class="has-toc">
-    <nav class="toc">
-      <h2>Table of Contents</h2>
-      <ul>
-        {% assign headings = content | split: '<h2' %}
-        {% for section in headings offset: 1 %}
-          {% assign heading = section | split: '</h2>' | first %}
-          {% assign title = heading | split: '>' | last %}
-          <li>
-            <a href="#{{ title | slugify }}">{{ title }}</a>
-            <ul>
-              {% if section contains "<h3" %}
-                {% assign subheadings = section | split: '<h3' %}
-                {% for subsection in subheadings offset: 1 %}
-                  {% assign subheading = subsection | split: '</h3>' | first %}
-                  {% assign subtitle = subheading | split: '>' | last %}
-                  <li><a href="#{{ subtitle | slugify }}">{{ subtitle }}</a></li>
-                {% endfor %}
-              {% endif %}
-            </ul>
-          </li>
-        {% endfor %}
-      </ul>
-    </nav>
-  </div>
-{% endif %}
-
+{% if content contains "<h2" %}<div class="has-toc"><nav class="toc"><h2>Table of Contents</h2><ul>{% assign headings = content | split: '<h2' %}{% for section in headings offset: 1 %}{% assign heading = section | split: '</h2>' | first %}{% assign title = heading | split: '>' | last %}<li><a href="#{{ title | slugify }}" title="{{ title }}">{{ title }}</a><ul>{% if section contains "<h3" %}{% assign subheadings = section | split: '<h3' %}{% for subsection in subheadings offset: 1 %}{% assign subheading = subsection | split: '</h3>' | first %}{% assign subtitle = subheading | split: '>' | last %}<li><a href="#{{ subtitle | slugify }}" title="{{ subtitle }}">{{ subtitle }}</a></li>{% endfor %}{% endif %}</ul></li>{% endfor %}</ul></nav></div>{% endif %}
 {{ content }}
 </article>
