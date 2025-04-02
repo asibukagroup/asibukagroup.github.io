@@ -9,7 +9,7 @@ robots: "index, follow"
 lang: "id"
 disqus_shortname: "asibukagroup"
 permalink: /:title/
-date: 2025-04-02 00:00:03
+future: true
 
 # Default Value
 defaults:
