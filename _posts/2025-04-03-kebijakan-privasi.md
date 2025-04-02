@@ -15,6 +15,7 @@ author: ASIBUKA Group
 Di semua web ASIBUKA, salah satu hal yang kami prioritaskan adalah privasi pengunjung. Kebijakan Privasi ini mengandung jenis-jenis informasi yang dikumpulkan dan dicatat oleh web ASIBUKA dan bagaimana kami menggunakannya.
 
 Jika kamu ada pertanyaan atau butuh informasi lebih lanjut mengenai Kebijakan Privasi kami, jangan sungkan untuk menghubungi kami. Kamu dapat menemukan informasi detail cara menghubungi kami melalui halaman **[Contact](https://asibuka.com/hubungi-kami/)**.
+
 ## _Log Files_
 ASIBUKA mengikuti prosedur standar dalam menggunakan informasi _log files_. Files ini mulai tercatat semenjak pengunjung memasuki web ini. Semua perusahaan hosting dan beberapa jasa analisa melakukan ini. Informasi yang diakses oleh _log files_ ini berupa alamat internet protokol (IP), jenis browser, dan _Internet Service Provider_ (ISP), tanggal kunjungan, lama kunjungan, sumber kunjungan, dan tujuan saat keluar dari web ASIBUKA, dan kemungkinan jumlah klik dari pengguna. Informasi-informasi ini tidak berhubungan dengan data pribadi pengguna. Tujuan dari pengambilan informasi ini adalah untuk menganalisa trend pasar, administrasi situs, mengidentifikasi kegiatan pengguna selama berada di situs, dan mengumpulkan informasi demografik.
 
@@ -30,6 +31,7 @@ Google adalah salah satu penyedia layanan pihak ketiga di situs ASIBUKA. Google 
 Beberapa pengiklan di situs kami diperbolehkan menggunakan _cookies_ dan _web beacons_. Adapun pengiklan di situs kami dapat dilihat dalam daftar di bawah. Setiap pengiklan memiliki kebijakan privasi tersendiri mengenai penggunaan data pengguna. Untuk mengakses kebijakan dari masing-masing pengiklan, kami lampirkan alamat kebijakan privasi dari masing-masing pengiklan.
 
 * Google: https://policies.google.com/technologies/ads
+
 ## Kebijakan Privasi
 Kamu bisa membaca list di atas untuk menemukan Kebijakan Privasi dari tiap-tiap pengiklan di ASIBUKA.
 
