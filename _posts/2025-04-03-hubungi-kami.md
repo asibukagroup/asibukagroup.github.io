@@ -14,9 +14,9 @@ author: ASIBUKA Group
 ---
 Selamat datang di halaman Kontak kami! Jika Anda memiliki pertanyaan, masukan, atau ingin berhubungan dengan kami, silakan gunakan informasi kontak di bawah ini:
 
-*Telepon: 0823-1779-8484
-*WhatsApp: [+6282317798484](https://wa.me/+6282317798484)
-*Email: [admin@asibuka.com](mailto:admin@asibuka.com)
+* Telepon: 0823-1779-8484
+* WhatsApp: [+6282317798484](https://wa.me/+6282317798484)
+* Email: [admin@asibuka.com](mailto:admin@asibuka.com)
 
 Selain daftar kontak di atas, kamu juga dapat menggunakan kolom Kontak di bawah untuk mengirimi kami pesan.
 
