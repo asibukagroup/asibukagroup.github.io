@@ -9,6 +9,7 @@ robots: "index, follow"
 lang: "id"
 disqus_shortname: "asibukagroup"
 permalink: /:title/
+date: 2025-04-02 00:00:03
 
 # Default Value
 defaults:
@@ -21,7 +22,7 @@ defaults:
   robots: "index, follow"
   lang: "id"
   disqus_shortname: "asibukagroup"
-  date: 2025-04-02 10:00:00
+  date: 2025-04-02 00:00:05
 
 # Navigation links
 nav_links:
