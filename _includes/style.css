@@ -1,8 +1,12 @@
 /* CSS Reset */
 html{transition:.3s ease-in-out;line-height:1.5;scroll-behavior:smooth;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%}
+}::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar-thumb{background-color:#004AAD;border:.05em solid #004AAD;background-clip:padding-box;cursor:pointer;border-radius:8px;-webkit-border-radius:8px}
+::-webkit-scrollbar-track{background-color:#000000}
+::selection{background-color:#004AAD;color:#fff}
 [hidden]{display:none}
 /* Body */
-body{font:normal normal 1rem Arial,Helvetica, sans-serif;background-color:#fff;color:#333;max-width:900px;margin:0 auto}
+body{font-family:Arial,sans-serif;background-color:#f4f4f4;color:#333;max-width:900px;margin:0 auto}
 body.dark-mode{background-color:#1e1e1e;color:#f4f4f4}
 /* A (Hyperlink) */
 a{background-color:transparent;-webkit-text-decoration-skip:objects;text-decoration:none;font-weight:600;color:#012345}
