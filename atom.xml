@@ -1,0 +1,24 @@
+---
+layout: none
+---
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>{{ site.title }}</title>
+  <link href="{{ site.url }}/atom.xml" rel="self"/>
+  <link href="{{ site.url }}"/>
+  <updated>{{ site.time | date_to_rfc3339 }}</updated>
+  <author>
+    <name>{{ site.author | default: "Admin" }}</name>
+  </author>
+  <id>{{ site.url }}/</id>
+
+  {% for post in site.posts %}
+  <entry>
+    <title>{{ post.title }}</title>
+    <link href="{{ site.url }}{{ post.url }}"/>
+    <id>{{ site.url }}{{ post.url }}</id>
+    <updated>{{ post.date | date_to_rfc3339 }}</updated>
+    <summary type="html"><![CDATA[{{ post.excerpt | strip_html | truncatewords: 50 }}]]></summary>
+  </entry>
+  {% endfor %}
+</feed>
