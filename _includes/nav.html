@@ -1,4 +1,4 @@
-<input type='checkbox' hidden id='sidebar-toggle'>
+<input type='checkbox' hidden aria-hidden='true' aria-label='Sidebar Menu' id='sidebar-toggle'>
 <nav itemscope itemtype='https://schema.org/SiteNavigationElement' id='sidebar' class='sidebar' aria-hidden='true'>
     <label for='sidebar-toggle' class='close'>&times;</label>
     <h2>Navigation Links</h2>
@@ -6,4 +6,4 @@
         {% for link in site.nav_links %}<li itemprop='name'><a itemprop='url' title='{{ link[0] }}' href='{{ link[1] }}'>{{ link[0] }}</a></li>{% endfor %}
     </ul>
 </nav>
-<label for='sidebar-toggle' class='overlay'></label>
+<label for='sidebar-toggle' class='overlay' aria-hidden='true'></label>
