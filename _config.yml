@@ -34,6 +34,7 @@ defaults:
 
 # Navigation links
 nav_links:
+  Beranda: "/"
   Hak Cipta: "/hak-cipta/"
   Hubungi Kami: "/hubungi-kami/"
   Kebijakan Privasi: "/kebijakan-privasi/"
