@@ -1,5 +1,6 @@
 <input type='checkbox' hidden id='sidebar-toggle'>
 <nav itemscope itemtype='https://schema.org/SiteNavigationElement' id='sidebar' class='sidebar' aria-hidden='true'>
+    <label for='sidebar-toggle' class='close'>&times;</label>
     <h2>Navigation Links</h2>
     <ul class='menu'>
         {% for link in site.nav_links %}<li itemprop='name'><a itemprop='url' title='{{ link[0] }}' href='{{ link[1] }}'>{{ link[0] }}</a></li>{% endfor %}
