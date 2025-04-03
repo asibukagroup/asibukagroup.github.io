@@ -14,7 +14,7 @@ layout: none
     <item>
       <title>{{ post.title }}</title>
       <link>{{ site.url }}{{ post.url }}</link>
-      <description>{{ post.excerpt | strip_html }}</description>
+      <description><![CDATA[{{ post.excerpt | strip_html | truncatewords: 200 }}]]></description>
       <pubDate>{{ post.date | date_to_rfc822 }}</pubDate>
     </item>
     {% endfor %}
