@@ -1,2 +1,8 @@
-<nav id="sidebar" class="sidebar"><button id="close-sidebar" class="close-btn">&times;</button><ul class="menu">{% for link in site.nav_links %}<li><a title='{{ link[0] }}' href="{{ link[1] }}">{{ link[0] }}</a></li>{% endfor %}</ul></nav>
-<div id="overlay" class="overlay"></div>
+<input type="checkbox" id="sidebar-toggle">
+<nav id='sidebar' class='sidebar'>
+    <button id='close-sidebar' class='close-btn'>&times;</button>
+    <ul class='menu'>
+        {% for link in site.nav_links %}<li><a title='{{ link[0] }}' href='{{ link[1] }}'>{{ link[0] }}</a></li>{% endfor %}
+    </ul>
+</nav>
+<label for='sidebar-toggle' class='overlay'></label><div id='overlay' class='overlay'></div>
