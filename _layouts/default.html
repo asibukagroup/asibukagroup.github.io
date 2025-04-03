@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ page.lang | default: site.defaults.lang }}">
+<html {% if page.amp or site.amp_mode %} ⚡ {% endif %} lang="{{ page.lang | default: site.defaults.lang }}">
 <head>
     <meta charset='UTF-8'>
     <meta content='IE=EDGE' http-equiv='X-UA-Compatible'>
@@ -56,8 +56,10 @@
     <meta name='dmca-site-verification' content='OWJ0Vk5lWTVjNzRLMWxFcis4NythQT090'>
     <!-- Canonical -->
     <link rel="canonical" hreflang='{{ page.lang | default: site.defaults.lang }}' href="{{ site.url }}{{ page.url | replace:'index.html','' }}">
+    {% if page.amp or site.amp_mode %}<link rel="amphtml" href="{{ page.url | absolute_url }}?amp=1">{% endif %}
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
-    <style>{% include style.css %}</style>
+    <style {% if page.amp or site.amp_mode %} amp-boilerplate {% endif %}>{% include style.css %}</style>
+    {% if page.amp or site.amp_mode %}<script async src="https://cdn.ampproject.org/v0.js"></script>{% endif %}
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4951061355072034" crossorigin="anonymous"></script>
     <!-- Structured Data -->
     <script type="application/ld+json">
@@ -70,7 +72,7 @@
     }
     </script>
 </head>
-<body>
+<body class="{% if page.amp or site.amp_mode %}amp-visible{% endif %}">
 {% include header.html %}
 {% include nav.html %}
 {% include top-info.html %}
