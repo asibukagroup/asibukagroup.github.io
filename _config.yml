@@ -29,18 +29,8 @@ defaults:
 
   - scope:
       path: "_includes/sw.js.liquid"
-      path: "assets/sitemap.xml"
-      path: "assets/ads.txt"
-      path: "assets/robots.txt"
-      path: "assets/favicon.ico"
-      path: "assets/manifest.json"
     values:
       permalink: "/sw.js"
-      permalink: "/sitemap.xml"
-      permalink: "/ads.txt"
-      permalink: "/robots.txt"
-      permalink: "/favicon.ico"
-      permalink: "/manifest.json"
 
 # Navigation links
 nav_links:
