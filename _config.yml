@@ -11,14 +11,6 @@ disqus_shortname: "asibukagroup"
 permalink: /:title/
 future: true
 
-collections:
-  posts:
-    output: true
-    permalink: /:title/
-  amp:
-    output: true
-    permalink: /:title/amp/
-
 defaults:
   - scope:
       path: ""
