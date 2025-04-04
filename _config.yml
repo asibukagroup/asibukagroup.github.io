@@ -15,21 +15,22 @@ plugins:
 collections:
   posts:
     output: true
-    permalink: /:title/
+
 defaults:
   - scope:
-      path: "_posts"
+      path: ""
       type: "posts"
     values:
-      layout: "post"
+      layout: post
       amp: false
+
   - scope:
-      path: "_posts"
+      path: ""
       type: "posts"
     values:
-      layout: "amp"
-      permalink: "/:title/amp/"
+      layout: amp
       amp: true
+      permalink: "/:title/amp/"
 
 # Navigation links
 nav_links:
