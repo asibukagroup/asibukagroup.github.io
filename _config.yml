@@ -21,6 +21,10 @@ defaults:
       path: "_includes/sw.js.liquid"
     values:
       permalink: "/sw.js"
+  - scope:
+      path: "_layout/amp.html"
+    values:
+      permalink: /:title/amp/
 
 # Navigation links
 nav_links:
