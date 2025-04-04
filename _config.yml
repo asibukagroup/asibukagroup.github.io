@@ -1,4 +1,4 @@
-theme_name: ASIBUKA Group Theme
+theme_name: "ASIBUKA Group Theme"
 title: "ASIBUKA Group"
 description: "ASIBUKA Group adalah usaha yang bergerak di bidang investasi di bidang UMKM baik offline maupun online, berbasis teknologi ataupun konvensional."
 url: "https://asibuka.com"
@@ -10,13 +10,17 @@ lang: "id"
 disqus_shortname: "asibukagroup"
 permalink: /:title/
 future: true
+
 collections:
+  posts:
+    output: true
+    permalink: /:title/
   amp:
     output: true
-    permalink: "/amp/:path/"
+    permalink: /:title/amp/
 
-# Default Value
 defaults:
+  # Normal posts
   - scope:
       path: "_posts"
       type: "posts"
@@ -24,6 +28,7 @@ defaults:
       layout: "post"
       amp: false
 
+  # AMP version
   - scope:
       path: "_posts"
       type: "posts"
@@ -31,16 +36,6 @@ defaults:
       layout: "amp"
       permalink: "/:title/amp/"
       amp: true
-    title: "ASIBUKA Group"
-    description: "ASIBUKA Group adalah usaha yang bergerak di bidang investasi di bidang UMKM baik offline maupun online, berbasis teknologi ataupun konvensional."
-    url: "https://asibuka.com"
-    author: "ASIBUKA Group"
-    thumbnail: "https://asibuka.com/assets/img/ASIBUKA-Blue.png"
-    keywords: "ASIBUKA, ASIBUKA Group, Bisnis, Investasi, UMKM"
-    robots: "index, follow"
-    lang: "id"
-    disqus_shortname: "asibukagroup"
-    date: 2025-04-02 00:00:05
 
 # Navigation links
 nav_links:
