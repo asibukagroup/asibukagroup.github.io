@@ -1,6 +1,6 @@
-theme_name: "ASIBUKA Group Theme"
+theme_name: ASIBUKA Group Theme
 title: "ASIBUKA Group"
-description: "ASIBUKA Group adalah usaha yang bergerak di bidang investasi di bidang UMKM baik offline maupun online, berbasis teknologi ataupun konvensional."
+description: "ASIBUKA Group adalah usaha yang bergerak di bidang investasi di bidang UMKM..."
 url: "https://asibuka.com"
 author: "ASIBUKA Group"
 thumbnail: "https://asibuka.com/assets/img/ASIBUKA-Blue.png"
@@ -10,35 +10,26 @@ lang: "id"
 disqus_shortname: "asibukagroup"
 permalink: /:title/
 future: true
-plugins:
-  - jekyll-amp
+
+# Collections
 collections:
   posts:
     output: true
+    permalink: /:title/
+  amp:
+    output: true
+    permalink: /:title/amp/
 
+# Default values
 defaults:
   - scope:
       path: ""
-      type: "posts"
+      type: posts
     values:
       layout: post
-      amp: false
 
   - scope:
       path: ""
-      type: "posts"
+      type: amp
     values:
       layout: amp
-      amp: true
-      permalink: "/:title/amp/"
-
-# Navigation links
-nav_links:
-  Beranda: "/"
-  Hak Cipta: "/hak-cipta/"
-  Hubungi Kami: "/hubungi-kami/"
-  Kebijakan Privasi: "/kebijakan-privasi/"
-  Laman Diskusi: "/diskusi/"
-  Peta Situs: "/peta-situs/"
-  Syarat dan Ketentuan: "/syarat-ketentuan/"
-  Tentang Kami: "/tentang-kami/"
