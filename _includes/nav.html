@@ -1,9 +1,12 @@
 <input type='checkbox' hidden id='sidebar-toggle'>
-<nav itemscope itemtype='https://schema.org/SiteNavigationElement' id='sidebar' class='sidebar' aria-label='Sidebar Menu' aria-hidden='true'>
-    <label for='sidebar-toggle' class='close'>&times;</label>
-    <h2>Navigation Links</h2>
-    <ul class='menu'>
-        {% for link in site.nav_links %}<li itemprop='name'><a itemprop='url' title='{{ link[0] }}' href='{{ link[1] }}'>{{ link[0] }}</a></li>{% endfor %}
-    </ul>
+<nav itemscope itemtype='https://schema.org/SiteNavigationElement' aria-label='Sidebar Menu' class='page-wrapper'>
+    <div class='sidebar-container'>
+      <div class='sidebar'>
+        <label for='sidebar-toggle' class='close'>&times;</label>
+        <h2>Navigation Links</h2>
+        <ul class='menu'>
+            {% for link in site.nav_links %}<li itemprop='name'><a itemprop='url' title='{{ link[0] }}' href='{{ link[1] }}'>{{ link[0] }}</a></li>{% endfor %}
+        </ul>
+      </div>
+      <label for='sidebar-toggle' class='overlay'></label>
 </nav>
-<label for='sidebar-toggle' class='overlay' aria-hidden='true'></label>
