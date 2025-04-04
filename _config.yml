@@ -19,12 +19,28 @@ defaults:
       permalink: /:title/
   - scope:
       path: "_includes/sw.js.liquid"
+  - scope:
+      path: "_layouts/amp.html"
+    values:
+      permalink: "?amp=1"
     values:
       permalink: "/sw.js"
   - scope:
       path: "sitemap.xml"
     values:
       permalink: "/sitemap.xml"
+  - scope:
+      path: "rss.xml"
+    values:
+      permalink: "/rss.xml"
+  - scope:
+      path: "feed.xml"
+    values:
+      permalink: "/feed.xml"
+  - scope:
+      path: "atom.xml"
+    values:
+      permalink: "/atom.xml"
 
 # Navigation links
 nav_links:
