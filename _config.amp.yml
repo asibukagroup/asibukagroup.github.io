@@ -1,0 +1,14 @@
+baseurl: ""
+url: "https://asibuka.com"
+permalink: /:title/amp/
+
+defaults:
+  - scope:
+      path: ""
+      type: posts
+    values:
+      layout: amp
+      amp: true
+
+plugins:
+  - jekyll-amp
