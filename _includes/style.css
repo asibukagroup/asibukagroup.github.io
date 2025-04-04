@@ -25,7 +25,7 @@ article{margin:auto .5rem}
 .floating-navbar{padding:12px 0}
 }
 /* Sidebar Menu */
-.sidebar{position:fixed;top:0;left:-340px;width:300px;z-index:4;height:100%;background:#004AAD;color:#fff;transition:left .3s ease-in-out;padding:60px 20px 20px;box-shadow:2px 0 10px #0000004d;overflow-y:auto;text-align:center}
+.sidebar{position:fixed;top:0;left:-290px;width:250PX;z-index:4;height:100%;background:#004AAD;color:#fff;transition:left .3s ease-in-out;padding:60px 20px 20px;box-shadow:2px 0 10px #0000004d;overflow-y:auto;text-align:center}
 .sidebar h2{margin:0 0 20px;font-size:1.5rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;padding:10px;border-bottom:2px solid #ffffff80}
 .sidebar .close{position:absolute;top:10px;right:10px;font-size:24px;background:none;border:none;color:#fff;cursor:pointer}
 .sidebar ul{list-style:none;padding:0}
