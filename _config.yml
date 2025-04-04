@@ -10,22 +10,19 @@ lang: "id"
 disqus_shortname: "asibukagroup"
 permalink: /:title/
 future: true
-
+plugins:
+  - jekyll-amp
 collections:
   posts:
     output: true
     permalink: /:title/
-
 defaults:
-  # Normal post at /:title/
   - scope:
       path: "_posts"
       type: "posts"
     values:
       layout: "post"
       amp: false
-
-  # AMP version at /:title/amp/
   - scope:
       path: "_posts"
       type: "posts"
