@@ -15,12 +15,9 @@ collections:
   posts:
     output: true
     permalink: /:title/
-  amp:
-    output: true
-    permalink: /:title/amp/
 
 defaults:
-  # Normal posts
+  # Normal post at /:title/
   - scope:
       path: "_posts"
       type: "posts"
@@ -28,7 +25,7 @@ defaults:
       layout: "post"
       amp: false
 
-  # AMP version
+  # AMP version at /:title/amp/
   - scope:
       path: "_posts"
       type: "posts"
