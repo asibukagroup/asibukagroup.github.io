@@ -13,16 +13,16 @@ future: true
 
 defaults:
   - scope:
-      path: ""
+      path: "_posts"
       type: posts
     values:
       layout: post
       amp: false
 
   - scope:
-      path: ""
+      path: "_posts"
       type: posts
     values:
-      layout: amp
-      permalink: "/:title/amp/"
+      amp_layout: amp
+      amp_permalink: "/:title/amp/"
       amp: true
