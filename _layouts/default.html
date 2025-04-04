@@ -56,7 +56,12 @@
     <meta name='dmca-site-verification' content='OWJ0Vk5lWTVjNzRLMWxFcis4NythQT090'>
     <!-- Canonical -->
     <link rel="canonical" hreflang='{{ page.lang | default: site.defaults.lang }}' href="{{ site.url }}{{ page.url | replace:'index.html','' }}">
-    <link rel="amphtml" href="{{ page.url | replace: site.url, site.url | append: '/amp/' }}">
+    {% if page.amp %}
+<link rel="canonical" href="{{ page.url | replace: '/amp/', '/' | absolute_url }}">
+{% else %}
+<link rel="amphtml" href="{{ page.url | absolute_url | append: '/amp/' }}">
+{% endif %}
+
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
     <style>{% include style.css %}</style>
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4951061355072034" crossorigin="anonymous"></script>
