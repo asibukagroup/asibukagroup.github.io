@@ -21,6 +21,10 @@ defaults:
       path: "_includes/sw.js.liquid"
     values:
       permalink: "/sw.js"
+  - scope:
+      path: "sitemap.xml"
+    values:
+      permalink: "/sitemap.xml"
 
 # Navigation links
 nav_links:
