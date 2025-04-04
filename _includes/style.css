@@ -36,7 +36,7 @@ article{margin:auto .5rem}
 #sidebar-toggle:checked ~ .sidebar{left:0}
 #sidebar-toggle:checked ~ .overlay{opacity:1;visibility:visible}
 @media (max-width: 400px) {
-.sidebar{width:100%;left:-120%}
+.sidebar{width:90%;left:-120%}
 #sidebar-toggle:checked ~ .sidebar{left:0}
 .sidebar h2{font-size:1.3rem}
 }
