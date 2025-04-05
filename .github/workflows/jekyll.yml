@@ -3,7 +3,7 @@ name: Build and Deploy Jekyll site to GitHub Pages
 on:
   push:
     branches:
-      - main  # Change if you're using a different default branch
+      - main
 
 permissions:
   contents: read
