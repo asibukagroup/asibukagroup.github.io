@@ -85,3 +85,14 @@ plugins:
   - jekyll-seo-tag
   - jekyll-paginate
   - jekyll-archives
+# ------------------------------
+# Plugins
+# ------------------------------
+jekyll-archives:
+  enabled:
+    - categories
+    - tags
+  layout: archive
+  permalinks:
+    category: '/category/:name/'
+    tag: '/tag/:name/'
