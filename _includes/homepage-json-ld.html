@@ -1,0 +1,98 @@
+{
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": "{{ site.url }}{{ page.url | replace:'index.html','' }}#website",
+        "url": "{{ site.url }}{{ page.url | replace:'index.html','' }}",
+        "name": "{{ page.title | default: site.defaults.title }}",
+        "alternateName": "{{ page.title | default: site.defaults.title }}",
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": "{{ site.url }}{{ page.url | replace:'index.html','' }}/search?q={search_term_string}",
+          "query-input": "required name=search_term_string"
+        },
+        "inLanguage": "id",
+        "publisher": {
+          "@id": "{{ site.url }}{{ page.url | replace:'index.html','' }}/tentang-kami"
+        }
+      },
+      {
+        "@type": "WebPage",
+        "@id": "{{ site.url }}{{ page.url | replace:'index.html','' }}",
+        "url": "{{ site.url }}{{ page.url | replace:'index.html','' }}",
+        "name": "Welcome to Your Website Name",
+        "isPartOf": {
+          "@id": "{{ site.url }}{{ page.url | replace:'index.html','' }}"
+        },
+        "about": {
+          "@id": "{{ site.url }}{{ page.url | replace:'index.html','' }}/tentang-kami/"
+        },
+        "description": "This is your homepage description for SEO and users. Summarize your website’s purpose here.",
+        "breadcrumb": {
+          "@id": "https://yourwebsite.com/#breadcrumb"
+        },
+        "inLanguage": "en"
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": "https://yourwebsite.com/#breadcrumb",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://yourwebsite.com/"
+          }
+        ]
+      },
+      {
+        "@type": "Organization",
+        "@id": "https://yourwebsite.com/#organization",
+        "name": "Your Company Name or Personal Brand",
+        "legalName": "Your Legal Company Name (if different)",
+        "url": "https://yourwebsite.com/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://yourwebsite.com/images/logo.png",
+          "width": 300,
+          "height": 60
+        },
+        "image": {
+          "@type": "ImageObject",
+          "url": "https://yourwebsite.com/images/cover.jpg",
+          "width": 1200,
+          "height": 628
+        },
+        "founder": {
+          "@type": "Person",
+          "name": "Founder Name"
+        },
+        "foundingDate": "2020-01-01",
+        "foundingLocation": "City, Country",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "123 Your Street",
+          "addressLocality": "City Name",
+          "addressRegion": "Region/State",
+          "postalCode": "12345",
+          "addressCountry": "Country"
+        },
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "telephone": "+1-800-555-1234",
+          "contactType": "Customer Support",
+          "areaServed": "Worldwide",
+          "availableLanguage": ["English", "Spanish"]
+        },
+        "sameAs": [
+          "https://www.facebook.com/yourprofile",
+          "https://twitter.com/yourprofile",
+          "https://www.instagram.com/yourprofile",
+          "https://www.linkedin.com/company/yourcompany",
+          "https://github.com/yourprofile",
+          "https://www.youtube.com/yourchannel"
+        ]
+      }
+    ]
+  }
