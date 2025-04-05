@@ -1,15 +1,12 @@
 const CACHE_NAME = "jekyll-pwa-v1";
-
 const urlsToCache = [
-    "{{ site.baseurl }}/",  // Cache homepage
+    "{{ site.baseurl }}/",
     {% for post in site.posts %}
     "{{ site.baseurl }}{{ post.url }}",
     {% endfor %}
-    "{{ site.baseurl }}/assets/css/style.css",
     "{{ site.baseurl }}/assets/js/main.js"
 ];
 
-// Install Service Worker and Cache Files
 self.addEventListener("install", event => {
     event.waitUntil(
         caches.open(CACHE_NAME).then(cache => {
@@ -18,7 +15,6 @@ self.addEventListener("install", event => {
     );
 });
 
-// Fetch from cache first, then update from network
 self.addEventListener("fetch", event => {
     event.respondWith(
         caches.match(event.request).then(response => {
@@ -27,7 +23,6 @@ self.addEventListener("fetch", event => {
     );
 });
 
-// Activate & Remove Old Cache
 self.addEventListener("activate", event => {
     event.waitUntil(
         caches.keys().then(cacheNames => {

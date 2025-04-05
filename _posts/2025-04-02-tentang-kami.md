@@ -3,7 +3,7 @@ layout: post
 title: Tentang Kami
 date: 2025-04-02 00:00:04
 permalink: /tentang-kami/
-thumbnail: https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiBNdLGucFdwv1tnt5_EAcLzW30wtL95iaeC_dSGjQtPvDrdgZ8QeEv_vQz1TkaxsBaUpUCh3MizCx-_BBylFmdXiOASx8gXQeew0Tl5AzZQCKxIACdn62unc2_4sIJIJu34Atenl5c545jmya2qBW9HowTF75UZXZ2ldVkVueZt2Vg3c6mKUsJOFvNfcM/s0-rw/tentang-kami.jpeg
+image: https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiBNdLGucFdwv1tnt5_EAcLzW30wtL95iaeC_dSGjQtPvDrdgZ8QeEv_vQz1TkaxsBaUpUCh3MizCx-_BBylFmdXiOASx8gXQeew0Tl5AzZQCKxIACdn62unc2_4sIJIJu34Atenl5c545jmya2qBW9HowTF75UZXZ2ldVkVueZt2Vg3c6mKUsJOFvNfcM/s0-rw/tentang-kami.jpeg
 description: Halaman yang berisi pengenalan tentang apa itu ASIBUKA Group, visi misi, siapa saja orang di dalamnya, program yang direncanakannya serta perkembangannya.
 keywords: ASIBUKA, ASIBUKA Group
 robots: index, follow

@@ -6,7 +6,7 @@ permalink: /syarat-ketentuan/
 categories: [Official]
 tags: [official, syarat dan ketentuan, syarat penggunaan]
 lang: id
-thumbnail: https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjFXkv5xQbBacLX_LaRRsWZgIXAyXupJpI_gCDYdAPyVX3XmZUiuh61c9Gqb23TC6ugZ7x1kNc_wF5gzmLoeUwVSSuFllnAuWdVMTNT4yayzZvAcrlcheZqSYB6UcvCaxxsZJCGT6gIBfPSOZy0K1WaWiaBBkjROCwYOf6Au4BZLGDFACmfi2XLU0L4Ifo/s0-rw/syarat-ketentuan.jpeg
+image: https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjFXkv5xQbBacLX_LaRRsWZgIXAyXupJpI_gCDYdAPyVX3XmZUiuh61c9Gqb23TC6ugZ7x1kNc_wF5gzmLoeUwVSSuFllnAuWdVMTNT4yayzZvAcrlcheZqSYB6UcvCaxxsZJCGT6gIBfPSOZy0K1WaWiaBBkjROCwYOf6Au4BZLGDFACmfi2XLU0L4Ifo/s0-rw/syarat-ketentuan.jpeg
 description: Halaman terms and conditions yang menjelaskan tentang aturan yang berlaku di semua website ASIBUKA Group.
 keywords: syarat penggunaan
 robots: index, follow

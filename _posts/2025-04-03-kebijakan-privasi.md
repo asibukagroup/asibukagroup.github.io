@@ -6,7 +6,7 @@ permalink: /kebijakan-privasi/
 categories: [Official]
 tags: [official, kebijakan privasi]
 lang: id
-thumbnail: https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiHyFdRh78rNr1M1aZ3E5XyzuvrN4Kc-TQvm9MOZ1tmtTIv1buOQ6oCW1NCx8nKadpuA-I4w51xZp2o6ySa5XBhyphenhyphenNpDfhUXFK4KHHMKwdiWgwC8PejoHJL9fyyJlt3GXD6TCIRzGlJfRp8J8kVz1SkExEPaPseB_lwcffUuow9ptm6JOY8UD2p9xwySXPo/s0-rw/kebijakan-privasi.png
+image: https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiHyFdRh78rNr1M1aZ3E5XyzuvrN4Kc-TQvm9MOZ1tmtTIv1buOQ6oCW1NCx8nKadpuA-I4w51xZp2o6ySa5XBhyphenhyphenNpDfhUXFK4KHHMKwdiWgwC8PejoHJL9fyyJlt3GXD6TCIRzGlJfRp8J8kVz1SkExEPaPseB_lwcffUuow9ptm6JOY8UD2p9xwySXPo/s0-rw/kebijakan-privasi.png
 description: Halaman tentang kebijakan privasi / privacy policy pengguna dan pengunjung selama berada di situs ASIBUKA Group.
 keywords: privasi, kebijakan privasi
 robots: index, follow
