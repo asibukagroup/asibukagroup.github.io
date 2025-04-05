@@ -61,7 +61,7 @@ defaults:
     values:
       permalink: "/atom.xml"
   - scope:
-      path: "_includes/sw.js.liquid"
+      path: "sw.js"
     values:
       permalink: "/sw.js"
 # ------------------------------
@@ -86,7 +86,7 @@ plugins:
   - jekyll-paginate
   - jekyll-archives
 # ------------------------------
-# Plugins
+# Jekyll Archives Plugins
 # ------------------------------
 jekyll-archives:
   enabled:
