@@ -3,10 +3,11 @@
     <div class='sidebar-container'>
       <div class='sidebar'>
         <label for='sidebar-toggle' class='close'>&times;</label>
-        <h2>Navigation Links</h2>
+        <h2>Menu Navigasi</h2>
         <ul class='menu'>
             {% for link in site.nav_links %}<li itemprop='name'><a itemprop='url' title='{{ link[0] }}' href='{{ link[1] }}'>{{ link[0] }}</a></li>{% endfor %}
         </ul>
+        <h2>Bisnis</h2>
       </div>
       <label for='sidebar-toggle' class='overlay'></label>
 </nav>
