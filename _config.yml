@@ -73,3 +73,24 @@ nav_links:
 # ------------------------------
 # Plugins
 # ------------------------------
+plugins:
+  - jekyll-archives
+# ------------------------------
+# Jekyll Archives Plugins
+# ------------------------------
+jekyll-archives:
+  enabled:
+    - categories
+    - tags
+    - year
+    - month
+  layouts:
+    category: archive
+    tag: archive
+    year: archive
+    month: archive
+  permalinks:
+    year: '/archives/:year/'
+    month: '/archives/:year/:month/'
+    tag: '/tag/:name/'
+    category: '/category/:name/'
