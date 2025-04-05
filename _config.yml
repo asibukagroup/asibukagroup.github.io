@@ -60,6 +60,7 @@ defaults:
       path: "atom.xml"
     values:
       permalink: "/atom.xml"
+  - scope:
       path: "_includes/sw.js.liquid"
     values:
       permalink: "/sw.js"
