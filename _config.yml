@@ -1,27 +1,47 @@
 theme_name: ASIBUKA Group Theme
+# ------------------------------
+# 🌐 Site Information
+# ------------------------------
 title: "ASIBUKA Group"
-description: "ASIBUKA Group adalah usaha yang bergerak di bidang investasi di bidang UMKM baik offline maupun online, berbasis teknologi ataupun konvensional."
-url: "https://asibuka.com"
-author: "ASIBUKA Group"
-thumbnail: "https://asibuka.com/assets/img/ASIBUKA-Blue.webp"
+description: "ASIBUKA Group adalah usaha yang bergerak di bidang investasi UMKM berbasis teknologi."
 keywords: "ASIBUKA, ASIBUKA Group, Bisnis, Investasi, UMKM"
 robots: "index, follow"
-lang: "id"
-disqus_shortname: "asibukagroup"
+baseurl: ""
+url: "https://asibuka.com/"
 permalink: /:title/
+thumbnail: "https://asibuka.com/assets/img/ASIBUKA-Blue.webp"
+date: 2023-06-19 00:00:05
+timezone: "Asia/Jakarta"
+robots: "index, follow"
+lang: "id"
+categories: [-]
+tags: [ASIBUKA, ASIBUKA Blog]
+# ------------------------------
+# 👤 Author Info
+# ------------------------------
+author: "ASIBUKA Group"
+email: "admin@asibuka.com"
+# ------------------------------
+# 🗂 Permalinks & Pagination
+# ------------------------------
+permalink: /:title/
+paginate: 5
+paginate_path: "/page:num/"
+# ------------------------------
+# 🌐 Other Settings
+# ------------------------------
+disqus_shortname: "asibukagroup"
 future: true
-amp: true
+amp: false
 
+# ------------------------------
 # Default Value
+# ------------------------------
 defaults:
   - scope:
       path: ""
     values:
       permalink: /:title/
-    values:
-      permalink: "?amp=1"
-    values:
-      permalink: "/sw.js"
   - scope:
       path: "sitemap.xml"
     values:
@@ -38,8 +58,9 @@ defaults:
       path: "atom.xml"
     values:
       permalink: "/atom.xml"
-
+# ------------------------------
 # Navigation links
+# ------------------------------
 nav_links:
   Beranda: "/"
   Hak Cipta: "/hak-cipta/"
@@ -49,3 +70,12 @@ nav_links:
   Peta Situs: "/peta-situs/"
   Syarat dan Ketentuan: "/syarat-ketentuan/"
   Tentang Kami: "/tentang-kami/"
+# ------------------------------
+# Plugins
+# ------------------------------
+plugins:
+  - jekyll-feed
+  - jekyll-sitemap
+  - jekyll-seo-tag
+  - jekyll-paginate
+  - jekyll-archives
