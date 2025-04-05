@@ -30,6 +30,9 @@ jobs:
       - name: Build Jekyll site
         run: bundle exec jekyll build
 
+      - name: List _site Directory
+        run: ls -la _site
+
       - name: Upload artifact
         uses: actions/upload-artifact@v3
         with:
