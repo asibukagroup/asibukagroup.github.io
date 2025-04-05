@@ -60,6 +60,9 @@ defaults:
       path: "atom.xml"
     values:
       permalink: "/atom.xml"
+      path: "_includes/sw.js.liquid"
+    values:
+      permalink: "/sw.js"
 # ------------------------------
 # Navigation links
 # ------------------------------
