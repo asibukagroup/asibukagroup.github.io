@@ -59,7 +59,7 @@ module Jekyll
     def generate(site)
       markdown_exts = [".md", ".markdown"]
 
-      # --- Pages ---
+      # --- Regular Pages ---
       site.pages.each do |page|
         next if page.url.include?("/amp/")
         next unless markdown_exts.include?(page.extname)
@@ -92,7 +92,7 @@ module Jekyll
         )
       end
 
-      # --- Archives (jekyll-archives) ---
+      # --- Archives from jekyll-archives ---
       if site.respond_to?(:archives)
         site.archives.each do |archive|
           next if archive.url.include?("/amp/")
@@ -109,6 +109,47 @@ module Jekyll
           )
         end
       end
+
+      # --- Categories ---
+      site.categories.each do |category, posts|
+        page = find_page_by_url(site.pages, "/category/#{category}/")
+        next unless page
+        next if page.url.include?("/amp/")
+
+        amp_permalink = File.join(page.url.sub(%r!/$!, ""), "amp", "/")
+        output_dir = amp_permalink.sub(%r!^/!, "").chomp("/")
+
+        site.pages << AmpPage.new(
+          site: site,
+          base: site.source,
+          original: page,
+          permalink: amp_permalink,
+          output_dir: output_dir
+        )
+      end
+
+      # --- Tags ---
+      site.tags.each do |tag, posts|
+        page = find_page_by_url(site.pages, "/tag/#{tag}/")
+        next unless page
+        next if page.url.include?("/amp/")
+
+        amp_permalink = File.join(page.url.sub(%r!/$!, ""), "amp", "/")
+        output_dir = amp_permalink.sub(%r!^/!, "").chomp("/")
+
+        site.pages << AmpPage.new(
+          site: site,
+          base: site.source,
+          original: page,
+          permalink: amp_permalink,
+          output_dir: output_dir
+        )
+      end
+    end
+
+    # Helper to find generated archive pages by URL
+    def find_page_by_url(pages, url)
+      pages.find { |page| page.url == url || page.url == "#{url}index.html" }
     end
   end
 end
