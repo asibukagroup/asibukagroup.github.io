@@ -31,10 +31,6 @@ permalink: /:title/
 disqus_shortname: "asibukagroup"
 future: true
 safe: false
-collections:
-  amp:
-    output: true
-    permalink: /:title/amp/
 # ------------------------------
 # Default Value
 # ------------------------------
@@ -84,9 +80,12 @@ nav_links:
 # ------------------------------
 # Plugins
 # ------------------------------
+plugins_dir: _plugins
 plugins:
   - jekyll-sitemap
   - jekyll-archives
+  - ./_plugins/amp_generator.rb
+  - ./_plugins/amp_converter.rb
 # ------------------------------
 # Jekyll Archives Plugins
 # ------------------------------
