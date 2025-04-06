@@ -6,25 +6,25 @@ module Jekyll
         @site = site
         @base = site.source
   
-        # Set output path: /:title/amp/index.html
+        # Determine target AMP URL path
         original_path = original.url.sub(/^\//, '').sub(/\/$/, '')
-        @dir = File.join(original_path, "amp")
+        @dir = original_path.empty? ? "amp" : File.join(original_path, "amp")
         @name = "index.html"
   
         self.process(@name)
   
-        # Copy final rendered HTML content
+        # Use rendered HTML from original
         self.output = original.output
   
-        # Clone front matter and override layout
+        # Duplicate front matter and override layout
         self.data = original.data.dup
         self.data["layout"] = "amp"
         self.data["canonical_url"] = original.url
       end
   
-      # Tell Jekyll not to re-render this page again
+      # Don't render again — we already have rendered content
       def render_with_liquid?; false; end
-      def render(layouts, site_payload); end
+      def render(_layouts, _site_payload); end
     end
   
     class AmpGenerator < Generator
@@ -33,13 +33,14 @@ module Jekyll
   
       def generate(site)
         site.pages.each do |page|
-          next if page.url.include?("/amp/")
+          # Only for markdown files
           next unless page.extname == ".md" || page.ext == ".md"
   
-          site.pages << AmpPage.new(site, page)
+          # Skip if already an AMP page
+          next if page.url.include?("/amp/")
   
-          # Ensure original page has a layout
-          page.data["layout"] ||= "default"
+          # Create and add AMP version
+          site.pages << AmpPage.new(site, page)
         end
       end
     end
