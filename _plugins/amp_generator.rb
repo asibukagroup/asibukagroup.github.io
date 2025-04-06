@@ -3,9 +3,8 @@ module Jekyll
       def initialize(site, base, original_page, output_html)
         @site = site
         @base = base
-        @dir  = File.join(original_page.url.sub(%r{^/}, ''), 'amp')
-        @name = 'index.html'
-  
+        url_path = original_page.url.chomp("/").sub(%r{^/}, "")
+        @dir = url_path.empty? ? "amp" : File.join(url_path, "amp")
         self.process(@name)
         self.read_yaml(File.join(base, '_layouts'), 'amp.html')
         self.data = original_page.data.clone
