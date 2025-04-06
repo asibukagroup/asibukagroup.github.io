@@ -9,17 +9,14 @@ module Jekyll
       @name = "index.html"
       process(@name)
 
-      # Copy front matter but DO NOT TOUCH the original
       self.data = original.data.dup
       self.data["layout"] = "amp"
       self.data["permalink"] = permalink
       self.data["canonical_url"] = original.url
 
-      # Convert original markdown content to HTML
       markdown_converter = site.find_converter_instance(Jekyll::Converters::Markdown)
       rendered_html = markdown_converter.convert(original.content)
 
-      # Convert to AMP-compliant HTML
       self.content = convert_to_amp(rendered_html)
     end
 
@@ -60,11 +57,12 @@ module Jekyll
     priority :low
 
     def generate(site)
-      # Only generate AMP versions. Do not modify original pages/posts.
+      markdown_exts = [".md", ".markdown"]
 
+      # --- Pages ---
       site.pages.each do |page|
-        next unless page.extname == ".md" || page.ext == ".md"
         next if page.url.include?("/amp/")
+        next unless markdown_exts.include?(page.extname)
 
         amp_permalink = File.join((page.data["permalink"] || page.url).sub(%r!/$!, ""), "amp", "/")
         output_dir = page.url == "/" ? "amp" : amp_permalink.sub(%r!^/!, "").chomp("/")
@@ -78,6 +76,7 @@ module Jekyll
         )
       end
 
+      # --- Posts ---
       site.posts.docs.each do |post|
         next if post.url.include?("/amp/")
 
@@ -91,6 +90,24 @@ module Jekyll
           permalink: amp_permalink,
           output_dir: output_dir
         )
+      end
+
+      # --- Archives (jekyll-archives) ---
+      if site.respond_to?(:archives)
+        site.archives.each do |archive|
+          next if archive.url.include?("/amp/")
+
+          amp_permalink = File.join(archive.url.sub(%r!/$!, ""), "amp", "/")
+          output_dir = amp_permalink.sub(%r!^/!, "").chomp("/")
+
+          site.pages << AmpPage.new(
+            site: site,
+            base: site.source,
+            original: archive,
+            permalink: amp_permalink,
+            output_dir: output_dir
+          )
+        end
       end
     end
   end
