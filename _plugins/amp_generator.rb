@@ -7,16 +7,17 @@ module Jekyll
         @name = 'index.html'
   
         self.process(@name)
-        self.data = post.data.clone
-        self.data['layout'] = 'amp'
+        self.read_yaml(File.join(base, '_layouts'), 'amp.html')
+        self.data['title'] = post.data['title']
         self.data['canonical_url'] = post.url
         self.content = post.content
+        self.data['layout'] = 'amp'
       end
     end
   
     class AMPGenerator < Generator
-      priority :lowest
       safe true
+      priority :lowest
   
       def generate(site)
         site.posts.docs.each do |post|
