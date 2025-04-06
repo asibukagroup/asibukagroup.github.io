@@ -9,7 +9,10 @@ module Jekyll
         @name = "index.html"
         self.process(@name)
   
-        # Use rendered HTML as the content
+        # Render original if not already rendered
+        original.render({}, site.site_payload)
+  
+        # Use rendered HTML as content
         self.content = original.output
         self.data = original.data.dup
   
@@ -22,7 +25,7 @@ module Jekyll
   
     class AmpGenerator < Generator
       safe true
-      priority :lowest  # Run after site has rendered all pages/posts
+      priority :low  # After site reads files, before write phase
   
       def generate(site)
         # === PAGES ===
