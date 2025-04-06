@@ -1,5 +1,3 @@
-# _plugins/amp_generator.rb
-
 require "nokogiri"
 
 module Jekyll
@@ -11,18 +9,19 @@ module Jekyll
       @name = "index.html"
       process(@name)
 
-      # Handle front matter
-      self.data = original.data.dup
-      self.data["layout"] = "amp"
-      self.data["permalink"] = permalink
-      self.data["canonical_url"] = original.url
+      # Copy metadata
+      self.data = Jekyll::Utils.deep_merge_hashes(original.data.dup, {
+        "layout" => "amp",
+        "permalink" => permalink,
+        "canonical_url" => original.url
+      })
 
-      # Render Markdown to HTML using converter
+      # Render Markdown to HTML
       markdown_converter = site.find_converter_instance(Jekyll::Converters::Markdown)
       raw_content = original.content
       rendered_html = markdown_converter.convert(raw_content)
 
-      # Apply AMP conversions
+      # Apply AMP-specific transformations
       self.content = convert_to_amp(rendered_html)
     end
 
@@ -66,10 +65,13 @@ module Jekyll
     priority :low
 
     def generate(site)
-      # === Generate AMP for Pages ===
+      # === AMP Pages ===
       site.pages.each do |page|
         next unless page.extname == ".md" || page.ext == ".md"
         next if page.url.include?("/amp/")
+
+        # Fallback layout for pages
+        page.data["layout"] ||= "default"
 
         amp_permalink = File.join((page.data["permalink"] || page.url).sub(/\/$/, ""), "amp", "/")
         output_dir = page.url == "/" ? "amp" : amp_permalink.sub(/^\//, "").chomp("/")
@@ -83,9 +85,12 @@ module Jekyll
         )
       end
 
-      # === Generate AMP for Posts ===
+      # === AMP Posts ===
       site.posts.docs.each do |post|
         next if post.url.include?("/amp/")
+
+        # Fallback layout for posts
+        post.data["layout"] ||= "post"
 
         amp_permalink = File.join(post.url.sub(/\/$/, ""), "amp", "/")
         output_dir = amp_permalink.sub(/^\//, "").chomp("/")
