@@ -31,6 +31,10 @@ permalink: /:title/
 disqus_shortname: "asibukagroup"
 future: true
 safe: false
+collections:
+  amp:
+    output: true
+    permalink: /:title/amp/
 # ------------------------------
 # Default Value
 # ------------------------------
