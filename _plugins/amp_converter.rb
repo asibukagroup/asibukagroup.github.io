@@ -1,34 +1,38 @@
-# _plugins/amp_converter.rb
 require 'nokogiri'
 
 module Jekyll
   class AMPConverter < Jekyll::Generator
-    def generate(site)
-      site.pages.each do |page|
-        convert_to_amp(page) if amp_page?(page)
-      end
+    safe true
+    priority :low
 
-      site.posts.docs.each do |post|
-        convert_to_amp(post) if amp_page?(post)
-      end
+    def generate(site)
+      process_docs(site.pages)
+      process_docs(site.posts.docs)
     end
 
     private
+
+    def process_docs(docs)
+      docs.each do |doc|
+        next unless amp_page?(doc)
+        next unless doc.output
+
+        begin
+          doc.output = convert_to_amp(doc.output)
+        rescue => e
+          Jekyll.logger.warn "AMPConverter Error:", e.message
+        end
+      end
+    end
 
     def amp_page?(doc)
       doc.data['layout'] == 'amp'
     end
 
-    def convert_to_amp(doc)
-      return unless doc.output && doc.output.include?('<html')
-
-      doc.output = process_amp(doc.output)
-    end
-
-    def process_amp(html)
+    def convert_to_amp(html)
       doc = Nokogiri::HTML::DocumentFragment.parse(html)
 
-      # Replace <img> with <amp-img>
+      # Convert <img> to <amp-img>
       doc.css('img').each do |img|
         amp_img = Nokogiri::XML::Node.new("amp-img", doc)
         img.attributes.each { |name, attr| amp_img[name] = attr.value }
@@ -38,7 +42,7 @@ module Jekyll
         img.replace(amp_img)
       end
 
-      # Replace <iframe> with <amp-iframe>
+      # Convert <iframe> to <amp-iframe>
       doc.css('iframe').each do |iframe|
         amp_iframe = Nokogiri::XML::Node.new("amp-iframe", doc)
         iframe.attributes.each { |name, attr| amp_iframe[name] = attr.value }
@@ -49,11 +53,9 @@ module Jekyll
         iframe.replace(amp_iframe)
       end
 
-      # Remove all <script> except AMP core script
+      # Remove <script> tags (except AMP script)
       doc.css('script').each do |script|
-        unless script['src'] == 'https://cdn.ampproject.org/v0.js'
-          script.remove
-        end
+        script.remove unless script['src']&.include?('https://cdn.ampproject.org/')
       end
 
       doc.to_html
