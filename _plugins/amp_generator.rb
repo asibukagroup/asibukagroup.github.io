@@ -14,15 +14,18 @@ module Jekyll
         self.content = post.output
       end
     end
+  
     class AMPGenerator < Generator
       safe true
       priority :lowest
   
       def generate(site)
-        site.posts.docs.each(&:render)
         site.posts.docs.each do |post|
+          post.output ||= site.find_converter_instance(
+            Jekyll::Converters::Markdown
+          ).convert(post.content)
           site.pages << AMPPage.new(site, site.source, post)
         end
       end
     end
-  end  
+  end
