@@ -1,5 +1,5 @@
 source "https://rubygems.org"
-gem "ASIBUKA", github: "yourusername/asibukagroup.github.io"
+
 gem "jekyll"
 # Plugins
 gem "jekyll-archives"
