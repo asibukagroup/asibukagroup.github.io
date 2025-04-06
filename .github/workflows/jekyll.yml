@@ -1,4 +1,4 @@
-name: Build and Deploy Jekyll Site
+name: Build and Deploy Jekyll
 
 on:
   push:
@@ -14,20 +14,19 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
+      - name: Checkout code
         uses: actions/checkout@v4
 
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: '3.2'
+          bundler-cache: true
 
-      - name: Install Bundler & Dependencies
-        run: |
-          gem install bundler
-          bundle install
+      - name: Install dependencies
+        run: bundle install
 
-      - name: Build Site with Jekyll
+      - name: Build Jekyll site
         run: bundle exec jekyll build
 
       - name: Upload GitHub Pages artifact
