@@ -1,35 +1,48 @@
 module Jekyll
-    class AMPPage < Page
-      def initialize(site, base, original, output_html)
+    class AmpPage < Page
+      def initialize(site, base, page, rendered_content)
         @site = site
         @base = base
-        is_homepage = original.url == "/"
-        @dir = is_homepage ? "amp" : File.join(original.url.chomp("/").sub(%r{^/}, ""), "amp")
-        @name = 'index.html'
+  
+        # Target: /:title/amp/index.html
+        original_path = page.url.sub(/^\//, '').sub(/\/$/, '')
+        @dir = File.join(original_path, "amp")
+        @name = "index.html"
+  
         self.process(@name)
-        self.read_yaml(File.join(base, '_layouts'), 'amp.html')
-        self.data = original.data.dup
-        self.data['layout'] = 'amp'
-        self.data['canonical_url'] = original.url
-        self.content = output_html
+  
+        # Duplicate data and rendered HTML
+        self.content = rendered_content
+        self.data = page.data.dup
+  
+        # Override layout to use AMP
+        self.data["layout"] = "amp"
+        self.data["canonical_url"] = page.url
       end
     end
   
-    class AMPGenerator < Generator
+    class AmpGenerator < Generator
       safe true
-      priority :lowest
+      priority :low
   
       def generate(site)
-        markdown_converter = site.find_converter_instance(Jekyll::Converters::Markdown)
+        pages = site.pages.select { |p| p.extname == ".md" || p.ext == ".md" }
   
-        (site.pages + site.posts.docs).each do |doc|
-          next if doc.url.include?('/amp/') || doc.data['skip_amp']
-          next unless doc.extname == ".md" || doc.extname == ".markdown"
+        pages.each do |page|
+          next if page.url.include?("/amp/")
   
-          output = markdown_converter.convert(doc.content || "")
-          site.pages << AMPPage.new(site, site.source, doc, output)
+          # Render the original page using its layout
+          layout = site.layouts[page.data["layout"] || "default"]
+          payload = site.site_payload.merge({ "page" => page.data, "content" => page.content })
+          rendered_content = layout.render(payload, site.site_payload)
+  
+          # Generate AMP version with the rendered content
+          amp_page = AmpPage.new(site, site.source, page, rendered_content)
+          site.pages << amp_page
+  
+          # Make sure original has a default layout if none set
+          page.data["layout"] ||= "default"
         end
       end
     end
   end
-  
