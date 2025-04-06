@@ -30,6 +30,7 @@ permalink: /:title/
 # ------------------------------
 disqus_shortname: "asibukagroup"
 future: true
+safe: false
 # ------------------------------
 # Default Value
 # ------------------------------
@@ -80,11 +81,9 @@ nav_links:
 # Plugins
 # ------------------------------
 plugins:
-  - jekyll-feed
   - jekyll-sitemap
-  - jekyll-seo-tag
   - jekyll-archives
-  - jekyll-amp
+  - amp_generator
 # ------------------------------
 # Jekyll Archives Plugins
 # ------------------------------
@@ -104,12 +103,3 @@ jekyll-archives:
     month: '/archives/:year/:month/'
     tag: '/tag/:name/'
     category: '/category/:name/'
-# ------------------------------
-# Jekyll AMP Plugins
-# ------------------------------
-amp:
-  enabled: true
-  base_url: https://asibuka.com
-  dir: amp
-  layout: amp
-  path: /:title/amp/
