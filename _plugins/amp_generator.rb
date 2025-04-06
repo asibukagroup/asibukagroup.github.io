@@ -15,7 +15,7 @@ module Jekyll
     end
   
     class AMPGenerator < Generator
-      priority :low
+      priority :lowest
       safe true
   
       def generate(site)
