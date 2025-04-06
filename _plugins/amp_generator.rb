@@ -16,7 +16,7 @@ module Jekyll
         end
     end
     class AMPGenerator < Generator
-        safe true
+        safe false
         priority :lowest
         def generate(site)
             markdown = site.find_converter_instance(Jekyll::Converters::Markdown)
