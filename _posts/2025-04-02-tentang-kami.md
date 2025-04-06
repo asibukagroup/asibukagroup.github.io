@@ -1,5 +1,4 @@
 ---
-layout: post
 title: Tentang Kami
 date: 2025-04-02 00:00:04
 permalink: /tentang-kami/

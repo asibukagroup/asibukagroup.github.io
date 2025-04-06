@@ -1,5 +1,4 @@
 ---
-layout: post
 title: Syarat dan Ketentuan
 date: 2025-04-03 00:00:05
 permalink: /syarat-ketentuan/
