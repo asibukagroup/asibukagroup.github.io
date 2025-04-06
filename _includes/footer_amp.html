@@ -1,0 +1,10 @@
+<footer itemscope itemtype='https://schema.org/WPFooter'>
+    <div>
+        <a href='https://www.dmca.com/Protection/Status.aspx?ID=aef4ea29-df6f-425f-a92f-c9e401fe0f21&refurl={{ page.url | absolute_url }}' target='nofollow noopener' title='DMCA.com Protection Status'>
+            <amp-img src='https://images.dmca.com/Badges/dmca_protected_26_120.png?ID=aef4ea29-df6f-425f-a92f-c9e401fe0f21'  width='121' height='57' loading='lazy' alt='DMCA.com Protection Status' title='DMCA.com Protection Status' layout='responsive' aria-label='DMCA Protection Badge'>
+        </a>
+    </div>
+    <p>Dibuat dengan ❤️ oleh <a href='{{ site.url }}' title='{{ site.title }}'>{{ site.author }}</a></p>
+    <p>2022-{{ site.time | date: "%Y" }} &copy; Hak Cipta Dilindungi.</p>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"WPFooter","url":"{{ site.url }}{{ page.url | relative_url }}","copyrightHolder":{"@type":"Organization","name":"{{ site.title }}","url":"{{ site.url }}"},"copyrightYear":"{{ site.time | date: '%Y' }}","publisher":{"@type":"Organization","name":"{{ site.title }}","logo":{"@type":"ImageObject","url":"{{ site.url }}/assets/img/ASIBUKA-Blue.png"}}}</script>
+</footer>
