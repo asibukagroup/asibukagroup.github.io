@@ -4,14 +4,9 @@
     <meta charset="utf-8">
     <link rel="canonical" href="{{ page.url | absolute_url | replace: '/amp/', '/' }}">
     <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
-    <style amp-boilerplate>
-      body {visibility:hidden}
-    </style>
+    <style amp-boilerplate>body{visibility:hidden}</style>
+    <style amp-custom>{% include style.css %}</style>
     <script async src="https://cdn.ampproject.org/v0.js"></script>
-    <style amp-custom>
-      /* Your AMP CSS here */
-    </style>
-    <title>{{ page.title }}</title>
   </head>
   <body>
     <article>
