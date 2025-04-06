@@ -25,17 +25,11 @@ email: "admin@asibuka.com"
 # 🗂 Permalinks & Pagination
 # ------------------------------
 permalink: /:title/
-paginate: 5
-paginate_path: "/page:num/"
 # ------------------------------
 # 🌐 Other Settings
 # ------------------------------
 disqus_shortname: "asibukagroup"
 future: true
-amp: false
-feed:
-  path: ""
-
 # ------------------------------
 # Default Value
 # ------------------------------
@@ -60,6 +54,10 @@ defaults:
       path: "atom.xml"
     values:
       permalink: "/atom.xml"
+  - scope:
+      path: "sw.js"
+    values:
+      permalink: "/sw.js"
 # ------------------------------
 # Navigation links
 # ------------------------------
@@ -76,8 +74,23 @@ nav_links:
 # Plugins
 # ------------------------------
 plugins:
-  - jekyll-feed
-  - jekyll-sitemap
-  - jekyll-seo-tag
-  - jekyll-paginate
   - jekyll-archives
+# ------------------------------
+# Jekyll Archives Plugins
+# ------------------------------
+jekyll-archives:
+  enabled:
+    - categories
+    - tags
+    - year
+    - month
+  layouts:
+    category: archive
+    tag: archive
+    year: archive
+    month: archive
+  permalinks:
+    year: '/archives/:year/'
+    month: '/archives/:year/:month/'
+    tag: '/tag/:name/'
+    category: '/category/:name/'
