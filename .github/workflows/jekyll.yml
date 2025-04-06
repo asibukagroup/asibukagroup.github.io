@@ -9,25 +9,33 @@ permissions:
   pages: write
   id-token: write
 
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-      - uses: ruby/setup-ruby@v1
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 3.2
+          ruby-version: 3.2  # match the version used locally
 
-      - name: Install dependencies
+      - name: Install Bundler and dependencies
         run: |
           gem install bundler
           bundle install
 
-      - name: Build the site
-        run: bundle exec jekyll build
+      - name: Build Jekyll site
+        run: bundle exec jekyll build --destination _site
 
-      - uses: actions/upload-pages-artifact@v2
+      - name: Upload build artifact
+        uses: actions/upload-pages-artifact@v2
         with:
           path: _site
 
@@ -38,6 +46,6 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - name: Deploy
+      - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v2
