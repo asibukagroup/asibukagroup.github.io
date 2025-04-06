@@ -24,7 +24,7 @@ email: "admin@asibuka.com"
 # ------------------------------
 # 🗂 Pagination
 # ------------------------------
-
+permalink: /:title/
 # ------------------------------
 # 🌐 Other Settings
 # ------------------------------
@@ -35,6 +35,11 @@ safe: false
 # Default Value
 # ------------------------------
 defaults:
+  - scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: post
   - scope:
       path: "sitemap.xml"
     values:

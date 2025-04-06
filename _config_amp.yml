@@ -1,8 +1,0 @@
-destination: _site/amp
-defaults:
-  - scope:
-      path: ""
-      type: "posts"
-    values:
-      layout: amp
-      permalink: /:title/amp/
