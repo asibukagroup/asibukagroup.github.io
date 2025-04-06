@@ -6,6 +6,7 @@ module Jekyll
         url_path = original_page.url.chomp("/").sub(%r{^/}, "")
         @dir = url_path.empty? ? "amp" : File.join(url_path, "amp")
         @name = 'index.html'
+        puts "Generating AMP for #{original_page.url} → #{File.join(@dir, @name)}"
   
         self.process(@name)
         self.read_yaml(File.join(base, '_layouts'), 'amp.html')
