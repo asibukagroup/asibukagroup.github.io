@@ -21,18 +21,14 @@ module Jekyll
   
       def generate(site)
         markdown_converter = site.find_converter_instance(Jekyll::Converters::Markdown)
-  
-        # Posts AMP
         site.posts.docs.each do |post|
           output = post.output || markdown_converter.convert(post.content)
           site.pages << AMPPage.new(site, site.source, post, output)
         end
-  
-        # Pages AMP
         site.pages.clone.each do |page|
           next if page.url.include?('/amp/')
           next if page.data['skip_amp'] == true
-          next unless page.path.end_with?('.md', '.markdown') # 💡 only convert markdown
+          next unless page.path.end_with?('.md', '.markdown')
   
           output = page.output || markdown_converter.convert(page.content || "")
           site.pages << AMPPage.new(site, site.source, page, output)
