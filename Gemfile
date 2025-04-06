@@ -4,4 +4,4 @@ gem "jekyll"
 # Plugins
 gem "jekyll-archives"
 gem "jekyll-sitemap"
-gem "jekyll-amp"
+gem 'nokogiri'
