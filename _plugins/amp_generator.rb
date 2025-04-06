@@ -21,16 +21,16 @@ module Jekyll
         def generate(site)
             markdown = site.find_converter_instance(Jekyll::Converters::Markdown)
             site.posts.docs.each do |post|
-            next if post.data['amp'] == false
+            next if post.data['skip_amp'] == true
                 amp_html = markdown.convert(post.content)
                 site.pages << AMPPage.new(site, site.source, post, amp_html)
                 Jekyll.logger.info "AMP:", "Generated AMP for post: #{post.url}"
             end
             site.pages.clone.each do |page|
             next if page.url.include?('/amp/')
-            next if page.data['amp'] == false
-            next unless page.path.end_with?('.md', '.markdown')
-                amp_html = markdown.convert(page.content || "")
+            next if page.data['skip_amp'] == true
+            next unless page.path.end_with?('.md', '.markdown', ".html")
+                amp_html = page.output || markdown.convert(page.content || "")
                 site.pages << AMPPage.new(site, site.source, page, amp_html)
                 Jekyll.logger.info "AMP:", "Generated AMP for page: #{page.url}"
             end
