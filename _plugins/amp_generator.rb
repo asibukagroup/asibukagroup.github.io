@@ -6,22 +6,30 @@ module Jekyll
         @site = site
         @base = base
   
-        # Get the file name without extension (e.g., 'about')
-        title = File.basename(original.path, File.extname(original.path))
+        # Get original permalink or URL
+        original_permalink = original.data['permalink'] || original.url
   
-        # Output dir: same as original + /amp/
-        @dir = File.join(File.dirname(original.path.sub(site.source, '')), title, 'amp')
+        # Build AMP permalink
+        amp_permalink = File.join(original_permalink.sub(/\/$/, ''), 'amp', '/')
+  
+        # Determine output dir
+        if original.url == '/' || original.relative_path == 'index.md'
+          @dir = 'amp'
+        else
+          @dir = amp_permalink.sub(/^\//, '').sub(/index\.html$/, '')
+        end
+  
         @name = 'index.html'
-  
         self.process(@name)
   
-        # Copy content and front matter from the original
+        # Copy content and front matter
         self.content = original.content
         self.data = original.data.dup
   
-        # Override layout and permalink
+        # Set AMP-specific front matter
         self.data['layout'] = 'amp'
-        self.data['permalink'] = "/#{title}/amp/"
+        self.data['permalink'] = amp_permalink
+        self.data['canonical_url'] = original.url
       end
     end
   
