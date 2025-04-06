@@ -9,7 +9,7 @@ module Jekyll
         @name = "index.html"
         self.process(@name)
   
-        self.content = original.content
+        self.content = original.output
         self.data = original.data.dup
         self.data["layout"] = "amp"
         self.data["permalink"] = permalink
