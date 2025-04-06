@@ -83,7 +83,6 @@ nav_links:
 plugins:
   - jekyll-sitemap
   - jekyll-archives
-  - amp_generator
 # ------------------------------
 # Jekyll Archives Plugins
 # ------------------------------
