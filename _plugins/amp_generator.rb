@@ -5,6 +5,8 @@ module Jekyll
         @base = base
         url_path = original_page.url.chomp("/").sub(%r{^/}, "")
         @dir = url_path.empty? ? "amp" : File.join(url_path, "amp")
+        @name = 'index.html'
+  
         self.process(@name)
         self.read_yaml(File.join(base, '_layouts'), 'amp.html')
         self.data = original_page.data.clone
