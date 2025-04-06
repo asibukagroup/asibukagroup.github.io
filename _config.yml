@@ -74,7 +74,11 @@ nav_links:
 # Plugins
 # ------------------------------
 plugins:
+  - jekyll-feed
+  - jekyll-sitemap
+  - jekyll-seo-tag
   - jekyll-archives
+  - jekyll-amp
 # ------------------------------
 # Jekyll Archives Plugins
 # ------------------------------
