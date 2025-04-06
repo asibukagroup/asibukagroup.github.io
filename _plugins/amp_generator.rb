@@ -65,44 +65,38 @@ module Jekyll
     priority :low
 
     def generate(site)
-      # === AMP Pages ===
-      site.pages.each do |page|
-        next unless page.extname == ".md" || page.ext == ".md"
-        next if page.url.include?("/amp/")
-
-        # Fallback layout for pages
-        page.data["layout"] ||= "default"
-
-        amp_permalink = File.join((page.data["permalink"] || page.url).sub(/\/$/, ""), "amp", "/")
-        output_dir = page.url == "/" ? "amp" : amp_permalink.sub(/^\//, "").chomp("/")
-
-        site.pages << AmpPage.new(
-          site: site,
-          base: site.source,
-          original: page,
-          permalink: amp_permalink,
-          output_dir: output_dir
-        )
+        # === AMP Pages ===
+        site.pages.each do |page|
+          next unless page.extname == ".md" || page.ext == ".md"
+          next if page.url.include?("/amp/")
+      
+          amp_permalink = File.join((page.data["permalink"] || page.url).sub(/\/$/, ""), "amp", "/")
+          output_dir = page.url == "/" ? "amp" : amp_permalink.sub(/^\//, "").chomp("/")
+      
+          site.pages << AmpPage.new(
+            site: site,
+            base: site.source,
+            original: page,
+            permalink: amp_permalink,
+            output_dir: output_dir
+          )
+        end
+      
+        # === AMP Posts ===
+        site.posts.docs.each do |post|
+          next if post.url.include?("/amp/")
+      
+          amp_permalink = File.join(post.url.sub(/\/$/, ""), "amp", "/")
+          output_dir = amp_permalink.sub(/^\//, "").chomp("/")
+      
+          site.pages << AmpPage.new(
+            site: site,
+            base: site.source,
+            original: post,
+            permalink: amp_permalink,
+            output_dir: output_dir
+          )
+        end
       end
-
-      # === AMP Posts ===
-      site.posts.docs.each do |post|
-        next if post.url.include?("/amp/")
-
-        # Fallback layout for posts
-        post.data["layout"] ||= "post"
-
-        amp_permalink = File.join(post.url.sub(/\/$/, ""), "amp", "/")
-        output_dir = amp_permalink.sub(/^\//, "").chomp("/")
-
-        site.pages << AmpPage.new(
-          site: site,
-          base: site.source,
-          original: post,
-          permalink: amp_permalink,
-          output_dir: output_dir
-        )
-      end
-    end
   end
 end
