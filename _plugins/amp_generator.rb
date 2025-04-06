@@ -9,11 +9,14 @@ module Jekyll
         @name = "index.html"
         self.process(@name)
   
-        # Use raw Markdown content
-        self.content = original.content
+        # Render Markdown to HTML
+        renderer = site.find_converter_instance(Jekyll::Converters::Markdown)
+        rendered_html = renderer.convert(original.content)
+  
+        # Set content and metadata
+        self.content = rendered_html
         self.data = original.data.dup
   
-        # Set AMP-specific front matter
         self.data["layout"] = "amp"
         self.data["permalink"] = permalink
         self.data["canonical_url"] = original.url
