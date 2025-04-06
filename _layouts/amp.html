@@ -1,37 +1,25 @@
 ---
-layout: null
-permalink: /amp/
----
-<!DOCTYPE html>
-<html ⚡ lang="en">
-<head>
-  <meta charset="utf-8">
-  <title>{{ page.title }}</title>
-  <link rel="canonical" href="{{ page.url | absolute_url }}">
-  <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
-  <style amp-boilerplate>
-    body { visibility: hidden } 
-    .amp-hidden { display: none }
-  </style>
-  <script async src="https://cdn.ampproject.org/v0.js"></script>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
-  <style amp-custom>
-    body { font-family: 'Roboto', sans-serif; padding: 15px; line-height: 1.6; }
-    h1, h2, h3 { color: #004aad; }
-    img { max-width: 100%; height: auto; }
-  </style>
-</head>
-<body>
-  <header>
-    <h1>{{ page.title }}</h1>
-  </header>
-  
-  <article>
-    {{ content | ampify }}
-  </article>
 
-  <footer>
-    <p>© {{ site.time | date: "%Y" }} {{ site.title }}</p>
-  </footer>
-</body>
+---
+<!doctype html>
+<html amp>
+  <head>
+    <meta charset="utf-8">
+    <link rel="canonical" href="{{ page.url | absolute_url | replace: '/amp/', '/' }}">
+    <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
+    <style amp-boilerplate>
+      body {visibility:hidden}
+    </style>
+    <script async src="https://cdn.ampproject.org/v0.js"></script>
+    <style amp-custom>
+      /* Your AMP CSS here */
+    </style>
+    <title>{{ page.title }}</title>
+  </head>
+  <body>
+    <article>
+      <h1>{{ page.title }}</h1>
+      {{ content }}
+    </article>
+  </body>
 </html>

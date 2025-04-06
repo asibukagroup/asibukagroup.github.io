@@ -58,7 +58,6 @@
     <link rel="canonical" hreflang='{{ page.lang | default: site.defaults.lang }}' href="{{ site.url }}{{ page.url | replace:'index.html','' }}">
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
     <style>{% include style.css %}</style>
-    {% if page.path contains '_posts' %}<link rel="amphtml" href="{{ page.id | prepend: '/YOURDIR' | prepend: site.baseurl | prepend: site.url | append: '.html' }}">{% endif %}
     <!-- Structured Data -->
     <script type="application/ld+json">
     {

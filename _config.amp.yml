@@ -1,0 +1,8 @@
+destination: _site/amp
+permalink: /:title/amp/
+defaults:
+  - scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: amp
