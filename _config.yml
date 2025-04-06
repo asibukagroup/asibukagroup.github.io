@@ -98,3 +98,12 @@ jekyll-archives:
     month: '/archives/:year/:month/'
     tag: '/tag/:name/'
     category: '/category/:name/'
+# ------------------------------
+# Jekyll AMP Plugins
+# ------------------------------
+amp:
+  enabled: true
+  base_url: https://asibuka.com
+  dir: amp
+  layout: amp
+  path: /:title/amp/
