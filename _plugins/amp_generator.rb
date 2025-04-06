@@ -12,7 +12,7 @@ module Jekyll
           self.data = original.data.dup
           self.data["layout"] = "amp"
           self.data["canonical_url"] = original.url
-          self.content = output_html
+          self.content = page.output
         end
     end
     class AMPGenerator < Generator

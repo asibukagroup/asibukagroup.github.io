@@ -35,11 +35,6 @@ safe: false
 # ------------------------------
 defaults:
   - scope:
-      path: ""
-      type: "posts"
-    values:
-      layout: post
-  - scope:
       path: "sitemap.xml"
     values:
       permalink: "/sitemap.xml"
