@@ -14,29 +14,28 @@ module Jekyll
         self.content = output_html
       end
     end
-  
     class AMPGenerator < Generator
       safe true
       priority :lowest
-  
       def generate(site)
+        puts "🚀 AMP Generator is running..."
         markdown_converter = site.find_converter_instance(Jekyll::Converters::Markdown)
-  
-        # Generate AMP for posts
         site.posts.docs.each do |post|
+          puts "✅ AMP for post: #{post.url}"
           amp_html = markdown_converter.convert(post.content)
           site.pages << AMPPage.new(site, site.source, post, amp_html)
         end
-  
-        # Generate AMP for pages
         site.pages.clone.each do |page|
           next if page.url.include?('/amp/')
           next if page.data['skip_amp'] == true
-          next unless page.path.end_with?('.md', '.markdown')
-  
+          homepage_paths = ['index.md', 'index.markdown', 'index.html']
+          next if page.url == '/' || homepage_paths.include?(page.path)
+          next unless page.path.end_with?('.md', '.markdown', '.html')
+          puts "✅ AMP for page: #{page.url}"
           amp_html = markdown_converter.convert(page.content || "")
           site.pages << AMPPage.new(site, site.source, page, amp_html)
         end
       end
     end
-  end  
+  end
+  
