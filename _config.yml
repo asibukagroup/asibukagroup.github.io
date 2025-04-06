@@ -22,9 +22,9 @@ tags: [ASIBUKA, ASIBUKA Blog]
 author: "ASIBUKA Group"
 email: "admin@asibuka.com"
 # ------------------------------
-# 🗂 Permalinks & Pagination
+# 🗂 Pagination
 # ------------------------------
-permalink: /:title/
+
 # ------------------------------
 # 🌐 Other Settings
 # ------------------------------
@@ -35,10 +35,6 @@ safe: false
 # Default Value
 # ------------------------------
 defaults:
-  - scope:
-      path: ""
-    values:
-      permalink: /:title/
   - scope:
       path: "sitemap.xml"
     values:
