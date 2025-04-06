@@ -1,7 +1,7 @@
 <footer>
     <div>
         <a href='https://www.dmca.com/Protection/Status.aspx?ID=aef4ea29-df6f-425f-a92f-c9e401fe0f21&refurl={{ page.url | absolute_url }}' target='nofollow noopener' title='DMCA.com Protection Status'>
-            <img src='https://images.dmca.com/Badges/dmca_protected_26_120.png?ID=aef4ea29-df6f-425f-a92f-c9e401fe0f21'  width='121' height='57' loading='lazy' alt='DMCA.com Protection Status' title='DMCA.com Protection Status' aria-label='DMCA Protection Badge'>
+            {% if page.url contains '/amp/' %}<amp-img src='https://images.dmca.com/Badges/dmca_protected_26_120.png?ID=aef4ea29-df6f-425f-a92f-c9e401fe0f21'  width='121' height='57' loading='lazy' alt='DMCA.com Protection Status' title='DMCA.com Protection Status' layout='fixed' aria-label='DMCA Protection Badge'></amp-img>{% else %}<img src='https://images.dmca.com/Badges/dmca_protected_26_120.png?ID=aef4ea29-df6f-425f-a92f-c9e401fe0f21'  width='121' height='57' loading='lazy' alt='DMCA.com Protection Status' title='DMCA.com Protection Status' aria-label='DMCA Protection Badge'>{% endif %}
         </a>
     </div>
     <p>Dibuat dengan ❤️ oleh <a href='{{ site.url }}' title='{{ site.title }}'>{{ site.author }}</a></p>
