@@ -9,17 +9,17 @@ module Jekyll
       @name = "index.html"
       process(@name)
 
-      # Copy and override data ONLY for AMP version
+      # Copy front matter but DO NOT TOUCH the original
       self.data = original.data.dup
       self.data["layout"] = "amp"
       self.data["permalink"] = permalink
       self.data["canonical_url"] = original.url
 
-      # Render the original Markdown to HTML
+      # Convert original markdown content to HTML
       markdown_converter = site.find_converter_instance(Jekyll::Converters::Markdown)
       rendered_html = markdown_converter.convert(original.content)
 
-      # Convert to AMP-safe HTML
+      # Convert to AMP-compliant HTML
       self.content = convert_to_amp(rendered_html)
     end
 
@@ -28,7 +28,6 @@ module Jekyll
     def convert_to_amp(html)
       doc = Nokogiri::HTML::DocumentFragment.parse(html)
 
-      # Convert <img> to <amp-img>
       doc.css("img").each do |img|
         amp_img = Nokogiri::XML::Node.new("amp-img", doc)
         img.attributes.each { |name, attr| amp_img[name] = attr.value }
@@ -38,7 +37,6 @@ module Jekyll
         img.replace(amp_img)
       end
 
-      # Convert <iframe> to <amp-iframe>
       doc.css("iframe").each do |iframe|
         amp_iframe = Nokogiri::XML::Node.new("amp-iframe", doc)
         iframe.attributes.each { |name, attr| amp_iframe[name] = attr.value }
@@ -49,7 +47,6 @@ module Jekyll
         iframe.replace(amp_iframe)
       end
 
-      # Remove disallowed scripts
       doc.css("script").each do |script|
         script.remove unless script["src"]&.include?("https://cdn.ampproject.org/")
       end
@@ -63,13 +60,14 @@ module Jekyll
     priority :low
 
     def generate(site)
-      # === AMP Pages ===
+      # Only generate AMP versions. Do not modify original pages/posts.
+
       site.pages.each do |page|
         next unless page.extname == ".md" || page.ext == ".md"
         next if page.url.include?("/amp/")
 
-        amp_permalink = File.join((page.data["permalink"] || page.url).sub(/\/$/, ""), "amp", "/")
-        output_dir = page.url == "/" ? "amp" : amp_permalink.sub(/^\//, "").chomp("/")
+        amp_permalink = File.join((page.data["permalink"] || page.url).sub(%r!/$!, ""), "amp", "/")
+        output_dir = page.url == "/" ? "amp" : amp_permalink.sub(%r!^/!, "").chomp("/")
 
         site.pages << AmpPage.new(
           site: site,
@@ -80,12 +78,11 @@ module Jekyll
         )
       end
 
-      # === AMP Posts ===
       site.posts.docs.each do |post|
         next if post.url.include?("/amp/")
 
-        amp_permalink = File.join(post.url.sub(/\/$/, ""), "amp", "/")
-        output_dir = amp_permalink.sub(/^\//, "").chomp("/")
+        amp_permalink = File.join(post.url.sub(%r!/$!, ""), "amp", "/")
+        output_dir = amp_permalink.sub(%r!^/!, "").chomp("/")
 
         site.pages << AmpPage.new(
           site: site,
