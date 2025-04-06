@@ -30,7 +30,7 @@ jobs:
         run: bundle install
 
       - name: Build Jekyll site
-        run: bundle exec jekyll build
+        run: bundle exec jekyll build --trace
 
       - name: Upload GitHub Pages artifact
         uses: actions/upload-pages-artifact@v3
