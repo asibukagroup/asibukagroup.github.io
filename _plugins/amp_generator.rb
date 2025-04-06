@@ -9,8 +9,11 @@ module Jekyll
         @name = "index.html"
         self.process(@name)
   
+        # Use rendered HTML as the content
         self.content = original.output
         self.data = original.data.dup
+  
+        # Set AMP-specific front matter
         self.data["layout"] = "amp"
         self.data["permalink"] = permalink
         self.data["canonical_url"] = original.url
@@ -19,7 +22,7 @@ module Jekyll
   
     class AmpGenerator < Generator
       safe true
-      priority :low
+      priority :lowest  # Run after site has rendered all pages/posts
   
       def generate(site)
         # === PAGES ===
