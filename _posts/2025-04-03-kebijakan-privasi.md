@@ -1,4 +1,5 @@
 ---
+layout: post
 title: Kebijakan Privasi
 date: 2025-04-03 00:00:04
 permalink: /kebijakan-privasi/

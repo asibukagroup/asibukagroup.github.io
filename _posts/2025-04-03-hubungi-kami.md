@@ -1,4 +1,5 @@
 ---
+layout: post
 title: Hubungi Kami
 date: 2025-04-03 00:00:01
 permalink: /hubungi-kami/
