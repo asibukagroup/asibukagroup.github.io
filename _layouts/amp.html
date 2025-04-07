@@ -7,6 +7,7 @@
     <noscript><style amp-boilerplate>body{-webkit-animation:none;-moz-animation:none;-ms-animation:none;animation:none}</style></noscript>
     <script async src="https://cdn.ampproject.org/v0.js"></script>
     <script async custom-element="amp-ad" src="https://cdn.ampproject.org/v0/amp-ad-0.1.js"></script>
+    {% if content contains "<amp-iframe" %}<script async custom-element="amp-iframe" src="https://cdn.ampproject.org/v0/amp-iframe-0.1.js"></script>{% endif %}
   </head>
   <body [class]="visible ? 'dark-mode' : 'light-mode'" class='light-mode'>
     {% include header.html %}

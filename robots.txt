@@ -1,5 +1,3 @@
 User-agent: *
 Allow: /
-Disallow: ?
-Disallow: /search
 Sitemap: https://www.asibuka.com/sitemap.xml

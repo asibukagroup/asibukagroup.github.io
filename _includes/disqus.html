@@ -1,4 +1,6 @@
-{% if site.disqus_shortname %}
+{% if page.url contains '/amp/' %}
+<amp-iframe width="600" height="400" sandbox="allow-scripts allow-same-origin" layout="responsive" frameborder="0" src="/comments.html"></amp-iframe>
+{% else %}
 <div id='disqus_thread'></div>
 <script>
 var disqus_config = function () {
