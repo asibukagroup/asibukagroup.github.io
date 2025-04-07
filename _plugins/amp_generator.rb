@@ -146,6 +146,7 @@ module Jekyll
         )
       end
     end
+    
 
     # Helper to find generated archive pages by URL
     def find_page_by_url(pages, url)
