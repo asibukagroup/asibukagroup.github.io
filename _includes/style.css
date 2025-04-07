@@ -1,3 +1,6 @@
+:root{
+    
+}
 /* CSS Reset */
 html{transition:.3s ease-in-out;line-height:1.5;scroll-behavior:smooth;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%}
 ::-webkit-scrollbar{width:10px;height:10px}
