@@ -1,3 +1,4 @@
+/* Defaults */
 :root{
 --font:normal normal 1rem Arial,Helvetica, sans-serif;
 --theme-color:#004aad;
@@ -8,14 +9,17 @@
 --darkgrey:#141414;
 --gold:#EFBF04;
 }
-/* CSS Reset */
 html{transition:.3s ease-in-out;line-height:1.5;scroll-behavior:smooth;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%}
 ::-webkit-scrollbar{width:10px;height:10px}
 ::-webkit-scrollbar-thumb{background-color:var(--theme-color);border:.05em solid var(--theme-color);background-clip:padding-box;cursor:pointer;border-radius:8px;-webkit-border-radius:8px}
 ::-webkit-scrollbar-track{background-color:var(--darkgrey)}
 ::selection{background-color:var(--theme-color);color:var(--white)}
-[hidden]{display:none}
+[hidden],#noprint{display:none}
 .ads{margin:1rem auto;text-align:center}
+.text-left{text-align:left}
+.text-center{text-align:center}
+.text-justify{text-align:justify}
+.text-right{text-align:right}
 /* Body */
 body{font:var(--font);background-color:var(--white);color:var(--black);margin:0 auto}
 body.dark-mode{background-color:var(--darkgrey);color:var(--white)}
@@ -84,3 +88,4 @@ body.dark-mode .credit-wrapper{background:linear-gradient(to bottom,var(--theme-
 {% if content contains "<h2" %}.toc{background:#f8f9fa;padding:15px;border-left:4px solid #004aad;margin-bottom:20px;transition:background 0.3s,color .3s}.toc h2{font-size:1.2rem;margin-bottom:10px}.toc ul{list-style:none;padding-left:15px}.toc ul li{margin-bottom:5px}.toc ul ul{padding-left:15px;font-size:.9rem}.dark-mode .toc{background:#1e1e1e;color:#f8f9fa;border-left:4px solid #0af}.dark-mode .toc h2{color:#f8f9fa}.dark-mode .toc ul li{color:#ddd}.dark-mode .toc a{color:#0af}.dark-mode .toc a:hover{color:#fa0}{% endif %}
 {% if page.collection == "posts" %}.post-label{color:#1e1e1e;font-weight:bold;margin:.5rem auto}.dark-mode .post-label{color:#fff}.post-label svg{width:1rem;height:1rem}.post-label svg path{fill:#1e1e1e}.dark-mode .post-label svg path{fill:#fff}{% endif %}
 .breadcrumb{font-size:.95rem;background-color:#f8f9fa;padding:10px 15px;border-radius:8px;margin-bottom:1rem;display:flex;flex-wrap:wrap;align-items:center;color:#333}.breadcrumb a{text-decoration:none;color:#004aad;font-weight:500}.breadcrumb a:hover{text-decoration:underline}.breadcrumb span[itemprop="itemListElement"] + span[itemprop="itemListElement"]::before{content:"›";margin:0 .5em;color:#888}.dark-mode .breadcrumb{background-color:#1e1e1e;color:#ccc}.dark-mode .breadcrumb a{color:#4da3ff}
+@media print{.hide-on-print{display:none}#noprint{display:block}}
