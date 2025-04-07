@@ -9,7 +9,7 @@
     <script async custom-element="amp-ad" src="https://cdn.ampproject.org/v0/amp-ad-0.1.js"></script>
     {% if content contains "<amp-iframe" %}<script async custom-element="amp-iframe" src="https://cdn.ampproject.org/v0/amp-iframe-0.1.js"></script>{% endif %}
   </head>
-  <body [class]="visible ? 'dark-mode' : 'light-mode'" class='light-mode'>
+  <body [class]="visible ? 'dark-mode hide-on-print' : 'light-mode hide-on-print'" class='light-mode hide-on-print'>
     {% include header.html %}
     {% include nav.html %}
     {% include top-info.html %}
