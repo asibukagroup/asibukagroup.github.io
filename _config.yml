@@ -59,15 +59,12 @@ defaults:
       path: "sw.js"
     values:
       permalink: "/sw.js"
-  - scope:
-      path: "_includes/txt/robots.txt"
-    values:
-      permalink: "/robots.txt"
 # ------------------------------
 # Navigation links
 # ------------------------------
 nav_links:
   Beranda: "/"
+  Cari: "/search"
   Hak Cipta: "/hak-cipta/"
   Hubungi Kami: "/hubungi-kami/"
   Kebijakan Privasi: "/kebijakan-privasi/"
