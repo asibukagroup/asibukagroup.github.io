@@ -7,5 +7,5 @@
     </div>
     <p>Dibuat dengan ❤️ oleh <a href='{{ site.url }}' itemprop='url' title='{{ site.title }}'><span itemprop='copyrightHolder name alternateName publisher'>{{ site.author }}</span></a></p>
     <p><span itemprop='copyrightYear'></span>2023</span>-{{ site.time | date: "%Y" }} &copy; <span itemprop='copyrightNotice'>Hak Cipta Dilindungi.</span></p>
-    <p><small>{% if page.url contains '/amp/' %}<a href="{{ site.url }}{{ page.url | replace:'index.html','' }}" title="Versi Asli">Versi Asli</a>{% else %}<a href="{{ site.url }}{{ page.url | replace:'index.html','' }}/amp/" title="Versi AMP">Versi AMP</a>{% endif %} - <a href='#' rel='nofollow' title='Kembali ke Atas'>Gulir Ke Atas</a></small></p>
+    <p><small>{% if page.url contains '/amp/' %}<a href="{{ site.url }}{{ page.url | replace:'index.html','' }}" title="Versi Asli">Versi Asli</a>{% else %}<a href="{{ site.url }}{{ page.url | replace:'index.html','' }}amp/" title="Versi AMP">Versi AMP</a>{% endif %} - <a href='#' rel='nofollow' title='Kembali ke Atas'>Gulir Ke Atas</a></small></p>
 </footer>
