@@ -59,10 +59,6 @@ defaults:
       path: "sw.js"
     values:
       permalink: "/sw.js"
-  - scope:
-      path: "_includes/robots.txt"
-    values:
-      permalink: "/robots.txt"
 # ------------------------------
 # Navigation links
 # ------------------------------
