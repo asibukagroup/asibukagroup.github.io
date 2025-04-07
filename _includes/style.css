@@ -7,7 +7,7 @@ html{transition:.3s ease-in-out;line-height:1.5;scroll-behavior:smooth;-ms-text-
 [hidden]{display:none}
 .ads{margin:1rem auto;text-align:center}
 /* Body */
-body{font-family:Arial,sans-serif;background-color:#f4f4f4;color:#333;max-width:900px;margin:0 auto}
+body{font-family:Arial,sans-serif;background-color:#f4f4f4;color:#333;margin:0 auto}
 body.dark-mode{background-color:#1e1e1e;color:#f4f4f4}
 /* A (Hyperlink) */
 a{background-color:transparent;-webkit-text-decoration-skip:objects;text-decoration:none;font-weight:600;color:#012345}
