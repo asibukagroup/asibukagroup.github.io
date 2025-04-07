@@ -1,5 +1,5 @@
 User-agent: *
 Allow: /
 Disallow: ?
-Disallow: /amp/
+Disallow: /search
 Sitemap: https://www.asibuka.com/sitemap.xml
