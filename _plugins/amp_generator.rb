@@ -15,9 +15,6 @@ module Jekyll
       self.data["canonical_url"] = original.url
       self.data['is_amp'] = true
 
-      template = site.liquid_renderer.file(original.path).parse(original.content)
-      rendered = template.render!(info, registers: { site: site, page: self })
-
       markdown_converter = site.find_converter_instance(Jekyll::Converters::Markdown)
       rendered_html = markdown_converter.convert(original.content)
 
