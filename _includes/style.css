@@ -85,7 +85,7 @@ body.dark-mode .social-links a:hover{background-color:#444;color:#fff}
 .credit-wrapper{background:linear-gradient(to bottom,var(--theme-color),rgba(0,0,0,0.9));color:var(--white);text-align:center;padding:1rem 0}
 body.dark-mode .credit-wrapper{background:linear-gradient(to bottom,var(--theme-color-dark),rgba(0,0,0,0.8))}
 .credit-wrapper a{color:var(--white)}
-{% if content contains "class='badge-slider" %}.badge-slider{background:var(--theme-color);overflow:hidden}
+{% if content contains "badge-slider" %}.badge-slider{background:var(--theme-color);overflow:hidden}
 body.dark-mode .badge-slider{background:var(--theme-color-dark)}
 .badges{display:flex;height:100px;align-content:center;align-items:center;flex-flow:row nowrap;animation:marqueeLeftToRight 15s linear infinite}
 .badges:hover,.badges:focus{animation-play-state:paused}
