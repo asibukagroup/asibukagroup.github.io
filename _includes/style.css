@@ -25,6 +25,9 @@ html{transition:.3s ease-in-out;line-height:1.5;scroll-behavior:smooth;-ms-text-
 .two-columns-wrapper .two-columns-widget{flex:0 0 calc(50% - 1rem);padding:.5rem}
 .three-columns-wrapper .three-columns-widget{flex:0 0 calc(33.33% - 1rem);padding:.5rem}
 .four-columns-wrapper .four-columns-widget{flex:0 0 calc(25% - 1rem);padding:.5rem}
+.widget-title{background:linear-gradient(45deg, rgba(0,0,0,.8), var(--theme-color));color:var(--white);font-weight:bolder;font-size:1.25rem;margin:.5rem auto;padding:.5rem;border-radius:.5rem}
+.widget-title svg{width:1rem;margin-right:.5rem}
+.widget-title svg path{fill:var(--white)}
 /* Body */
 body{font:var(--font);background-color:var(--white);color:var(--black);margin:0 auto}
 body.dark-mode{background-color:var(--darkgrey);color:var(--white)}
