@@ -16,9 +16,22 @@ module Jekyll
       self.data['is_amp'] = true
 
       markdown_converter = site.find_converter_instance(Jekyll::Converters::Markdown)
-      rendered_html = markdown_converter.convert(original.content)
 
-      self.content = convert_to_amp(rendered_html)
+      # Prepare Liquid payload (same as Jekyll does internally)
+      payload = {
+        "page" => original.data,
+        "site" => site.site_payload["site"]
+      }
+
+      # Render Liquid tags inside original.content
+      liquid = site.liquid_renderer.file(original.path).parse(original.content)
+      rendered_liquid = liquid.render!(payload, registers: { site: site, page: original })
+
+      # Convert the result to HTML with Markdown converter
+      html = markdown_converter.convert(rendered_liquid)
+
+      # Convert to AMP
+      self.content = convert_to_amp(html)
     end
 
     private
