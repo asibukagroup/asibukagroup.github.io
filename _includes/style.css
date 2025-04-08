@@ -20,6 +20,11 @@ html{transition:.3s ease-in-out;line-height:1.5;scroll-behavior:smooth;-ms-text-
 .text-center{text-align:center}
 .text-justify{text-align:justify}
 .text-right{text-align:right}
+.full-width-wrapper,.one-column-wrapper{margin:0 auto}
+.two-columns-wrapper,.three-columns-wrapper,.four-columns-wrapper{display:flex;flex-flow:row wrap;justify-content:space-around;margin:.5rem auto}
+.two-columns-wrapper .two-columns-widget{flex:0 0 calc(50% - 1rem);padding:.5rem}
+.three-columns-wrapper .three-columns-widget{flex:0 0 calc(33.33% - 1rem);padding:.5rem}
+.four-columns-wrapper .four-columns-widget{flex:0 0 calc(25% - 1rem);padding:.5rem}
 /* Body */
 body{font:var(--font);background-color:var(--white);color:var(--black);margin:0 auto}
 body.dark-mode{background-color:var(--darkgrey);color:var(--white)}
@@ -93,3 +98,9 @@ body.dark-mode .credit-wrapper{background:linear-gradient(to bottom,var(--theme-
 {% if content contains "custom-title" %}.custom-title{text-align:center;font-weight:bold;position:relative;margin:1rem auto}.custom-title:before{background:var(--black);z-index:1;content:'';width:100%;height:5px;position:absolute;top:50%;left:0;margin-top:-1px}body.dark-mode .custom-title:before{background:var(--white)}.custom-title .title{color:var(--black);background:var(--white);border:5px solid var(--black);display:inline-block;margin:0;text-transform:uppercase;z-index:1;position:relative;padding:.5rem 1rem;border-radius:18px;font-size:1.1rem}body.dark-mode .custom-title .title{color:var(--white);background:var(--black);border:5px solid var(--white)}{% endif %}
 @media print{.hide-on-print{display:none}#noprint{display:block}}
 @keyframes marqueeLeftToRight{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}@keyframes marqueeRightToLeft{0%{transform:translateX(100%)}100%{transform:translateX(-100%)}}
+@media screen and (max-width:768px){
+    .three-columns-wrapper .three-columns-widget,.four-columns-wrapper .four-columns-widget{flex:0 0 calc(50% - 1rem);padding:.5rem}
+}
+@media screen and (max-width:520px){
+    .two-columns-wrapper .two-columns-widget,.three-columns-wrapper .three-columns-widget,.four-columns-wrapper .four-columns-widget{flex:0 0 calc(100% - 1rem);padding:.5rem}
+}
