@@ -1,9 +1,18 @@
 <footer aria-label='Credit Section' class='full-width-wrapper credit-wrapper hide-on-print' id='credit-wrapper' itemtype='https://www.schema.org/WPFooter'>
     <meta content='#credit-wrapper' itemprop='cssSelector'>
-    <div class='marquee'>
-        <a href='https://www.dmca.com/Protection/Status.aspx?ID=aef4ea29-df6f-425f-a92f-c9e401fe0f21&refurl={{ page.url | absolute_url }}' target='nofollow noopener' title='DMCA.com Protection Status'>
-            {% if page.is_amp %}<amp-img src='https://images.dmca.com/Badges/dmca_protected_26_120.png?ID=aef4ea29-df6f-425f-a92f-c9e401fe0f21'  width='121' height='57' loading='lazy' alt='DMCA.com Protection Status' title='DMCA.com Protection Status' layout='fixed' aria-label='DMCA Protection Badge'></amp-img>{% else %}<img src='https://images.dmca.com/Badges/dmca_protected_26_120.png?ID=aef4ea29-df6f-425f-a92f-c9e401fe0f21'  width='121' height='57' loading='lazy' alt='DMCA.com Protection Status' title='DMCA.com Protection Status' aria-label='DMCA Protection Badge'>{% endif %}
-        </a>
+    <div class='badge-slider hide-on-print'>
+        <div class="badges">
+            <div class="badge">
+                <a href='https://www.dmca.com/Protection/Status.aspx?ID=aef4ea29-df6f-425f-a92f-c9e401fe0f21&refurl={{ page.url | absolute_url }}' target='nofollow noopener noreferrer license' title='DMCA.com Protection Status'>
+                    {% if page.is_amp %}<amp-img src='https://images.dmca.com/Badges/dmca_protected_26_120.png?ID=aef4ea29-df6f-425f-a92f-c9e401fe0f21'  width='121' height='57' loading='lazy' alt='DMCA.com Protection Status' title='DMCA.com Protection Status' layout='fixed' aria-label='DMCA Protection Badge'></amp-img>{% else %}<img src='https://images.dmca.com/Badges/dmca_protected_26_120.png?ID=aef4ea29-df6f-425f-a92f-c9e401fe0f21'  width='121' height='57' loading='lazy' alt='DMCA.com Protection Status' title='DMCA.com Protection Status' aria-label='DMCA Protection Badge'>{% endif %}
+                </a>
+            </div>
+            <div class="badge">
+                <a href='https://pagespeed.web.dev/analysis?url={{ page.url | absolute_url }}' target='nofollow noopener noreferrer' title='label="PageSpeed Insight Test Result'>
+                    {% if page.is_amp %}<amp-img src='https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhRVtjrjS6D_9yoDu34yrALEmffGq5KTApJGFhSZlAqhYyyP-3G1QsWrNpc-suIs2kiB_H9Mjfzwp8xdFDDyRSIh3sPMmTRtWJGytfA4FQ1z3RnT9kKOUFFrB3wDgDXgMjAwWPOHGMLO2Ejiwdt7HfjhsqZ7tLPE83KTs-RuPmIsZv6DKpyEKFQoEh-H8fh/s100-rw/pagespeed-tested.png'  width='121' height='57' loading='lazy' alt='DMCA.com Protection Status' title='DMCA.com Protection Status' layout='fixed' aria-label='DMCA Protection Badge'></amp-img>{% else %}<img src='https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhRVtjrjS6D_9yoDu34yrALEmffGq5KTApJGFhSZlAqhYyyP-3G1QsWrNpc-suIs2kiB_H9Mjfzwp8xdFDDyRSIh3sPMmTRtWJGytfA4FQ1z3RnT9kKOUFFrB3wDgDXgMjAwWPOHGMLO2Ejiwdt7HfjhsqZ7tLPE83KTs-RuPmIsZv6DKpyEKFQoEh-H8fh/s100-rw/pagespeed-tested.png'  width='121' height='57' loading='lazy' alt='DMCA.com Protection Status' title='DMCA.com Protection Status' aria-label='DMCA Protection Badge'>{% endif %}
+                </a>
+            </div>
+        </div>
     </div>
     <p>Dibuat dengan ❤️ oleh <a href='{{ site.url }}' itemprop='url' title='{{ site.title }}'><span itemprop='copyrightHolder name alternateName publisher'>{{ site.author }}</span></a></p>
     <p><span itemprop='copyrightYear'></span>2023</span>-{{ site.time | date: "%Y" }} &copy; <span itemprop='copyrightNotice'>Hak Cipta Dilindungi.</span></p>
