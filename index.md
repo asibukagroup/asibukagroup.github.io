@@ -10,4 +10,3 @@ keywords: ASIBUKA, ASIBUKA Group, Bisnis, Investasi, UMKM
 robots: index, follow
 lang: id
 ---
-{% include custom_title.html title='Tautan Penting' %}
