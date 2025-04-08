@@ -10,4 +10,5 @@ keywords: ASIBUKA, ASIBUKA Group, Bisnis, Investasi, UMKM
 robots: index, follow
 lang: id
 ---
-{% include custom-title.html title="Blog" %}
+{% include custom-title.html title="VISI" %}
+> Menjadi sarana mengembangkan bakat dan ekonomi rakyat.
