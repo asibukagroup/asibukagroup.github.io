@@ -11,13 +11,37 @@ robots: index, follow
 lang: id
 ---
 {% include custom-title.html title="Link Kami" %}
-<aside aria-label="Widget Link Footer Sponsor" class="four-columns-wrapper our-link hide-on-print" id="our-link" itemscope="itemscope" itemtype="https://schema.org/WPSideBar">
+<aside aria-label="Link Footer Sponsor" class="four-columns-wrapper our-link hide-on-print" id="our-link" itemscope itemtype="https://schema.org/WPSideBar">
 <meta content="#our-link" itemprop="cssSelector">
 <div class="four-columns-widget">
-<div class="widget Label" id="Label1">
+<div class="LinkList">
 <div class="widget-title"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM216 336l24 0 0-64-24 0c-13.3 0-24-10.7-24-24s10.7-24 24-24l48 0c13.3 0 24 10.7 24 24l0 88 8 0c13.3 0 24 10.7 24 24s-10.7 24-24 24l-80 0c-13.3 0-24-10.7-24-24s10.7-24 24-24zm40-208a32 32 0 1 1 0 64 32 32 0 1 1 0-64z"/></svg> Kategori</div>
-<div class="widget-content list-label-widget-content" itemscope="itemscope" itemtype="https://schema.org/ListItem">
 XXX
-</div></div></div>
-<div class="four-columns-widget section" id="our-link-widget-2"><div class="widget LinkList" data-version="2" id="LinkList2"><div class="widget-title">Web Tools</div><div class="widget-content"><ul aria-label="Web Tools" itemscope="itemscope" itemtype="https://schema.org/ListItem"><li><a href="/p/google-drive-direct-link-generator.html" itemprop="url" rel="nofollow noopener noreferrer" target="_blank" title="Google Drive Direct Link Generator"><span itemprop="name alternateName">Google Drive Direct Link Generator</span></a></li><li><a href="/p/iframe-viewer.html" itemprop="url" rel="nofollow noopener noreferrer" target="_blank" title="Iframe Viewer"><span itemprop="name alternateName">Iframe Viewer</span></a></li><li><a href="/p/image-viewer.html" itemprop="url" rel="nofollow noopener noreferrer" target="_blank" title="Image Viewer"><span itemprop="name alternateName">Image Viewer</span></a></li><li><a href="/p/safelink.html" itemprop="url" rel="nofollow noopener noreferrer" target="_blank" title="Safelink Converter"><span itemprop="name alternateName">Safelink Converter</span></a></li><li><a href="/p/preview.html" itemprop="url" rel="nofollow noopener noreferrer" target="_blank" title="Theme Preview"><span itemprop="name alternateName">Theme Preview</span></a></li></ul></div></div></div><div class="four-columns-widget section" id="our-link-widget-3"><div class="widget LinkList" data-version="2" id="LinkList3"><div class="widget-title">Link Bantuan</div><div class="widget-content"><ul aria-label="Link Bantuan" itemscope="itemscope" itemtype="https://schema.org/ListItem"><li><a href="/p/how-to-download.html" itemprop="url" rel="nofollow noopener noreferrer" target="_blank" title="Cara Download"><span itemprop="name alternateName">Cara Download</span></a></li><li><a href="/p/contact.html" itemprop="url" rel="nofollow noopener noreferrer" target="_blank" title="Contact"><span itemprop="name alternateName">Contact</span></a></li><li><a href="/p/template-documentation.html" itemprop="url" rel="nofollow noopener noreferrer" target="_blank" title="Dokumentasi Template"><span itemprop="name alternateName">Dokumentasi Template</span></a></li><li><a href="/p/dmca.html" itemprop="url" rel="nofollow noopener noreferrer" target="_blank" title="Hak Cipta"><span itemprop="name alternateName">Hak Cipta</span></a></li><li><a href="/p/privacy-policy.html" itemprop="url" rel="nofollow noopener noreferrer" target="_blank" title="Kebijakan Privasi"><span itemprop="name alternateName">Kebijakan Privasi</span></a></li><li><a href="/p/blog-placement.html" itemprop="url" rel="nofollow noopener noreferrer" target="_blank" title="Pasang Iklan / Artikel"><span itemprop="name alternateName">Pasang Iklan / Artikel</span></a></li><li><a href="/p/sitemap.html" itemprop="url" rel="nofollow noopener noreferrer" target="_blank" title="Peta Situs"><span itemprop="name alternateName">Peta Situs</span></a></li><li><a href="/p/disclaimer.html" itemprop="url" rel="nofollow noopener noreferrer" target="_blank" title="Sanggahan"><span itemprop="name alternateName">Sanggahan</span></a></li><li><a href="/p/terms-and-conditions" itemprop="url" rel="nofollow noopener noreferrer" target="_blank" title="Syarat dan Ketentuan"><span itemprop="name alternateName">Syarat dan Ketentuan</span></a></li><li><a href="/p/tentang-kami.html" itemprop="url" rel="nofollow noopener noreferrer" target="_blank" title="Tentang Kami"><span itemprop="name alternateName">Tentang Kami</span></a></li></ul></div></div></div><div class="four-columns-widget section" id="our-link-widget-4"><div class="widget HTML" data-version="2" id="HTML10"><div class="widget-title">YouTube</div><div class="widget-content"><div class="media-container landscape"><iframe class="media lazy loaded" data-src="https://www.youtube.com/embed/iEApBoa6IK4" src="https://www.youtube.com/embed/iEApBoa6IK4" title="YouTube"></iframe></div><amp-youtube data-videoid="iEApBoa6IK4" height="9" layout="responsive" width="16"></amp-youtube></div></div></div>
+</div>
+</div>
+<div class="four-columns-widget" id="our-link-widget-2">
+<div class="LinkList">
+<div class="widget-title">Web Tools</div>
+<ul aria-label="Web Tools" itemscope itemtype="https://schema.org/ListItem"><li><a href="#" itemprop="url" rel="nofollow noopener noreferrer" target="_blank" title="Google Drive Direct Link Generator"><span itemprop="name alternateName">Google Drive Direct Link Generator</span></a></li>
+<li><a href="#" itemprop="url" rel="nofollow noopener noreferrer" target="_blank" title="Iframe Viewer"><span itemprop="name alternateName">Iframe Viewer</span></a></li>
+<li><a href="#" itemprop="url" rel="nofollow noopener noreferrer" target="_blank" title="Image Viewer"><span itemprop="name alternateName">Image Viewer</span></a></li>
+<li><a href="#" itemprop="url" rel="nofollow noopener noreferrer" target="_blank" title="Safelink Converter"><span itemprop="name alternateName">Safelink Converter</span></a></li>
+<li><a href="#" itemprop="url" rel="nofollow noopener noreferrer" target="_blank" title="Theme Preview"><span itemprop="name alternateName">Theme Preview</span></a></li>
+</ul>
+</div>
+</div>
+<div class="four-columns-widget" id="our-link-widget-3">
+<div class="LinkList">
+<div class="widget-title">Dukungan</div>
+<ul aria-label="Web Tools" itemscope itemtype="https://schema.org/ListItem">
+{% for link in site.nav_links %}<li itemprop='name alternateName'><a itemprop='url' title='{{ link[0] }}' href='{{ link[1] }}'>{{ link[0] }}</a></li>{% endfor %}
+</ul>
+</div>
+</div>
+<div class="four-columns-widget" id="our-link-widget-4">
+<div class="LinkList">
+<div class="widget-title">Web Tools</div>
+
+</div>
+</div>
 </aside>
