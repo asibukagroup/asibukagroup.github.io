@@ -19,12 +19,10 @@
                 <a class="timestamp-link" href="{{ post.url }}" rel="bookmark" title="permanent link"><time class="published" datetime='{{ post.date | date: "%d %B %Y" }}' title='{{ post.date | date: "%d %B %Y" }}'>{{ post.date | date: "%d %B %Y" }}</time></a>
               </span>
             </div>
-            <div class="post-details">
-              <a class="thumbnail-wrapper" href="{{ post.url }}" title="{{ post.title }}">
-                <div class="thumbnail"></div>
-              </a>
-              <div class="post-snippet">{% assign content_excerpt = post.content | strip_html | strip_newlines | truncate: 300 %}{{ content_excerpt }}</div>
-            </div>
+          </div>
+          <div class="post-details">
+            <a class="thumbnail-wrapper" href="{{ post.url }}" title="{{ post.title }}"><div class="thumbnail"></div></a>
+            <div class="post-snippet">{% assign content_excerpt = post.content | strip_html | strip_newlines | truncate: 300 %}{{ content_excerpt }}</div>
           </div>
         </div>
       </div>
