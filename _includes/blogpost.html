@@ -23,7 +23,7 @@
               <a class="thumbnail-wrapper" href="{{ post.url }}" title="{{ post.title }}">
                 <div class="thumbnail"></div>
               </a>
-              <div class="post-snippet">{{ post.description }}</div>
+              <div class="post-snippet">{{ post.content | strip_html | strip_newlines | truncate: 300 }}</div>
             </div>
           </div>
         </div>
