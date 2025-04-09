@@ -16,6 +16,7 @@ html{transition:.3s ease-in-out;line-height:1.5;scroll-behavior:smooth;-ms-text-
 ::selection{background-color:var(--theme-color);color:var(--white)}
 [hidden],#noprint{display:none}
 .ads{margin:1rem auto;text-align:center}
+.clear{clear:both}
 .text-left{text-align:left}
 .text-center{text-align:center}
 .text-justify{text-align:justify}
