@@ -10,4 +10,4 @@ keywords: ASIBUKA, ASIBUKA Group, Bisnis, Investasi, UMKM
 robots: index, follow
 lang: id
 ---
-{{ include blogpost.html }}
+{% include blogpost.html %}
