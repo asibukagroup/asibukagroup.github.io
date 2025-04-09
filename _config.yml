@@ -15,6 +15,7 @@ robots: "index, follow"
 lang: "id"
 categories: [-]
 tags: [ASIBUKA, ASIBUKA Blog]
+markdown: kramdown
 # ------------------------------
 # 👤 Author Info
 # ------------------------------
