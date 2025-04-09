@@ -4,6 +4,15 @@ document.addEventListener("DOMContentLoaded",function(){const e=document.getElem
 let lastScrollTop=0;const navbar=document.querySelector(".floating-navbar");window.addEventListener("scroll",function(){var a=window.pageYOffset||document.documentElement.scrollTop;a>lastScrollTop?(navbar.style.transform="translate(-50%, -100%)",navbar.style.opacity="0"):(navbar.style.transform="translate(-50%, 0)",navbar.style.opacity="1"),lastScrollTop=a});
 /// PWA
 "serviceWorker"in navigator&&navigator.serviceWorker.register("/sw.js").then(e=>console.log("Service Worker Registered!",e)).catch(e=>console.log("Service Worker Registration Failed!",e));
+if('serviceWorker' in navigator){window.addEventListener('load',()=>{navigator.serviceWorker.register('/sw.js').then(registration=>{}).catch(registrationError=>{console.log('SW registration failed: ',registrationError)})})}if('serviceWorker' in navigator){navigator.serviceWorker.register('/sw.js').then(function(){console.log('Service Worker Registered')})}const installButton = document.getElementById("installWebApp");window.addEventListener("beforeinstallprompt", e => {e.preventDefault();deferredPrompt = e;installButton.hidden = false;installButton.addEventListener("click", installApp);});function installApp() {deferredPrompt.prompt();installButton.disabled = true;deferredPrompt.userChoice.then(choiceResult => {if (choiceResult.outcome === "accepted") {installButton.hidden = true;} else {}installButton.disabled = false;deferredPrompt = null;});}window.addEventListener("appinstalled", evt => {console.log("appinstalled fired", evt);});if ('serviceWorker' in navigator) {
+navigator.serviceWorker.getRegistrations().then(function(registrations) {
+    for(let registration of registrations) {
+      if (registration.active.scriptURL.includes("/sw.js")) {
+        registration.unregister();
+      }
+    } 
+});
+}
 // Lazyload Scripts
 function lazyLoadScript(n,c,e){var i=!1;function t(){if(!i){i=!0;var e,t=document.createElement("script");for(e in t.src=n,t.async=!0,c)c.hasOwnProperty(e)&&t.setAttribute(e,c[e]);document.head.appendChild(t)}}c=c||{},"scroll"===(e=e||"click")?window.addEventListener("scroll",t,{once:!0}):"timeout"===e?setTimeout(t,3e3):(window.addEventListener("click",t,{once:!0}),window.addEventListener("touchstart",t,{once:!0}))}
 // Lazyload AdSense
