@@ -63,6 +63,41 @@
     <div class="widget PopularPosts" data-version="2" id="PopularPosts1"><div class="widgettitle">Terbaik Minggu Ini</div><div class="widget-content"><div class="popular-post-feed"><article aria-label="Cara Menambahkan Sitemap Blogger ke Google Search Console" class="post"><h2 class="post-title"><a href="https://maz-daily-id.blogspot.com/2023/09/sitemap-blogger-ke-google.html" title="Cara Menambahkan Sitemap Blogger ke Google Search Console">Cara Menambahkan Sitemap Blogger ke Google Search Console</a></h2></article><article aria-label="Hello World!" class="post"><h2 class="post-title"><a href="https://maz-daily-id.blogspot.com/2023/09/hello-world.html" title="Hello World!">Hello World!</a></h2></article><article aria-label="Curhat Moment #1" class="post"><h2 class="post-title"><a href="https://maz-daily-id.blogspot.com/2024/03/curhat-moment-1.html" title="Curhat Moment #1">Curhat Moment #1</a></h2></article></div></div></div></div><div class="clear"></div></div>
 {{ content }}
 </main>
+{% include custom-title.html title="Link Kami" %}
+<aside aria-label="Link Footer Sponsor" class="four-columns-wrapper our-link hide-on-print" id="our-link" itemscope itemtype="https://schema.org/WPSideBar">
+<meta content="#our-link" itemprop="cssSelector">
+<div class="four-columns-widget">
+<div class="LinkList">
+<div class="widget-title"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M500.3 7.3C507.7 13.3 512 22.4 512 32l0 144c0 26.5-28.7 48-64 48s-64-21.5-64-48s28.7-48 64-48l0-57L352 90.2 352 208c0 26.5-28.7 48-64 48s-64-21.5-64-48s28.7-48 64-48l0-96c0-15.3 10.8-28.4 25.7-31.4l160-32c9.4-1.9 19.1 .6 26.6 6.6zM74.7 304l11.8-17.8c5.9-8.9 15.9-14.2 26.6-14.2l61.7 0c10.7 0 20.7 5.3 26.6 14.2L213.3 304l26.7 0c26.5 0 48 21.5 48 48l0 112c0 26.5-21.5 48-48 48L48 512c-26.5 0-48-21.5-48-48L0 352c0-26.5 21.5-48 48-48l26.7 0zM192 408a48 48 0 1 0 -96 0 48 48 0 1 0 96 0zM478.7 278.3L440.3 368l55.7 0c6.7 0 12.6 4.1 15 10.4s.6 13.3-4.4 17.7l-128 112c-5.6 4.9-13.9 5.3-19.9 .9s-8.2-12.4-5.3-19.2L391.7 400 336 400c-6.7 0-12.6-4.1-15-10.4s-.6-13.3 4.4-17.7l128-112c5.6-4.9 13.9-5.3 19.9-.9s8.2 12.4 5.3 19.2zm-339-59.2c-6.5 6.5-17 6.5-23 0L19.9 119.2c-28-29-26.5-76.9 5-103.9c27-23.5 68.4-19 93.4 6.5l10 10.5 9.5-10.5c25-25.5 65.9-30 93.9-6.5c31 27 32.5 74.9 4.5 103.9l-96.4 99.9z"/></svg> Kategori</div>
+<ul aria-label="Kategori" itemscope itemtype="https://schema.org/ListItem">{% for category in site.categories %}<li itemprop='name alternateName'><a itemprop='url' title='{{ category[0] | capitalize }}' href="{{ '/category/' | append: category[0] | downcase | relative_url }}">{{ category[0] | capitalize }}</a></li>{% endfor %}</ul>
+</div>
+</div>
+<div class="four-columns-widget" id="our-link-widget-2">
+<div class="LinkList">
+<div class="widget-title">Web Tools</div>
+<ul aria-label="Web Tools" itemscope itemtype="https://schema.org/ListItem"><li><a href="#" itemprop="url" rel="nofollow noopener noreferrer" target="_blank" title="Google Drive Direct Link Generator"><span itemprop="name alternateName">Google Drive Direct Link Generator</span></a></li>
+<li><a href="#" itemprop="url" rel="nofollow noopener noreferrer" target="_blank" title="Iframe Viewer"><span itemprop="name alternateName">Iframe Viewer</span></a></li>
+<li><a href="#" itemprop="url" rel="nofollow noopener noreferrer" target="_blank" title="Image Viewer"><span itemprop="name alternateName">Image Viewer</span></a></li>
+<li><a href="#" itemprop="url" rel="nofollow noopener noreferrer" target="_blank" title="Safelink Converter"><span itemprop="name alternateName">Safelink Converter</span></a></li>
+<li><a href="#" itemprop="url" rel="nofollow noopener noreferrer" target="_blank" title="Theme Preview"><span itemprop="name alternateName">Theme Preview</span></a></li>
+</ul>
+</div>
+</div>
+<div class="four-columns-widget" id="our-link-widget-3">
+<div class="LinkList">
+<div class="widget-title"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M367.2 412.5C335.9 434.9 297.5 448 256 448s-79.9-13.1-111.2-35.5l58-58c15.8 8.6 34 13.5 53.3 13.5s37.4-4.9 53.3-13.5l58 58zm90.7 .8c33.8-43.4 54-98 54-157.3s-20.2-113.9-54-157.3c9-12.5 7.9-30.1-3.4-41.3S425.8 45 413.3 54C369.9 20.2 315.3 0 256 0S142.1 20.2 98.7 54c-12.5-9-30.1-7.9-41.3 3.4S45 86.2 54 98.7C20.2 142.1 0 196.7 0 256s20.2 113.9 54 157.3c-9 12.5-7.9 30.1 3.4 41.3S86.2 467 98.7 458c43.4 33.8 98 54 157.3 54s113.9-20.2 157.3-54c12.5 9 30.1 7.9 41.3-3.4s12.4-28.8 3.4-41.3zm-45.5-46.1l-58-58c8.6-15.8 13.5-34 13.5-53.3s-4.9-37.4-13.5-53.3l58-58C434.9 176.1 448 214.5 448 256s-13.1 79.9-35.5 111.2zM367.2 99.5l-58 58c-15.8-8.6-34-13.5-53.3-13.5s-37.4 4.9-53.3 13.5l-58-58C176.1 77.1 214.5 64 256 64s79.9 13.1 111.2 35.5zM157.5 309.3l-58 58C77.1 335.9 64 297.5 64 256s13.1-79.9 35.5-111.2l58 58c-8.6 15.8-13.5 34-13.5 53.3s4.9 37.4 13.5 53.3zM208 256a48 48 0 1 1 96 0 48 48 0 1 1 -96 0z"/></svg> Dukungan</div>
+<ul aria-label="Dukungan" itemscope itemtype="https://schema.org/ListItem">
+{% for link in site.nav_links %}<li itemprop='name alternateName'><a itemprop='url' title='{{ link[0] }}' href='{{ link[1] }}'>{{ link[0] }}</a></li>{% endfor %}
+</ul>
+</div>
+</div>
+<div class="four-columns-widget" id="our-link-widget-4">
+<div class="LinkList">
+<div class="widget-title">Web Tools</div>
+
+</div>
+</div>
+</aside>
 {% include footer.html %}
 {% include noprint.html %}
 {% include main.js %}
