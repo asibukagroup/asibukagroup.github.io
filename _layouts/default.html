@@ -23,33 +23,35 @@
   <div class="outer-content">
     <div class="main-wrapper">
       <div class="main section" id="main">
-            <div class="widget Blog" data-version="2" id="Blog1">
-              <div class="blog-posts hfeed container">
-                {{ content }}
-              </div>
-            </div>
-    </div>
-    <div class="left-sidebar section" id="left-sidebar">
-      <div class="widget HTML" data-version="2" id="HTML11">
-        <div class="widget-content text-center">
-          <button hidden="" class="button press icon download" id="installWebApp">Install Now</button>
+        <div class="widget Blog" data-version="2" id="Blog1">
+          <div class="blog-posts hfeed container">
+            {{ content }}
+          </div>
         </div>
       </div>
-      <div class="widget HTML" data-version="2" id="HTML5">
-        <div class="widget-content ads" itemscope="itemscope" itemtype="https://schema.org/WPAdblock">
+      <div class="left-sidebar section" id="left-sidebar">
+        <div class="widget HTML" data-version="2" id="HTML11">
+          <div class="widget-content text-center">
+            <button hidden="" class="button press icon download" id="installWebApp">Install Now</button>
+          </div>
+        </div>
+        <div class="widget HTML" data-version="2" id="HTML5">
+          <div class="widget-content ads" itemscope="itemscope" itemtype="https://schema.org/WPAdblock">
+            <meta content="Iklan ada di sini" itemprop="name">
+            <meta content="Iklan ada di sini" itemprop="description">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="right-sidebar section" id="right-sidebar">
+      <div class="widget HTML">
+        <div class="widget-content" itemscope="itemscope" itemtype="https://schema.org/WPAdblock">
           <meta content="Iklan ada di sini" itemprop="name">
           <meta content="Iklan ada di sini" itemprop="description">
         </div>
       </div>
     </div>
-  </div>
-  <div class="right-sidebar section" id="right-sidebar">
-    <div class="widget HTML">
-      <div class="widget-content" itemscope="itemscope" itemtype="https://schema.org/WPAdblock">
-        <meta content="Iklan ada di sini" itemprop="name">
-        <meta content="Iklan ada di sini" itemprop="description">
-      </div>
-    </div>
+    <div class="clear"></div>
 </main>
 {% include custom-title.html title="Link Kami" %}
 <aside aria-label="Link Footer Sponsor" class="four-columns-wrapper our-link hide-on-print" id="our-link" itemscope itemtype="https://schema.org/WPSideBar">
