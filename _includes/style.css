@@ -25,6 +25,11 @@ html{transition:.3s ease-in-out;line-height:1.5;scroll-behavior:smooth;-ms-text-
 .two-columns-wrapper .two-columns-widget{flex:0 0 calc(50% - 1rem);padding:.5rem}
 .three-columns-wrapper .three-columns-widget{flex:0 0 calc(33.33% - 1rem);padding:.5rem}
 .four-columns-wrapper .four-columns-widget{flex:0 0 calc(25% - 1rem);padding:.5rem}
+.main-wrapper{width:calc(100% - 316px);float:left;margin:0 auto;padding:0}
+.main{width:calc(100% - 176px);float:right;margin:0 auto;padding:0 0 70px;position:relative}
+.content-wrapper{margin:0 auto;padding:0;position:relative}
+.left-sidebar{width:160px;float:left;padding:0;margin:0;position:sticky;top:3rem}
+.right-sidebar{width:300px;float:right;padding:0;margin:0;position:sticky;top:3rem}
 .widget-title{background:linear-gradient(45deg, rgba(0,0,0,.8), var(--theme-color));color:var(--white);font-weight:bolder;font-size:1.25rem;margin:.5rem auto;padding:.5rem;border-radius:.5rem}
 .widget-title svg{width:1rem;margin-right:.5rem}
 .widget-title svg path{fill:var(--white)}
@@ -103,6 +108,8 @@ body.dark-mode .credit-wrapper{background:linear-gradient(to bottom,var(--theme-
 @media print{.hide-on-print{display:none}#noprint{display:block}}
 @keyframes marqueeLeftToRight{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}@keyframes marqueeRightToLeft{0%{transform:translateX(100%)}100%{transform:translateX(-100%)}}
 @media screen and (max-width:768px){
+    .content-wrapper{overflow:hidden}
+    .left-sidebar,.right-sidebar,.main-wrapper,.main{width:100%;float:none;margin:0 auto;padding:0;position:static}
     .three-columns-wrapper .three-columns-widget,.four-columns-wrapper .four-columns-widget{flex:0 0 calc(50% - 1rem);padding:.5rem}
 }
 @media screen and (max-width:520px){
