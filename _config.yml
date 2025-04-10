@@ -38,6 +38,16 @@ email: "admin@asibuka.com"
 # ------------------------------
 permalink: /:title/
 # ------------------------------
+# 🗂 Collections
+# ------------------------------
+collections:
+  posts:
+    output: true
+    permalink: /:title/
+  pages:
+    output: true
+    permalink: /:title/
+# ------------------------------
 # 🌐 Other Settings
 # ------------------------------
 disqus_shortname: "asibukagroup"
