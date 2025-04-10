@@ -1,5 +1,16 @@
 theme_name: ASIBUKA
 # ------------------------------
+# 🌐 Theme Information
+# 1. All pages and posts valid AMPHTML
+# 2. All pages and posts valid CSS3
+# 3. All pages and posts valid HTML5
+# 4. All pages and posts passed the Pagespeed Insight Test
+# 5. All pages and posts passed the Lighthouse Test
+# 6. All pages and posts are well-layouted
+# 7. All pages and posts have well configuration for SEO
+# 8. All pages and posts have well-structured Schema metadata
+# ------------------------------
+# ------------------------------
 # 🌐 Site Information
 # ------------------------------
 title: "ASIBUKA Group"
