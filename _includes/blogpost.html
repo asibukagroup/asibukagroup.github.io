@@ -1,30 +1,30 @@
-    {% for post in site.posts %}
-    <article aria-label="{{ post.title }}" class="post-outer-container">
-      <div class="post-outer">
-        <div class="post">
-          <h2 class="post-title entry-title"><a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a></h2>
-          <div class="post-header">
-            <div class="post-header-line-1">
-              <span class="byline post-author vcard">
-                <span class="post-author-label">
-                  <svg viewBox="0 0 24 24"><path d="M19 7.001c0 3.865-3.134 7-7 7s-7-3.135-7-7c0-3.867 3.134-7.001 7-7.001s7 3.134 7 7.001zm-1.598 7.18c-1.506 1.137-3.374 1.82-5.402 1.82-2.03 0-3.899-.685-5.407-1.822-4.072 1.793-6.593 7.376-6.593 9.821h24c0-2.423-2.6-8.006-6.598-9.819z"></path></svg>
-                </span>
-                <span class="fn" itemscope="itemscope" itemtype="https://schema.org/Person">
-                  <meta content="{{ post.url }}" itemprop="url sameAs">
-                  <a class="g-profile" href="{{ post.url }}" rel="author" title="{{ post.author }}"><span itemprop="name alternateName description">{{ post.author }}</span></a>
-                </span>
-              </span>
-              <span class="byline post-timestamp">
-                <svg viewBox="0 0 24 24"><path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm6 14h-7v-8h2v6h5v2z"></path></svg>
-                <a class="timestamp-link" href="{{ post.url }}" rel="bookmark" title="permanent link"><time class="published" datetime='{{ post.date | date: "%d %B %Y" }}' title='{{ post.date | date: "%d %B %Y" }}'>{{ post.date | date: "%d %B %Y" }}</time></a>
-              </span>
-            </div>
-          </div>
-          <div class="post-details">
-            <a class="thumbnail-wrapper" href="{{ post.url }}" title="{{ post.title }}"><div class="thumbnail"></div></a>
-            <div class="post-snippet">{% assign content_excerpt = post.content | strip_html | strip_newlines | truncate: 300 %}{{ content_excerpt }}</div>
-          </div>
+{% for post in site.posts %}
+<article aria-label="{{ post.title }}" class="post-outer-container">
+  <div class="post-outer">
+    <div class="post">
+      <h2 class="post-title entry-title"><a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a></h2>
+      <div class="post-header">
+        <div class="post-header-line-1">
+          <span class="byline post-author vcard">
+            <span class="post-author-label">
+              <svg viewBox="0 0 24 24"><path d="M19 7.001c0 3.865-3.134 7-7 7s-7-3.135-7-7c0-3.867 3.134-7.001 7-7.001s7 3.134 7 7.001zm-1.598 7.18c-1.506 1.137-3.374 1.82-5.402 1.82-2.03 0-3.899-.685-5.407-1.822-4.072 1.793-6.593 7.376-6.593 9.821h24c0-2.423-2.6-8.006-6.598-9.819z"></path></svg>
+            </span>
+            <span class="fn" itemscope="itemscope" itemtype="https://schema.org/Person">
+              <meta content="{{ post.url }}" itemprop="url sameAs">
+              <a class="g-profile" href="{{ post.url }}" rel="author" title="{{ post.author }}"><span itemprop="name alternateName description">{{ post.author }}</span></a>
+            </span>
+          </span>
+          <span class="byline post-timestamp">
+            <svg viewBox="0 0 24 24"><path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm6 14h-7v-8h2v6h5v2z"></path></svg>
+            <a class="timestamp-link" href="{{ post.url }}" rel="bookmark" title="permanent link"><time class="published" datetime='{{ post.date | date: "%d %B %Y" }}' title='{{ post.date | date: "%d %B %Y" }}'>{{ post.date | date: "%d %B %Y" }}</time></a>
+          </span>
         </div>
       </div>
-    </article>
-    {% endfor %}
+      <div class="post-details">
+        <a class="thumbnail-wrapper" href="{{ post.url }}" title="{{ post.title }}"><div class="thumbnail"></div></a>
+        <div class="post-snippet">{% assign content_excerpt = post.content | strip_html | strip_newlines | truncate: 300 %}{{ content_excerpt }}</div>
+      </div>
+    </div>
+  </div>
+</article>
+{% endfor %}
