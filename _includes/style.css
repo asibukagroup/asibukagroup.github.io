@@ -9,7 +9,7 @@
 --darkgrey:#141414;
 --gold:#EFBF04;
 }
-html{transition:.3s ease-in-out;line-height:1.5;scroll-behavior:smooth;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%}
+html{transition:.3s ease-in-out;scroll-behavior:smooth;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%}
 ::-webkit-scrollbar{width:10px;height:10px}
 ::-webkit-scrollbar-thumb{background-color:var(--theme-color);border:.05em solid var(--theme-color);background-clip:padding-box;cursor:pointer;border-radius:8px;-webkit-border-radius:8px}
 ::-webkit-scrollbar-track{background-color:var(--darkgrey)}
@@ -70,7 +70,7 @@ body.dark-mode .LinkList ul li:before{background:url("data:image/svg+xml;charset
 .LinkList ul li a{color:var(--black);border-bottom:var(--black) thin solid;margin:0;padding:.5rem 2rem;display:block}
 body.dark-mode .LinkList ul li a{color:var(--white);border-bottom:var(--white) thin solid}
 /* Body */
-body{font:var(--font);background-color:var(--white);color:var(--black);margin:0 auto}
+body{font:var(--font);background-color:var(--white);color:var(--black);margin:0 auto;line-height:1.5}
 body.dark-mode{background-color:var(--darkgrey);color:var(--white)}
 /* A (Hyperlink) */
 a{background-color:transparent;-webkit-text-decoration-skip:objects;text-decoration:none;font-weight:600;color:var(--theme-color)}
