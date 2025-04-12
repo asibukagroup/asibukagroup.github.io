@@ -3,7 +3,7 @@ const body=document.body,darkToggle=document.getElementById("darkToggle");"enabl
 // PWA
 "serviceWorker"in navigator&&navigator.serviceWorker.register("/sw.js").then(e=>console.log("Service Worker Registered!",e)).catch(e=>console.log("Service Worker Registration Failed!",e));
 // Random Posts
-fetch('{{ "/search.json" | relative_url }}').then(n=>n.json()).then(n=>{0!==n.length&&(n=n[Math.floor(Math.random()*n.length)],window.randomLink=n.url)}).catch(console.error);
+const postUrls=[{% for post in site.posts %}{% unless post.url contains '/404.html' or post.url contains '/search.json' or post.url contains '/amp/' %}"{{ post.url | relative_url }}",{% endunless %}{% endfor %}],randomUrl=postUrls[Math.floor(Math.random()*postUrls.length)];document.addEventListener("DOMContentLoaded",function(){const n=document.getElementById("random-post-link");n&&randomUrl&&(n.href=randomUrl)});
 // Lazyload Scripts
 function lazyLoadScript(n,c,e){var i=!1;function t(){if(!i){i=!0;var e,t=document.createElement("script");for(e in t.src=n,t.async=!0,c)c.hasOwnProperty(e)&&t.setAttribute(e,c[e]);document.head.appendChild(t)}}c=c||{},"scroll"===(e=e||"click")?window.addEventListener("scroll",t,{once:!0}):"timeout"===e?setTimeout(t,3e3):(window.addEventListener("click",t,{once:!0}),window.addEventListener("touchstart",t,{once:!0}))}
 // Lazyload AdSense
