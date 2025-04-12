@@ -11,5 +11,5 @@ robots: index, follow
 lang: id
 ---
 # {{ page.title }}
-ASIBUKA Group adalah usaha yang bergerak di bidang investasi di bidang UMKM baik offline maupun online, berbasis teknologi ataupun konvensional.
-{% include image.html src="https://asibuka.com/assets/img/ASIBUKA-Blue.webp" width="360" height="360" layout="responsive %}
+{{ page.description }}
+{% include image.html src="{{ page.image }}" width="360" height="360" layout="responsive" %}
