@@ -6,4 +6,32 @@ layout: default
   <h1>{{ page.title }}</h1>
   {% include image.html src=page.image title='thumbnail' width='1600' height='720' layout='responsive' %}
 {{ content }}
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "{{ page.url }}"
+    },
+    "headline": "{{ page.title }}",
+    "description": "{{ page.description }}",
+    "image": "{{ page.image }}",  
+    "author": {
+      "@type": "Organization",
+      "name": "ASIBUKA Group",
+      "url": "https://www.asibuka.com"
+    },  
+    "publisher": {
+      "@type": "Organization",
+      "name": "ASIBUKA Group",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://asibuka.com/assets/img/ASIBUKA-Blue.webp"
+      }
+    },
+    "datePublished": "{{ page.date | date_to_xmlschema }}",
+    "dateModified": "{{ page.date | date_to_xmlschema }}"
+  }
+  </script>
 </article>
