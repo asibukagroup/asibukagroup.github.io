@@ -6,13 +6,8 @@ lang: id
 description: Silahkan cari konten yang kamu perlukan menggunakan form ini.
 robots: noindex, nofollow
 ---
-<<<<<<< HEAD
-<h1 class="main-heading">
-<div id="results" class="search-results"></div>
-=======
 <h1 class="main-heading">Hasil Pencarian</h1>
-<ul id="results"></ul>
->>>>>>> 761fc725074f007285c0fb69f752226a0eb1b482
+<div id="results" class="search-results"></div>
 <script src="https://unpkg.com/lunr/lunr.js"></script>
 <script>
   document.addEventListener('DOMContentLoaded', function () {
