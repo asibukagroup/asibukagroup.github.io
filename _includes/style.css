@@ -103,5 +103,7 @@
     .hide-on-print{display:none}
     #noprint{display:block;color:var(--black)}
     }
+.lazy{opacity:0;transform:scale(0.98);transition:opacity .6s ease-out,transform .6s ease-out;filter:blur(4px)}
+.lazy.loaded{opacity:1;transform:scale(1);filter:blur(0)}
 {% include css/styling.css %}
 {% if content contains "<h2" %}.toc{background:#f8f9fa;padding:15px;border-left:4px solid #004aad;margin-bottom:20px;transition:background 0.3s,color .3s}.toc h2{font-size:1.2rem;margin-bottom:10px}.toc ul{list-style:none;padding-left:15px}.toc ul li{margin-bottom:5px}.toc ul ul{padding-left:15px;font-size:.9rem}.dark-mode .toc{background:#1e1e1e;color:#f8f9fa;border-left:4px solid #0af}.dark-mode .toc h2{color:#f8f9fa}.dark-mode .toc ul li{color:#ddd}.dark-mode .toc a{color:#0af}.dark-mode .toc a:hover{color:#fa0}{% endif %}
