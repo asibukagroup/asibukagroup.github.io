@@ -6,6 +6,7 @@ lang: id
 description: Silahkan cari konten yang kamu perlukan menggunakan form ini.
 robots: noindex, nofollow
 ---
+<h1 class="main-heading">
 <ul id="results"></ul>
 <script src="https://unpkg.com/lunr/lunr.js"></script>
 <script>
@@ -58,9 +59,9 @@ robots: noindex, nofollow
           const li = document.createElement('li');
           li.innerHTML = `
             <article class="search-result">
-              ${item.image ? `<div class="result-image"><img src="${item.image}" alt="${item.title}" /></div>` : ''}
+              ${item.image ? `<div class="result-image"><img src="${item.image}" alt="${item.title}" title="${item.title}" /></div>` : ''}
               <div class="result-content">
-                <h2><a href="${item.url}">${item.title}</a></h2>
+                <h2><a href="${item.url}" title="${item.title}">${item.title}</a></h2>
                 ${item.author ? `<p class="author"><strong>Author:</strong> ${item.author}</p>` : ''}
                 <p class="summary">${item.content}</p>
               </div>
@@ -74,6 +75,49 @@ robots: noindex, nofollow
 </script>
 
 <style>
+  .main-heading {
+  font-size: 2.2rem;
+  font-weight: 700;
+  text-align: center;
+  margin: 2rem 0 1rem;
+  color: #2c3e50;
+  position: relative;
+  z-index: 1;
+  transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+.main-heading::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 80px;
+  height: 4px;
+  background: linear-gradient(90deg, #3498db, #9b59b6);
+  transform: translateX(-50%);
+  border-radius: 2px;
+  z-index: -1;
+  opacity: 0.7;
+}
+
+.main-heading:hover {
+  text-shadow: 0 0 10px rgba(52, 152, 219, 0.6);
+}
+
+/* 🌙 Dark Mode: when body has .dark class */
+body.dark .main-heading {
+  color: #ecf0f1;
+}
+
+body.dark .main-heading::after {
+  background: linear-gradient(90deg, #8e44ad, #2980b9);
+  opacity: 0.9;
+}
+
+body.dark .main-heading:hover {
+  text-shadow: 0 0 10px rgba(142, 68, 173, 0.8);
+}
+
   ul#results {
     list-style: none;
     padding: 0;
