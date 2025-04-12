@@ -6,8 +6,13 @@ lang: id
 description: Silahkan cari konten yang kamu perlukan menggunakan form ini.
 robots: noindex, nofollow
 ---
+<<<<<<< HEAD
+<h1 class="main-heading">
+<div id="results" class="search-results"></div>
+=======
 <h1 class="main-heading">Hasil Pencarian</h1>
 <ul id="results"></ul>
+>>>>>>> 761fc725074f007285c0fb69f752226a0eb1b482
 <script src="https://unpkg.com/lunr/lunr.js"></script>
 <script>
   document.addEventListener('DOMContentLoaded', function () {
@@ -21,7 +26,7 @@ robots: noindex, nofollow
 
     const params = new URLSearchParams(window.location.search);
     const query = params.get('q') || '';
-    searchBox.value = query; // ✅ Keep last query in input
+    searchBox.value = query;
 
     fetch('/search.json')
       .then(res => res.json())
@@ -37,10 +42,16 @@ robots: noindex, nofollow
 
         if (query.trim()) {
           runSearch(query, data, index);
+        } else {
+          showAll(data);
         }
 
         searchBox.addEventListener('input', function () {
-          runSearch(this.value, data, index);
+          if (this.value.trim()) {
+            runSearch(this.value, data, index);
+          } else {
+            showAll(data);
+          }
         });
       })
       .catch(err => {
@@ -52,27 +63,36 @@ robots: noindex, nofollow
       resultsContainer.innerHTML = '';
 
       if (results.length === 0) {
-        resultsContainer.innerHTML = '<li>No results found.</li>';
+        resultsContainer.innerHTML = '<div class="no-results">No results found.</div>';
       } else {
         results.forEach(result => {
           const item = data.find(d => d.url === result.ref);
-          const li = document.createElement('li');
-          li.innerHTML = `
-            <article class="search-result">
-              ${item.image ? `<div class="result-image"><img src="${item.image}" alt="${item.title}" title="${item.title}" /></div>` : ''}
-              <div class="result-content">
-                <h2><a href="${item.url}" title="${item.title}">${item.title}</a></h2>
-                ${item.author ? `<p class="author"><strong>Author:</strong> ${item.author}</p>` : ''}
-                <p class="summary">${item.content}</p>
-              </div>
-            </article>
-          `;
-          resultsContainer.appendChild(li);
+          if (item) renderResult(item);
         });
       }
     }
+
+    function showAll(data) {
+      resultsContainer.innerHTML = '';
+      data.forEach(item => renderResult(item));
+    }
+
+    function renderResult(item) {
+      const wrapper = document.createElement('div');
+      wrapper.className = 'search-result';
+      wrapper.innerHTML = `
+        ${item.image ? `<div class="result-image"><img src="${item.image}" alt="${item.title}" /></div>` : ''}
+        <div class="result-content">
+          <h2><a href="${item.url}">${item.title}</a></h2>
+          ${item.author ? `<p class="author"><strong>Author:</strong> ${item.author}</p>` : ''}
+          <p class="summary">${item.content}</p>
+        </div>
+      `;
+      resultsContainer.appendChild(wrapper);
+    }
   });
 </script>
+
 
 <style>
   .main-heading {
@@ -117,63 +137,88 @@ body.dark .main-heading::after {
 body.dark .main-heading:hover {
   text-shadow: 0 0 10px rgba(142, 68, 173, 0.8);
 }
+.search-results {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
 
-  ul#results {
-    list-style: none;
-    padding: 0;
-    margin: 2rem 0;
-  }
+.search-result {
+  display: flex;
+  gap: 1rem;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 1rem;
+  flex-wrap: wrap;
+}
 
+.result-image {
+  flex: 0 0 30%;
+  max-width: 30%;
+}
+
+.result-image img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+.result-content {
+  flex: 1;
+  min-width: 200px;
+}
+
+.result-content h2 {
+  margin: 0 0 0.5rem;
+  font-size: 1.3rem;
+}
+
+.result-content a {
+  color: #3498db;
+  text-decoration: none;
+}
+
+.result-content a:hover {
+  text-decoration: underline;
+}
+
+.author {
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.summary {
+  margin-top: 0.5rem;
+  line-height: 1.5;
+}
+
+/* Responsive for small screens */
+@media (max-width: 768px) {
   .search-result {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-    margin-bottom: 2rem;
-    border-bottom: 1px solid #ccc;
-    padding-bottom: 1rem;
+    flex-direction: column;
   }
 
-  .result-image {
-    flex: 0 0 30%;
-  }
-
-  .result-image img {
-    width: 100%;
-    height: auto;
-    border-radius: 8px;
-  }
-
+  .result-image,
   .result-content {
-    flex: 1;
+    max-width: 100%;
+    flex: 100%;
   }
+}
 
-  .result-content h2 {
-    margin: 0 0 0.5rem;
-  }
+/* Dark mode */
+body.dark .result-content a {
+  color: #8ab4f8;
+}
 
-  .result-content .author {
-    margin: 0 0 0.5rem;
-    font-size: 0.95rem;
-    color: #555;
-  }
+body.dark .author {
+  color: #aaa;
+}
 
-  .result-content .summary {
-    margin: 0;
-    font-size: 1rem;
-    line-height: 1.4;
-  }
+body.dark .search-result {
+  border-color: #444;
+}
 
-  @media (max-width: 768px) {
-    .search-result {
-      flex-direction: column;
-    }
-
-    .result-image {
-      flex: 1 1 100%;
-    }
-
-    .result-content {
-      flex: 1 1 100%;
-    }
-  }
+body.dark .summary {
+  color: #ddd;
+}
 </style>
