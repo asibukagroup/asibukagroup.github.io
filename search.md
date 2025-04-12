@@ -6,7 +6,7 @@ lang: id
 description: Silahkan cari konten yang kamu perlukan menggunakan form ini.
 robots: noindex, nofollow
 ---
-<h1 class="main-heading">
+<h1 class="main-heading">Hasil Pencarian</h1>
 <ul id="results"></ul>
 <script src="https://unpkg.com/lunr/lunr.js"></script>
 <script>
