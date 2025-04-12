@@ -22,9 +22,9 @@
     body.dark a{color:var(--white)}
     a:hover,a:focus,body.dark a:hover,body.dark a:focus{color:var(--grey)}
     /* Images */
-    {% if page.url contains '/amp/' %}amp-img,{% endif %}img{max-width:100%;height:auto;border-style:none;width:100%}
-    {% if page.url contains '/amp/' %}body.dark amp-img,{% endif %}body.dark img{filter:brightness(75%)}
-    {% if page.url contains '/amp/' %}body.dark amp-img:hover,{% endif %}body.dark img:hover,{% if page.url contains '/amp/' %}body.dark amp-img:focus,{% endif %}body.dark img:focus{filter:brightness(100%)}
+    {% if page.url contains '/amp/' %}amp-img{% else %}img{% endif %}{max-width:100%;height:auto;border-style:none;width:100%}
+    {% if page.url contains '/amp/' %}body.dark amp-img{% else %}body.dark img{% endif %}{filter:brightness(75%)}
+    {% if page.url contains '/amp/' %}body.dark amp-img:hover,body.dark amp-img:focus{% else %}body.dark img:hover,body.dark img:focus{% endif %}{filter:brightness(100%)}
     /* Header Section */
     .header-wrapper{display:flex;justify-content:space-between;align-items:center;padding:10px 16px;background:var(--white)fffe6;border-bottom:1px solid var(--white);position:sticky;top:0;z-index:1001;backdrop-filter:blur(10px)}
     .header-wrapper a svg path{fill:var(--black)}
