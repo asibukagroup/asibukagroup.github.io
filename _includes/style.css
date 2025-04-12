@@ -22,9 +22,9 @@
     body.dark a{color:var(--white)}
     a:hover,a:focus,body.dark a:hover,body.dark a:focus{color:var(--grey)}
     /* Images */
-    amp-img,img{max-width:100%;height:auto;border-style:none;width:100%}
-    body.dark amp-img, body.dark img{filter:brightness(75%)}
-    body.dark amp-img:hover, body.dark img:hover,body.dark amp-img:focus, body.dark img:focus{filter:brightness(100%)}
+    {% unless page.url contains '/amp/' %}amp-img,{% endunless %}img{max-width:100%;height:auto;border-style:none;width:100%}
+    {% unless page.url contains '/amp/' %}body.dark amp-img,{% endunless %}body.dark img{filter:brightness(75%)}
+    {% unless page.url contains '/amp/' %}body.dark amp-img:hover,{% endunless %}body.dark img:hover,{% unless page.url contains '/amp/' %}body.dark amp-img:focus,{% endunless %}body.dark img:focus{filter:brightness(100%)}
     /* Header Section */
     .header-wrapper{display:flex;justify-content:space-between;align-items:center;padding:10px 16px;background:var(--white)fffe6;border-bottom:1px solid var(--white);position:sticky;top:0;z-index:1001;backdrop-filter:blur(10px)}
     .header-wrapper a svg path{fill:var(--black)}
