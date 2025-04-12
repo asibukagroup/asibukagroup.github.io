@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Search
-permalink: /search
+permalink: /search/
 lang: id
 description: Silahkan cari konten yang kamu perlukan menggunakan form ini.
 robots: noindex, nofollow
