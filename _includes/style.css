@@ -22,7 +22,7 @@ a{background-color:transparent;-webkit-text-decoration-skip:objects;text-decorat
 body.dark a{color:var(--white)}
 a:hover,a:focus,body.dark a:hover,body.dark a:focus{color:var(--grey)}
 /* Images */
-{% if page.url contains '/amp/' %}amp-img{% else %}img{% endif %}{border-style:none}
+{% if page.url contains '/amp/' %}amp-img{% else %}img{% endif %}{border-style:none;max-width:100%;height:auto}
 {% if page.url contains '/amp/' %}body.dark amp-img{% else %}body.dark img{% endif %}{filter:brightness(75%)}
 {% if page.url contains '/amp/' %}body.dark amp-img:hover,body.dark amp-img:focus{% else %}body.dark img:hover,body.dark img:focus{% endif %}{filter:brightness(100%)}
 /* Header Section */

@@ -7,34 +7,26 @@ description: Silahkan cari konten yang kamu perlukan menggunakan form ini.
 robots: noindex, nofollow
 ---
 <ul id="results"></ul>
-
 <script src="https://unpkg.com/lunr/lunr.js"></script>
 <script>
-  // Wait for the DOM to load
-  document.addEventListener('DOMContentLoaded', function() {
+  document.addEventListener('DOMContentLoaded', function () {
     const searchBox = document.getElementById('search-box');
     const resultsContainer = document.getElementById('results');
 
-    // Ensure resultsContainer exists before proceeding
     if (!resultsContainer) {
       console.error('Results container not found.');
       return;
     }
 
-    // Get the query parameter from the URL
     const params = new URLSearchParams(window.location.search);
-    const query = params.get('q') || ''; // Default to empty string if no query
+    const query = params.get('q') || '';
+    searchBox.value = query; // ✅ Keep last query in input
 
-    // Set the search box value to the query
-    searchBox.value = query;
-
-    // Fetch the search data from search.json
     fetch('/search.json')
       .then(res => res.json())
       .then(json => {
         const data = json;
 
-        // Create the Lunr index
         const index = lunr(function () {
           this.ref('url');
           this.field('title');
@@ -42,12 +34,10 @@ robots: noindex, nofollow
           data.forEach(doc => this.add(doc));
         });
 
-        // Run the search if there's a query in the URL
         if (query.trim()) {
           runSearch(query, data, index);
         }
 
-        // Add event listener for live search as the user types
         searchBox.addEventListener('input', function () {
           runSearch(this.value, data, index);
         });
@@ -56,10 +46,9 @@ robots: noindex, nofollow
         console.error('Error fetching search.json:', err);
       });
 
-    // Function to run the search
     function runSearch(query, data, index) {
       const results = index.search(query);
-      resultsContainer.innerHTML = ''; // Clear previous results
+      resultsContainer.innerHTML = '';
 
       if (results.length === 0) {
         resultsContainer.innerHTML = '<li>No results found.</li>';
@@ -68,11 +57,13 @@ robots: noindex, nofollow
           const item = data.find(d => d.url === result.ref);
           const li = document.createElement('li');
           li.innerHTML = `
-            <article class="search-result" style="margin-bottom: 1.5rem;">
-              <h2><a href="${item.url}">${item.title}</a></h2>
-              ${item.author ? `<p><strong>Author:</strong> ${item.author}</p>` : ''}
-              ${item.image ? `<img src="${item.image}" alt="${item.title}" style="max-width:100%;height:auto;margin:0.5rem 0;" />` : ''}
-              <p>${item.content}</p>
+            <article class="search-result">
+              ${item.image ? `<div class="result-image"><img src="${item.image}" alt="${item.title}" /></div>` : ''}
+              <div class="result-content">
+                <h2><a href="${item.url}">${item.title}</a></h2>
+                ${item.author ? `<p class="author"><strong>Author:</strong> ${item.author}</p>` : ''}
+                <p class="summary">${item.content}</p>
+              </div>
             </article>
           `;
           resultsContainer.appendChild(li);
@@ -83,13 +74,62 @@ robots: noindex, nofollow
 </script>
 
 <style>
-  .search-result h2 {
-    margin-bottom: 0.3rem;
+  ul#results {
+    list-style: none;
+    padding: 0;
+    margin: 2rem 0;
   }
-  .search-result img {
+
+  .search-result {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 1rem;
+  }
+
+  .result-image {
+    flex: 0 0 30%;
+  }
+
+  .result-image img {
+    width: 100%;
+    height: auto;
     border-radius: 8px;
   }
-  .search-result p {
-    margin: 0.3rem 0;
+
+  .result-content {
+    flex: 1;
+  }
+
+  .result-content h2 {
+    margin: 0 0 0.5rem;
+  }
+
+  .result-content .author {
+    margin: 0 0 0.5rem;
+    font-size: 0.95rem;
+    color: #555;
+  }
+
+  .result-content .summary {
+    margin: 0;
+    font-size: 1rem;
+    line-height: 1.4;
+  }
+
+  @media (max-width: 768px) {
+    .search-result {
+      flex-direction: column;
+    }
+
+    .result-image {
+      flex: 1 1 100%;
+    }
+
+    .result-content {
+      flex: 1 1 100%;
+    }
   }
 </style>
