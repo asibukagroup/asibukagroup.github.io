@@ -3,35 +3,8 @@
 <head>
   {% include meta.html %}
   <style>{% include style.css %}</style>
-    <!-- Structured Data -->
-    <script type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@type": "WebPage",
-        "name": "{{ page.title | default: site.defaults.title }}",
-        "description": "{{ page.description | default: site.defaults.description }}",
-        "url": "{{ site.url }}{{ page.url | replace:'index.html','' }}",
-        "inLanguage": "{{ site.lang }}",
-        "mainEntityOfPage": {
-          "@type": "WebPage",
-          "@id": "{{ site.url }}/"
-        },
-        "publisher": {
-          "@type": "Organization",
-          "name": "{{ site.title }}",
-          "logo": {
-            "@type": "ImageObject",
-            "url": "{{ site.image }}"
-          }
-        },
-        "potentialAction": {
-          "@type": "SearchAction",
-          "target": "https://www.asibuka.com/search?q={search_term_string}",
-          "query-input": "required name=search_term_string"
-        }
-      }
-      </script>
-    {% include script-head.js %}
+  {% include head/json-homepage.html %}
+  {% include script-head.js %}
 </head>
 <body class="light">
 {% include header.html %}
