@@ -4,6 +4,6 @@ layout: default
 {% include html/breadcrumb.html %}
 <article class="hide-on-print">
   <h1>{{ page.title }}</h1>
-  {% include image.html src='{{ page.image }}' title='thumbnail' width='1600' height='720' layout='responsive' %}
+  {% include image.html src=page.image title='thumbnail' width='1600' height='720' layout='responsive' %}
 {{ content }}
 </article>
