@@ -26,18 +26,18 @@
     body.dark amp-img, body.dark img{filter:brightness(75%)}
     body.dark amp-img:hover, body.dark img:hover,body.dark amp-img:focus, body.dark img:focus{filter:brightness(100%)}
     /* Header Section */
-    header{display:flex;justify-content:space-between;align-items:center;padding:10px 16px;background:var(--white)fffe6;border-bottom:1px solid var(--white);position:sticky;top:0;z-index:1001;backdrop-filter:blur(10px)}
-    header a svg path{fill:var(--black)}
-    body.dark a svg path{fill:var(--white)}
-    body.dark header{background:#202020e6;border-color:var(--grey)}
-    .left-section{display:flex;align-items:center;gap:16px}
-    .menu-btn{width:24px;height:24px;cursor:pointer;fill:currentColor;display:block}
-    .logo{font-weight:700;font-size:18px;text-decoration:none;color:inherit}
-    .center-section{flex:1;display:flex;justify-content:center;max-width:500px}
-    .search-bar{display:flex;flex:1;border:1px solid #ccc;border-radius:20px;overflow:hidden;background:var(--white);transition:all .3s ease}
-    body.dark .search-bar{background:#121212;border-color:#444}
+    .header-wrapper{display:flex;justify-content:space-between;align-items:center;padding:10px 16px;background:var(--white)fffe6;border-bottom:1px solid var(--white);position:sticky;top:0;z-index:1001;backdrop-filter:blur(10px)}
+    .header-wrapper a svg path{fill:var(--black)}
+    body.dark .header-wrapper a svg path{fill:var(--white)}
+    body.dark .header-wrapper{background:#202020e6;border-color:var(--grey)}
+    .header-wrapper .left-section{display:flex;align-items:center;gap:16px}
+    .header-wrapper .menu-btn{width:24px;height:24px;cursor:pointer;fill:currentColor;display:block}
+    .header-wrapper .logo{font-weight:700;font-size:18px;text-decoration:none;color:inherit}
+    .header-wrapper .center-section{flex:1;display:flex;justify-content:center;max-width:500px}
+    .search-bar{display:flex;flex:1;border:1px solid var(--white);border-radius:20px;overflow:hidden;background:var(--white);transition:all .3s ease}
+    body.dark .search-bar{background:var(--black);border-color:var(--grey)}
     .search-bar input{flex:1;border:none;padding:8px 12px;font-size:16px;background:transparent;color:inherit}
-    .search-bar button{border:none;background:#f0f0f0;padding:0 16px;cursor:pointer}
+    .search-bar button{border:none;background:var(--white);padding:0 16px;cursor:pointer}
     body.dark .search-bar button{background:#333;color:var(--white)}
     .right-section{display:flex;align-items:center;gap:1rem}
     .darkmode-btn,.search-toggle-label,.header-icon{width:24px;height:24px;cursor:pointer;fill:currentColor;color:currentColor}

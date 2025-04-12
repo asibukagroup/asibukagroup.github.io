@@ -61,6 +61,10 @@ safe: false
 # ------------------------------
 defaults:
   - scope:
+      path: ""
+    values:
+      permalink: "/sitemap.xml"
+  - scope:
       path: "sitemap.xml"
     values:
       permalink: "/sitemap.xml"
