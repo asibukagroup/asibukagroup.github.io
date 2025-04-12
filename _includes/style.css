@@ -80,7 +80,7 @@
     .menu-btn{display:none}
     .sidebar{left:0}
     .overlay{display:none}
-    main{margin-left:240px}
+    .layout,.one-column-wrapper{margin-left:240px}
     }
     @media (max-width:768px){
     .search-bar{display:none}
