@@ -12,4 +12,4 @@ lang: id
 ---
 # {{ page.title }}
 {{ page.description }}
-{% include image.html src="{{ page.image }}" width="360" height="360" layout="responsive %}
+{% include image.html src="https://asibuka.com/assets/img/ASIBUKA-Blue.webp" width="360" height="360" layout="responsive %}
