@@ -2,14 +2,16 @@
 layout: null
 permalink: /search.json
 ---
-[{% assign all_items = site.pages | concat: site.posts %}
+[
+  {% assign all_items = site.pages | concat: site.posts %}
   {% for item in all_items %}
     {
       "title": {{ item.title | jsonify }},
-      "url": {{ item.url | relative_url | jsonify }}
-      "date": "{{ post.date | date_to_xmlschema }}",
-      "tags": {{ post.tags | jsonify }},
-      "categories": {{ post.categories | jsonify }},
-      "content": {{ post.content | strip_html | strip_newlines | jsonify }}
+      "url": {{ item.url | relative_url | jsonify }},
+      "date": "{{ item.date | date_to_xmlschema }}",
+      "content": {{ item.excerpt | strip_html | strip_newlines | truncate: 250 | jsonify }},
+      "image": {{ item.image | jsonify }},
+      "author": {{ item.author | jsonify }}
     }{% unless forloop.last %},{% endunless %}
-  {% endfor %}]
+  {% endfor %}
+]
