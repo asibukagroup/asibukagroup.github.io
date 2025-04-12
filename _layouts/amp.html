@@ -10,7 +10,7 @@
     <script async='async' custom-element='amp-bind' src='https://cdn.ampproject.org/v0/amp-bind-0.1.js'></script>
     {% if content contains "<amp-iframe" %}<script async custom-element="amp-iframe" src="https://cdn.ampproject.org/v0/amp-iframe-0.1.js"></script>{% endif %}
   </head>
-  <body [class]="visible ? 'dark hide-on-print' : 'light hide-on-print'" class='light hide-on-print'>
+  <body [class]="visible ? 'dark' : 'light" class='light'>
     {% include header.html %}
     {% include nav.html %}
     {% include leaderboard_ads.html %}
