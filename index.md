@@ -14,4 +14,4 @@ lang: id
 
 {{ page.description }}
 
-{% include image.html src="https://asibuka.com/assets/img/ASIBUKA-Blue.webp" title="Logo ASIUBKA" width="360" height="360" layout="responsive" %}
+{% include image.html src="https://asibuka.com/assets/img/ASIBUKA-Blue.webp" title="Logo ASIUBKA" width="300" height="250" layout="fixed" %}
