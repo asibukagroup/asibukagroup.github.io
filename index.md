@@ -11,4 +11,5 @@ robots: index, follow
 lang: id
 ---
 # {{ page.title }}
-{{ page.descrtipion }}
+{{ page.description }}
+{% include image.html src="{{ page.image }}" width="360" height="360" layout="responsive %}
