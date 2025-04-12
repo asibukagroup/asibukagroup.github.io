@@ -18,7 +18,7 @@
     [hidden],#noprint,#search-toggle,.search-toggle-label{display:none}
     .one-column-wrapper{margin:0 auto}
     /* A (Hyperlink) */
-    a{background-color:transparent;-webkit-text-decoration-skip:objects;text-decoration:none;font-weight:600;color:var(--theme-color)}
+    a{background-color:transparent;-webkit-text-decoration-skip:objects;text-decoration:none;color:var(--theme-color)}
     body.dark a{color:var(--white)}
     a:hover,a:focus,body.dark a:hover,body.dark a:focus{color:var(--grey)}
     /* Header Section */
