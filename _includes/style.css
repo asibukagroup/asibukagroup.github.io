@@ -91,7 +91,7 @@
     .layout,.one-column-wrapper{margin-left:240px}
     }
     @media (max-width: 768px){
-    .menu-btn{display:block}
+    .header-wrapper  .menu-btn{display:block}
     .search-bar{display:none}
     #search-toggle:checked ~ header .center-section .search-bar{display:flex;position:absolute;left:0;top:0;width:100%;height:100%;border-radius:0;z-index:1002}
     .search-toggle-label{display:inline-block}
