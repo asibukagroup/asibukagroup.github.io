@@ -26,8 +26,8 @@
     body.dark amp-img, body.dark img{filter:brightness(75%)}
     body.dark amp-img:hover, body.dark img:hover,body.dark amp-img:focus, body.dark img:focus{filter:brightness(100%)}
     /* Header Section */
-    header{display:flex;justify-content:space-between;align-items:center;padding:10px 16px;background:var(--white)fffe6;border-bottom:1px solid #ccc;position:sticky;top:0;z-index:1001;backdrop-filter:blur(10px)}
-    body.dark header{background:#202020e6;border-color:#444}
+    header{display:flex;justify-content:space-between;align-items:center;padding:10px 16px;background:var(--white)fffe6;border-bottom:1px solid var(--white);position:sticky;top:0;z-index:1001;backdrop-filter:blur(10px)}
+    body.dark header{background:#202020e6;border-color:var(--grey)}
     .left-section{display:flex;align-items:center;gap:16px}
     .menu-btn{width:24px;height:24px;cursor:pointer;fill:currentColor;display:block}
     .logo{font-weight:700;font-size:18px;text-decoration:none;color:inherit}
