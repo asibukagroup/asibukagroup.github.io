@@ -17,13 +17,13 @@
 <body class="light-mode">
 {% include header.html %}
 {% include nav.html %}
-{% include top-info.html %}
 {% include leaderboard_ads.html %}
+<div class="layout hide-on-print">
 <main aria-label="Main Wrapper" class="content-wrapper hide-on-print" id="content-wrapper">
 {{ content }}
 </main>
-{% include our-links-section.html %}
-{% include footer.html %}
+{% include right-sidebar.html %}
+</div>
 {% include noprint.html %}
 {% include main.js %}
 </body>

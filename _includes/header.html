@@ -1,14 +1,52 @@
-<header class="floating-navbar hide-on-print" itemscope itemtype="https://schema.org/WPHeader">
-    <label for="sidebar-toggle" class="hamburger-menu">&#9776;</label>
-  
-    <div class="brand-name" itemscope itemtype="https://schema.org/Organization">
-      <a href="https://asibuka.com" title="ASIBUKA Group" itemprop="url">
-        <span itemprop="name">ASIBUKA Group</span>
-      </a>
+<input type="checkbox" class='hide-on-print' id="sidebar-toggle">
+<input type="checkbox" class='hide-on-print' id="search-toggle">
+<header class='hide-on-print' itemscope itemtype="https://schema.org/WPHeader">
+  <div class="left-section" itemscope itemtype="https://schema.org/Organization">
+    <label for="sidebar-toggle" class="menu-btn" title="Menu">
+      <svg viewBox="0 0 24 24">
+        <path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+    </label>
+    <a href="https://asibuka.com" title="ASIBUKA Group" itemprop="url" class="logo"><span itemprop="name">ASIBUKA Group</span></a>
+  </div>
+  <div class="center-section">
+    <div class="search-bar">
+      <input type="text" placeholder="Search" />
+      <button>🔍</button>
     </div>
-  
-    <div class="navbar-icons">
-      <span class="icon-button" id="dark-mode-toggle" title="Toggle dark mode">🌙</span>
+  </div>
+  <div class="right-section">
+    <label for="search-toggle" class="search-toggle-label" title="Search">
+      <svg viewBox="0 0 24 24">
+        <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2" fill="none"/>
+        <line x1="21" y1="21" x2="16.65" y2="16.65" stroke="currentColor" stroke-width="2" />
+      </svg>
+    </label>
+    <div class="darkmode-btn" id="darkToggle" title="Toggle Dark Mode">
+<!-- Moon (default for light mode) -->
+<svg class="moon-icon" viewBox="0 0 24 24">
+  <path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 1 0 9.79 9.79z" fill="none" stroke="currentColor" stroke-width="2"/>
+</svg>
+<!-- Sun (visible in dark mode) -->
+<svg class="sun-icon" viewBox="0 0 24 24">
+  <circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="2" fill="none"/>
+  <g stroke="currentColor" stroke-width="2">
+    <line x1="12" y1="1" x2="12" y2="3"/>
+    <line x1="12" y1="21" x2="12" y2="23"/>
+    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+    <line x1="1" y1="12" x2="3" y2="12"/>
+    <line x1="21" y1="12" x2="23" y2="12"/>
+    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+  </g>
+</svg>
+</div>
+    <div class="header-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M403.8 34.4c12-5 25.7-2.2 34.9 6.9l64 64c6 6 9.4 14.1 9.4 22.6s-3.4 16.6-9.4 22.6l-64 64c-9.2 9.2-22.9 11.9-34.9 6.9s-19.8-16.6-19.8-29.6l0-32-32 0c-10.1 0-19.6 4.7-25.6 12.8L284 229.3 244 176l31.2-41.6C293.3 110.2 321.8 96 352 96l32 0 0-32c0-12.9 7.8-24.6 19.8-29.6zM164 282.7L204 336l-31.2 41.6C154.7 401.8 126.2 416 96 416l-64 0c-17.7 0-32-14.3-32-32s14.3-32 32-32l64 0c10.1 0 19.6-4.7 25.6-12.8L164 282.7zm274.6 188c-9.2 9.2-22.9 11.9-34.9 6.9s-19.8-16.6-19.8-29.6l0-32-32 0c-30.2 0-58.7-14.2-76.8-38.4L121.6 172.8c-6-8.1-15.5-12.8-25.6-12.8l-64 0c-17.7 0-32-14.3-32-32s14.3-32 32-32l64 0c30.2 0 58.7 14.2 76.8 38.4L326.4 339.2c6 8.1 15.5 12.8 25.6 12.8l32 0 0-32c0-12.9 7.8-24.6 19.8-29.6s25.7-2.2 34.9 6.9l64 64c6 6 9.4 14.1 9.4 22.6s-3.4 16.6-9.4 22.6l-64 64z"/></svg>
     </div>
-  </header>
-  
+    <a class="header-icon" href='#' title='AMP Version'>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M349.4 44.6c5.9-13.7 1.5-29.7-10.6-38.5s-28.6-8-39.9 1.8l-256 224c-10 8.8-13.6 22.9-8.9 35.3S50.7 288 64 288l111.5 0L98.6 467.4c-5.9 13.7-1.5 29.7 10.6 38.5s28.6 8 39.9-1.8l256-224c10-8.8 13.6-22.9 8.9-35.3s-16.6-20.7-30-20.7l-111.5 0L349.4 44.6z"/></svg>
+    </a>
+  </div>
+</header>
