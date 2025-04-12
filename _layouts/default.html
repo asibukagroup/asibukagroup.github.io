@@ -13,6 +13,7 @@
       "url": "{{ site.url }}{{ page.url | replace:'index.html','' }}"
     }
     </script>
+    {% include script-head.js %}
 </head>
 <body class="light">
 {% include header.html %}
@@ -25,6 +26,6 @@
 {% include right-sidebar.html %}
 </div>
 {% include noprint.html %}
-{% include main.js %}
+{% include script-body.js %}
 </body>
 </html>
