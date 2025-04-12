@@ -79,6 +79,9 @@
     .right-sidebar{padding:.5rem}
     .right-sidebar > div{margin:.5rem auto}
     .right-sidebar .sticky-box{position:sticky;top:3.5rem;width:300px}
+    /* Lazy Load Effect */
+    .lazy{transform:scale(0,0);opacity:0}
+    .lazy.loaded{transform:scale(1,1);opacity:1}
     /* Media Queries */
     @media (min-width:769px){
     .menu-btn{display:none}

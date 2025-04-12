@@ -47,6 +47,9 @@ collections:
   pages:
     output: true
     permalink: /:title/
+  products:
+    output: true
+    permalink: /produk/:title/
 # ------------------------------
 # 🌐 Other Settings
 # ------------------------------
@@ -57,11 +60,6 @@ safe: false
 # Default Value
 # ------------------------------
 defaults:
-  - scope:
-      path: ""
-      type: posts
-    values:
-      layout: post
   - scope:
       path: "sitemap.xml"
     values:
