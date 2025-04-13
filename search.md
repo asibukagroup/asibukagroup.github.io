@@ -111,7 +111,7 @@ robots: noindex, nofollow
   position: relative;
   overflow: hidden;
   background-color: #eee;
-  padding-top: 56.25%; /* This maintains the 16:9 aspect ratio */
+  padding-bottom: 56.25%; /* This maintains the 16:9 aspect ratio */
 }
 
 .result-image img {
