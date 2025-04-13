@@ -4,7 +4,7 @@
   {% include meta.html %}
   <style>{% include style.css %}</style>
   {% include html/json-homepage.html %}
-  {% include script-head.js %}
+  {% if page.url contains "/search" %}<script src="https://unpkg.com/lunr/lunr.js"></script>{% endif %}{% include script-head.js %}
 </head>
 <body class="light">
 {% include header.html %}
