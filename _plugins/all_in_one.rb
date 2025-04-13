@@ -1,3 +1,4 @@
+require "jekyll"
 require "nokogiri"
 
 module Jekyll

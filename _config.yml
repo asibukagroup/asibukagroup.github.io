@@ -59,12 +59,26 @@ safe: false
 # ------------------------------
 # Default Value
 # ------------------------------
-
+defaults:
+  - scope:
+      path: ""           # Applies to the whole site
+      type: "posts"      # Or "pages" or a collection name
+    values:
+      layout: "post"
+      author: "ASIBUKA Group"
+      is_amp: true
+  - scope:
+      path: ""           # Applies to all pages
+      type: "pages"
+    values:
+      layout: "post"
+      is_amp: true
 # ------------------------------
 # Navigation links
 # ------------------------------
 nav_links:
   Beranda: "/"
+  Blog: "/blog/"
   Hak Cipta: "/hak-cipta/"
   Hubungi Kami: "/hubungi-kami/"
   Kebijakan Privasi: "/kebijakan-privasi/"
