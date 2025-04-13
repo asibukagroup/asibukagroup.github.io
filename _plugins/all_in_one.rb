@@ -1,0 +1,136 @@
+require "nokogiri"
+
+module Jekyll
+  module HTMLUtils
+    def self.minify_html(html)
+      html = html.gsub(/<!--.*?-->/m, "")                         # Remove comments
+      html = html.gsub(/<style\b[^>]*>(.*?)<\/style>/m) do
+        content = $1.gsub(/\/\*.*?\*\//m, "")
+                    .gsub(/\s+/, " ")
+                    .gsub(/\s*([{}:;,])\s*/, '\\1')
+                    .strip
+        "<style>#{content}</style>"
+      end
+      html = html.gsub(/<script(?![^>]*\bsrc=)[^>]*>(.*?)<\/script>/m) do
+        content = $1.gsub(/\/\/[^\n]*/, "")
+                    .gsub(/\/\*.*?\*\//m, "")
+                    .gsub(/\s+/, " ")
+                    .gsub(/\s*([{}();=:+,\-*\/<>])\s*/, '\\1')
+                    .strip
+        "<script>#{content}</script>"
+      end
+      html = html.gsub(/<script type=\"application\/ld\+json\">(.*?)<\/script>/m) do
+        content = $1.gsub(/\s+/, " ").strip
+        "<script type=\"application/ld+json\">#{content}</script>"
+      end
+      html.gsub(/>\s+</, '><').strip
+    end
+  end
+
+  class AmpPage < Page
+    def initialize(site:, base:, original:, permalink:, output_dir:)
+      @site = site
+      @base = base
+      @dir  = output_dir
+      @name = "index.html"
+      process(@name)
+
+      self.data = original.data.dup
+      self.data["layout"] = "amp"
+      self.data["permalink"] = permalink
+      self.data["canonical_url"] = original.url
+      self.data["is_amp"] = true
+
+      markdown_converter = site.find_converter_instance(Jekyll::Converters::Markdown)
+
+      payload = {
+        "page" => original.data,
+        "site" => site.site_payload["site"]
+      }
+
+      liquid = site.liquid_renderer.file(original.path).parse(original.content)
+      rendered_liquid = liquid.render!(payload, registers: { site: site, page: original })
+
+      html = markdown_converter.convert(rendered_liquid)
+
+      self.content = HTMLUtils.minify_html(convert_to_amp(html))
+    end
+
+    private
+
+    def convert_to_amp(html)
+      doc = Nokogiri::HTML::DocumentFragment.parse(html)
+
+      doc.css("img").each do |img|
+        amp_img = Nokogiri::XML::Node.new("amp-img", doc)
+        amp_img["src"] = img["data-src"] || img["src"]
+        amp_img["alt"] = img["alt"] if img["alt"]
+        amp_img["width"] = img["width"] || "600"
+        amp_img["height"] = img["height"] || "400"
+        amp_img["layout"] = img["layout"] || "responsive"
+        img.replace(amp_img)
+      end
+
+      doc.css("iframe").each do |iframe|
+        amp_iframe = Nokogiri::XML::Node.new("amp-iframe", doc)
+        %w[src width height layout sandbox].each { |attr| amp_iframe[attr] = iframe[attr] if iframe[attr] }
+        amp_iframe["layout"] ||= "responsive"
+        amp_iframe["sandbox"] ||= "allow-scripts allow-same-origin"
+        amp_iframe["width"] ||= "600"
+        amp_iframe["height"] ||= "400"
+        iframe.replace(amp_iframe)
+      end
+
+      doc.css("script").each { |script| script.remove unless script["src"]&.include?("https://cdn.ampproject.org/") }
+      doc.to_html
+    end
+  end
+
+  class AmpGenerator < Generator
+    safe true
+    priority :low
+
+    def generate(site)
+      markdown_exts = [".md", ".markdown"]
+
+      site.pages.each do |page|
+        next if page.url.include?("/amp/") || !markdown_exts.include?(page.extname)
+        create_amp_page(site, page)
+      end
+
+      site.posts.docs.each do |post|
+        next if post.url.include?("/amp/")
+        create_amp_page(site, post)
+      end
+
+      if site.respond_to?(:archives)
+        site.archives.each { |archive| create_amp_page(site, archive) unless archive.url.include?("/amp/") }
+      end
+
+      site.categories.each do |category, _|
+        page = find_page_by_url(site.pages, "/category/#{category}/")
+        create_amp_page(site, page) if page && !page.url.include?("/amp/")
+      end
+
+      site.tags.each do |tag, _|
+        page = find_page_by_url(site.pages, "/tag/#{tag}/")
+        create_amp_page(site, page) if page && !page.url.include?("/amp/")
+      end
+    end
+
+    def create_amp_page(site, original)
+      amp_permalink = File.join((original.data["permalink"] || original.url).sub(%r!/$!, ""), "amp", "/")
+      output_dir = original.url == "/" ? "amp" : amp_permalink.sub(%r!^/!, "").chomp("/")
+      site.pages << AmpPage.new(site: site, base: site.source, original: original, permalink: amp_permalink, output_dir: output_dir)
+    end
+
+    def find_page_by_url(pages, url)
+      pages.find { |page| page.url == url || page.url == "#{url}index.html" }
+    end
+  end
+
+  Jekyll::Hooks.register [:documents, :pages], :post_render do |item|
+    next unless item.output_ext == ".html"
+    item.output = HTMLUtils.minify_html(item.output)
+  end
+end
