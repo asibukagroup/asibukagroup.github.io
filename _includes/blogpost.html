@@ -5,7 +5,7 @@
     
     <div class="post-image">
       <a href="{{ post.url }}" title="{{ post.title }}" itemprop="url">
-        {% if page.url contains "/amp" %}
+        {% if page.url contains "/amp/" %}
           <amp-img 
             src="{{ post.image }}" 
             title="{{ post.title }}" 
