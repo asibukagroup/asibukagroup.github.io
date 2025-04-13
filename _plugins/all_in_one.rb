@@ -80,8 +80,7 @@ module Jekyll
       end
 
       doc.css("script").each do |script|
-        if script["src"]&.include?("https://cdn.ampproject.org/")
-          # Do not alter AMP CDN scripts
+        if script["src"]&.include?("https://cdn.ampproject.org/") # Do not alter AMP CDN scripts
           next
         elsif script.children.any?
           cleaned_js = HTMLUtils.minify_js(script.content)
@@ -106,45 +105,46 @@ module Jekyll
     def generate(site)
       markdown_exts = [".md", ".markdown"]
 
-      site.pages.each do |page|
-        next if page.url.include?("/amp/")
-        next unless markdown_exts.include?(page.extname)
-
-        amp_permalink = File.join((page.data["permalink"] || page.url).sub(%r!/$!, ""), "amp", "/")
-        output_dir = page.url == "/" ? "amp" : amp_permalink.sub(%r!^/!, "").chomp("/")
-        site.pages << AmpPage.new(site: site, base: site.source, original: page, permalink: amp_permalink, output_dir: output_dir)
-      end
-
+      # Generating AMP versions for posts
       site.posts.docs.each do |post|
-        next if post.url.include?("/amp/")
+        next if post.url.include?("/amp/")  # Skip already generated AMP pages
         amp_permalink = File.join(post.url.sub(%r!/$!, ""), "amp", "/")
         output_dir = amp_permalink.sub(%r!^/!, "").chomp("/")
         site.pages << AmpPage.new(site: site, base: site.source, original: post, permalink: amp_permalink, output_dir: output_dir)
       end
 
-      if site.respond_to?(:archives)
-        site.archives.each do |archive|
-          next if archive.url.include?("/amp/")
-          amp_permalink = File.join(archive.url.sub(%r!/$!, ""), "amp", "/")
-          output_dir = amp_permalink.sub(%r!^/!, "").chomp("/")
-          site.pages << AmpPage.new(site: site, base: site.source, original: archive, permalink: amp_permalink, output_dir: output_dir)
-        end
-      end
-
+      # Generating AMP versions for categories
       site.categories.each do |category, _|
         page = find_page_by_url(site.pages, "/kategori/#{category}/")
-        next unless page && !page.url.include?("/amp/")
+        next unless page && !page.url.include?("/amp/")  # Skip if AMP version already exists
         amp_permalink = File.join(page.url.sub(%r!/$!, ""), "amp", "/")
         output_dir = amp_permalink.sub(%r!^/!, "").chomp("/")
         site.pages << AmpPage.new(site: site, base: site.source, original: page, permalink: amp_permalink, output_dir: output_dir)
       end
 
+      # Generating AMP versions for tags
       site.tags.each do |tag, _|
         page = find_page_by_url(site.pages, "/tag/#{tag}/")
-        next unless page && !page.url.include?("/amp/")
+        next unless page && !page.url.include?("/amp/")  # Skip if AMP version already exists
         amp_permalink = File.join(page.url.sub(%r!/$!, ""), "amp", "/")
         output_dir = amp_permalink.sub(%r!^/!, "").chomp("/")
         site.pages << AmpPage.new(site: site, base: site.source, original: page, permalink: amp_permalink, output_dir: output_dir)
+      end
+
+      # Generating AMP versions for year-based archive pages
+      site.archives.each do |archive|
+        next if archive.url.include?("/amp/")  # Skip if AMP version already exists
+        amp_permalink = File.join(archive.url.sub(%r!/$!, ""), "amp", "/")
+        output_dir = amp_permalink.sub(%r!^/!, "").chomp("/")
+        site.pages << AmpPage.new(site: site, base: site.source, original: archive, permalink: amp_permalink, output_dir: output_dir)
+      end
+
+      # Generating AMP versions for month-based archive pages
+      site.archives.each do |archive|
+        next if archive.url.include?("/amp/")  # Skip if AMP version already exists
+        amp_permalink = File.join(archive.url.sub(%r!/$!, ""), "amp", "/")
+        output_dir = amp_permalink.sub(%r!^/!, "").chomp("/")
+        site.pages << AmpPage.new(site: site, base: site.source, original: archive, permalink: amp_permalink, output_dir: output_dir)
       end
     end
 
