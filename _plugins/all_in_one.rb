@@ -79,8 +79,7 @@ module Jekyll
       end
 
       doc.css("script").each do |script|
-        if script["src"]&.include?("https://cdn.ampproject.org/")
-          # Do not alter AMP CDN scripts
+        if script["src"]&.include?("https://cdn.ampproject.org/") # Do not alter AMP CDN scripts
           next
         elsif script.children.any?
           cleaned_js = HTMLUtils.minify_js(script.content)
@@ -105,53 +104,38 @@ module Jekyll
     def generate(site)
       markdown_exts = [".md", ".markdown"]
 
-      site.pages.each do |page|
-        next if page.url.include?("/amp/")
-        next unless markdown_exts.include?(page.extname)
+      # Automatically generate AMP versions for all collections except for posts and pages
+      (site.collections.keys - %w[posts pages]).each do |collection_name|
+        collection = site.collections[collection_name]
+        next unless collection.respond_to?(:docs)
 
-        amp_permalink = File.join((page.data["permalink"] || page.url).sub(%r!/$!, ""), "amp", "/")
-        output_dir = page.url == "/" ? "amp" : amp_permalink.sub(%r!^/!, "").chomp("/")
-        site.pages << AmpPage.new(site: site, base: site.source, original: page, permalink: amp_permalink, output_dir: output_dir)
+        collection.docs.each do |doc|
+          next if doc.url.include?("/amp/") # Skip if already AMP version
+          amp_permalink = File.join(doc.url.sub(%r!/$!, ""), "amp", "/")
+          output_dir = amp_permalink.sub(%r!^/!, "").chomp("/")
+          site.pages << AmpPage.new(site: site, base: site.source, original: doc, permalink: amp_permalink, output_dir: output_dir)
+        end
       end
 
       site.posts.docs.each do |post|
-        next if post.url.include?("/amp/")
+        next if post.url.include?("/amp/") # Skip AMP versions
         amp_permalink = File.join(post.url.sub(%r!/$!, ""), "amp", "/")
         output_dir = amp_permalink.sub(%r!^/!, "").chomp("/")
         site.pages << AmpPage.new(site: site, base: site.source, original: post, permalink: amp_permalink, output_dir: output_dir)
       end
 
-      if site.respond_to?(:archives)
-        site.archives.each do |archive|
-          next if archive.url.include?("/amp/")
-          amp_permalink = File.join(archive.url.sub(%r!/$!, ""), "amp", "/")
-          output_dir = amp_permalink.sub(%r!^/!, "").chomp("/")
-          site.pages << AmpPage.new(site: site, base: site.source, original: archive, permalink: amp_permalink, output_dir: output_dir)
-        end
-      end
+      site.pages.each do |page|
+        next if page.url.include?("/amp/") # Skip AMP versions
+        next unless markdown_exts.include?(page.extname) # Only process markdown files
 
-      site.categories.each do |category, _|
-        page = find_page_by_url(site.pages, "/category/#{category}/")
-        next unless page && !page.url.include?("/amp/")
-        amp_permalink = File.join(page.url.sub(%r!/$!, ""), "amp", "/")
-        output_dir = amp_permalink.sub(%r!^/!, "").chomp("/")
+        amp_permalink = File.join((page.data["permalink"] || page.url).sub(%r!/$!, ""), "amp", "/")
+        output_dir = page.url == "/" ? "amp" : amp_permalink.sub(%r!^/!, "").chomp("/")
         site.pages << AmpPage.new(site: site, base: site.source, original: page, permalink: amp_permalink, output_dir: output_dir)
       end
-
-      site.tags.each do |tag, _|
-        page = find_page_by_url(site.pages, "/tag/#{tag}/")
-        next unless page && !page.url.include?("/amp/")
-        amp_permalink = File.join(page.url.sub(%r!/$!, ""), "amp", "/")
-        output_dir = amp_permalink.sub(%r!^/!, "").chomp("/")
-        site.pages << AmpPage.new(site: site, base: site.source, original: page, permalink: amp_permalink, output_dir: output_dir)
-      end
-    end
-
-    def find_page_by_url(pages, url)
-      pages.find { |page| page.url == url || page.url == "#{url}index.html" }
     end
   end
 
+  # Minify HTML output for all non-AMP pages
   Jekyll::Hooks.register [:documents, :pages], :post_render do |item|
     next unless item.output_ext == ".html"
     next if item.data["is_amp"] # Skip AMP pages
