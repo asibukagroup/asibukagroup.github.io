@@ -132,7 +132,7 @@ module Jekyll
       end
 
       site.categories.each do |category, _|
-        page = find_page_by_url(site.pages, "/category/#{category}/")
+        page = find_page_by_url(site.pages, "/kategori/#{category}/")
         next unless page && !page.url.include?("/amp/")
         amp_permalink = File.join(page.url.sub(%r!/$!, ""), "amp", "/")
         output_dir = amp_permalink.sub(%r!^/!, "").chomp("/")
