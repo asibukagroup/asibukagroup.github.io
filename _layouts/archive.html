@@ -2,7 +2,7 @@
 layout: default
 description: Kumpulan artikel dari kategori yang kamu pilih.
 ---
-<h1 class='main-heading'>Arsip {% if page.type == "category" %}
+<h1 class='main-heading'>{% if page.type == "category" %}
     Kategori: {{ page.title }}
   {% elsif page.type == "tag" %}
     Tag: {{ page.title }}
