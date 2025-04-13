@@ -78,9 +78,11 @@ module Jekyll
       end
 
       doc.css("style").each do |style|
-        minified_css = HTMLUtils.minify_css(style.content)
-        style.content = minified_css
-      end
+        raw_css = style.inner_html
+        minified_css = HTMLUtils.minify_css(raw_css)
+        style.children.remove
+        style.add_child(Nokogiri::XML::Text.new(minified_css, doc))
+      end      
 
       HTMLUtils.minify_html(doc.to_html)
     end
