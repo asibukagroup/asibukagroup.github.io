@@ -5,4 +5,3 @@ gem "jekyll-archives"
 gem "jekyll-sitemap"
 gem "nokogiri"
 gem "tzinfo"
-gem 'cssminify'
