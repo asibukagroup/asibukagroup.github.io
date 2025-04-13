@@ -69,7 +69,6 @@ defaults:
 # ------------------------------
 nav_links:
   Beranda: "/"
-  Cari: "/search"
   Hak Cipta: "/hak-cipta/"
   Hubungi Kami: "/hubungi-kami/"
   Kebijakan Privasi: "/kebijakan-privasi/"
