@@ -8,59 +8,24 @@
     <meta content='{{ page.lang | default: site.defaults.lang }}' name='geo.country'>
     <meta content='global' name='target'>
     <meta content='global' name='distribution'>
-    {% if page.type == "category" %}
-  {% assign seo_title = site.seo.category.title_prefix | append: page.title %}
-  {% assign seo_description = site.seo.category.description_prefix | append: page.title | append: "." %}
-
-{% elsif page.type == "tag" %}
-  {% assign seo_title = site.seo.tag.title_prefix | append: page.title %}
-  {% assign seo_description = site.seo.tag.description_prefix | append: page.title | append: "." %}
-
-{% elsif page.type == "year" %}
-  {% assign year = page.url | split: '/' | last %}
-  {% assign seo_title = site.seo.year.title_prefix | append: year %}
-  {% assign seo_description = site.seo.year.description_prefix | append: year | append: "." %}
-
-{% elsif page.type == "month" %}
-  {% assign parts = page.url | split: '/' %}
-  {% assign year = parts[2] %}
-  {% assign month_num = parts[3] %}
-  {% assign bulan = "" %}
-  {% case month_num %}
-    {% when "01" or "1" %} {% assign bulan = "Januari" %}
-    {% when "02" or "2" %} {% assign bulan = "Februari" %}
-    {% when "03" or "3" %} {% assign bulan = "Maret" %}
-    {% when "04" or "4" %} {% assign bulan = "April" %}
-    {% when "05" or "5" %} {% assign bulan = "Mei" %}
-    {% when "06" or "6" %} {% assign bulan = "Juni" %}
-    {% when "07" or "7" %} {% assign bulan = "Juli" %}
-    {% when "08" or "8" %} {% assign bulan = "Agustus" %}
-    {% when "09" or "9" %} {% assign bulan = "September" %}
-    {% when "10" %} {% assign bulan = "Oktober" %}
-    {% when "11" %} {% assign bulan = "November" %}
-    {% when "12" %} {% assign bulan = "Desember" %}
-  {% endcase %}
-  {% assign seo_title = site.seo.month.title_prefix | append: bulan | append: " " | append: year %}
-  {% assign seo_description = site.seo.month.description_prefix | append: bulan | append: " " | append: year | append: "." %}
-{% endif %}
-    <title>{{ seo_title | default: page.title | default: site.defaults.title }}</title>
-    <meta content='{{ seo_title | default: page.title | default: site.defaults.title }}' name='title'>
-    <meta name="description" content="{{ seo_description | default: page.description | default: site.defaults.description }}">
+    <title>{{ page.title | default: site.defaults.title }}</title>
+    <meta content='{{ page.title | default: site.defaults.title }}' name='title'>
+    <meta name="description" content="{{ page.description | default: site.defaults.description }}">
     <meta name="keywords" content="{{ page.tags | default: site.defaults.tags }}">
     <meta name="author" content="{{ page.author | default: site.defaults.author }}">
     <meta name="robots" content="{{ page.robots | default: site.defaults.robots }}">
     <!-- Facebook Open Graph -->
-    <meta property="og:title" content="{{ seo_title | default: page.title | default: site.defaults.title }}">
-    <meta property="og:description" content="{{ seo_description | default: page.description | default: site.defaults.description }}">
+    <meta property="og:title" content="{{ page.title | default: site.defaults.title }}">
+    <meta property="og:description" content="{{ page.description | default: site.defaults.description }}">
     <meta property="og:image" content="{{ page.image | default: site.defaults.image }}">
     <meta property="og:url" content="{{ site.url }}{{ page.url | replace:'index.html','' }}">
     <meta property="og:type" content="website">
-    <meta content='{{ seo_title | default: page.title | default: site.defaults.title }}' property='og:headline'>
+    <meta content='{{ page.title | default: site.defaults.title }}' property='og:headline'>
     <meta content='{{ site.title | default: site.defaults.title }}' property='og:site_name'>
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="{{ seo_title | default: page.title | default: site.defaults.title }}">
-    <meta name="twitter:description" content="{{ seo_description | default: page.description | default: site.defaults.description }}">
+    <meta name="twitter:title" content="{{ page.title | default: site.defaults.title }}">
+    <meta name="twitter:description" content="{{ page.description | default: site.defaults.description }}">
     <meta name="twitter:image" content="{{ page.image | default: site.defaults.image }}">
     <!-- PWA -->
     <meta content='/' name='msapplication-starturl'>

@@ -118,19 +118,6 @@ jekyll-archives:
     month: '/arsip/:year/:month/'
     tag: '/tag/:name/'
     category: '/kategori/:name/'
-  seo:
-  category:
-    title_prefix: "Kategori: "
-    description_prefix: "Kumpulan artikel dalam kategori "
-  tag:
-    title_prefix: "Tag: "
-    description_prefix: "Kumpulan artikel dengan tag "
-  year:
-    title_prefix: "Arsip Tahun "
-    description_prefix: "Kumpulan artikel yang diterbitkan pada tahun "
-  month:
-    title_prefix: "Arsip Bulan "
-    description_prefix: "Kumpulan artikel dari bulan "
 defaults:
   - scope:
       type: "category"

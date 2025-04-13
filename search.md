@@ -1,6 +1,5 @@
 ---
 layout: default
-# SEO Value
 title: Search
 permalink: /search/
 description: Silahkan cari konten yang kamu perlukan menggunakan form ini.
