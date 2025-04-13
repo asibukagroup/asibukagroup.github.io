@@ -66,13 +66,13 @@ defaults:
     values:
       layout: "post"
       author: "ASIBUKA Group"
-      is_amp: true
+      is_amp: false
   - scope:
       path: ""           # Applies to all pages
       type: "pages"
     values:
       layout: "post"
-      is_amp: true
+      is_amp: false
 # ------------------------------
 # Navigation links
 # ------------------------------
