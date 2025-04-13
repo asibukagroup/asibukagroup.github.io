@@ -2,14 +2,12 @@ require "nokogiri"
 require "brotli"
 require "zlib"
 require "stringio"
-require "fileutils"
-require "mini_magick"
 
 module Jekyll
   module HTMLUtils
     def self.minify_html(html)
       html = html.gsub(/<!--.*?-->/m, "")               # Remove HTML comments
-      html = html.gsub(/>\s+</, '><')                   # Collapse whitespace
+      html = html.gsub(/>\s+</, '><')                   # Collapse tag whitespace
 
       # Minify inline CSS
       html = html.gsub(/<style\b[^>]*>(.*?)<\/style>/m) do
@@ -68,15 +66,14 @@ module Jekyll
       doc = Nokogiri::HTML::DocumentFragment.parse(html)
 
       doc.css("img").each do |img|
-        src = img["data-src"] || img["src"]
-        webp_src = generate_webp(src)
-
         amp_img = Nokogiri::XML::Node.new("amp-img", doc)
-        amp_img["src"] = webp_src || src
+        amp_img["src"] = img["data-src"] || img["src"]
         amp_img["alt"] = img["alt"] if img["alt"]
-        amp_img["width"] = img["width"] || "600"
-        amp_img["height"] = img["height"] || "400"
+        amp_img["width"] = img["width"] if img["width"]
+        amp_img["height"] = img["height"] if img["height"]
         amp_img["layout"] = img["layout"] || "responsive"
+        amp_img["width"] ||= "600"
+        amp_img["height"] ||= "400"
         img.replace(amp_img)
       end
 
@@ -98,28 +95,6 @@ module Jekyll
 
       doc.to_html
     end
-
-    def generate_webp(src)
-      return unless src && src =~ /\.(jpe?g|png)$/i
-
-      input_path = File.join(@site.dest, src)
-      return unless File.exist?(input_path)
-
-      webp_path = src.sub(/\.(jpe?g|png)$/i, ".webp")
-      output_path = File.join(@site.dest, webp_path)
-
-      FileUtils.mkdir_p(File.dirname(output_path))
-
-      unless File.exist?(output_path)
-        image = MiniMagick::Image.open(input_path)
-        image.format("webp")
-        image.write(output_path)
-      end
-
-      webp_path
-    rescue
-      nil
-    end
   end
 
   class AmpGenerator < Generator
@@ -136,7 +111,13 @@ module Jekyll
         amp_permalink = File.join((page.data["permalink"] || page.url).sub(%r!/$!, ""), "amp", "/")
         output_dir = page.url == "/" ? "amp" : amp_permalink.sub(%r!^/!, "").chomp("/")
 
-        site.pages << AmpPage.new(site: site, base: site.source, original: page, permalink: amp_permalink, output_dir: output_dir)
+        site.pages << AmpPage.new(
+          site: site,
+          base: site.source,
+          original: page,
+          permalink: amp_permalink,
+          output_dir: output_dir
+        )
       end
 
       site.posts.docs.each do |post|
@@ -145,20 +126,33 @@ module Jekyll
         amp_permalink = File.join(post.url.sub(%r!/$!, ""), "amp", "/")
         output_dir = amp_permalink.sub(%r!^/!, "").chomp("/")
 
-        site.pages << AmpPage.new(site: site, base: site.source, original: post, permalink: amp_permalink, output_dir: output_dir)
+        site.pages << AmpPage.new(
+          site: site,
+          base: site.source,
+          original: post,
+          permalink: amp_permalink,
+          output_dir: output_dir
+        )
       end
 
       if site.respond_to?(:archives)
         site.archives.each do |archive|
           next if archive.url.include?("/amp/")
+
           amp_permalink = File.join(archive.url.sub(%r!/$!, ""), "amp", "/")
           output_dir = amp_permalink.sub(%r!^/!, "").chomp("/")
 
-          site.pages << AmpPage.new(site: site, base: site.source, original: archive, permalink: amp_permalink, output_dir: output_dir)
+          site.pages << AmpPage.new(
+            site: site,
+            base: site.source,
+            original: archive,
+            permalink: amp_permalink,
+            output_dir: output_dir
+          )
         end
       end
 
-      site.categories.each do |category, _|
+      site.categories.each do |category, _posts|
         page = find_page_by_url(site.pages, "/category/#{category}/")
         next unless page
         next if page.url.include?("/amp/")
@@ -166,10 +160,16 @@ module Jekyll
         amp_permalink = File.join(page.url.sub(%r!/$!, ""), "amp", "/")
         output_dir = amp_permalink.sub(%r!^/!, "").chomp("/")
 
-        site.pages << AmpPage.new(site: site, base: site.source, original: page, permalink: amp_permalink, output_dir: output_dir)
+        site.pages << AmpPage.new(
+          site: site,
+          base: site.source,
+          original: page,
+          permalink: amp_permalink,
+          output_dir: output_dir
+        )
       end
 
-      site.tags.each do |tag, _|
+      site.tags.each do |tag, _posts|
         page = find_page_by_url(site.pages, "/tag/#{tag}/")
         next unless page
         next if page.url.include?("/amp/")
@@ -177,7 +177,13 @@ module Jekyll
         amp_permalink = File.join(page.url.sub(%r!/$!, ""), "amp", "/")
         output_dir = amp_permalink.sub(%r!^/!, "").chomp("/")
 
-        site.pages << AmpPage.new(site: site, base: site.source, original: page, permalink: amp_permalink, output_dir: output_dir)
+        site.pages << AmpPage.new(
+          site: site,
+          base: site.source,
+          original: page,
+          permalink: amp_permalink,
+          output_dir: output_dir
+        )
       end
     end
 
@@ -186,17 +192,18 @@ module Jekyll
     end
   end
 
-  # Minify HTML after rendering
+  # Minify HTML content
   Jekyll::Hooks.register [:documents, :pages], :post_render do |item|
     next unless item.output_ext == ".html"
     item.output = HTMLUtils.minify_html(item.output)
   end
 
-  # Compress output to Brotli and Gzip
+  # Compress with Brotli and Gzip
   Jekyll::Hooks.register [:documents, :pages], :post_write do |item|
     path = item.destination(item.site.dest)
     ext = File.extname(path)
-    next unless File.exist?(path) && %w[.html .css .js].include?(ext)
+
+    next unless File.exist?(path) && %w[.html .js .css].include?(ext)
 
     raw = File.binread(path)
 
