@@ -184,4 +184,14 @@ module Jekyll
       pages.find { |page| page.url == url || page.url == "#{url}index.html" }
     end
   end
+  # Minifies html output
+  Jekyll::Hooks.register :documents, :post_render do |doc|
+    next unless doc.output_ext == '.html'
+    doc.output = doc.output.gsub(/\s+/, ' ').gsub(/>\s+</, '><').strip
+  end
+  
+  Jekyll::Hooks.register :pages, :post_render do |page|
+    next unless page.output_ext == '.html'
+    page.output = page.output.gsub(/\s+/, ' ').gsub(/>\s+</, '><').strip
+  end
 end
