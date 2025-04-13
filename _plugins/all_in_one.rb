@@ -15,22 +15,36 @@ module Jekyll
         el["style"] = minify_css(el["style"])
       end
 
+      # Minify safe inline <script> blocks
+      doc.css("script").each do |script|
+        next if script["src"]
+        next if script["type"] == "application/ld+json" # skip JSON-LD
+        script.content = minify_js(script.content)
+      end
+
       # Remove HTML comments
       doc.traverse do |node|
         node.remove if node.comment?
       end
 
-      # Minify layout spacing (not text content)
-      doc.to_html.gsub(/>\s+</, '><').gsub(/[\n\r\t]/, '').strip
+      # Collapse spaces between tags and remove line breaks
+      doc.to_html.gsub(/>\s+</, '><').gsub(/[\n\r\t]+/, '').strip
     end
 
     def self.minify_css(css)
-      # Remove comments and unnecessary whitespace, preserve strings
       css.gsub(/\/\*.*?\*\//m, '')             # Remove comments
          .gsub(/\s*([{}:;,])\s*/, '\1')        # Remove space around symbols
          .gsub(/\s+/, ' ')                     # Collapse multiple spaces
          .gsub(/;\}/, '}')                     # Remove final semicolon
          .strip
+    end
+
+    def self.minify_js(js)
+      js.gsub(/\/\/.*$/, '')                   # Remove single-line comments
+        .gsub(/\/\*.*?\*\//m, '')              # Remove block comments
+        .gsub(/[\n\r\t]+/, ' ')                # Remove line breaks
+        .gsub(/\s+/, ' ')                      # Collapse spaces
+        .strip
     end
   end
 
@@ -50,20 +64,16 @@ module Jekyll
 
       markdown_converter = site.find_converter_instance(Jekyll::Converters::Markdown)
 
-      # Prepare Liquid payload
       payload = {
         "page" => original.data,
         "site" => site.site_payload["site"]
       }
 
-      # Render Liquid
       liquid = site.liquid_renderer.file(original.path).parse(original.content)
       rendered_liquid = liquid.render!(payload, registers: { site: site, page: original })
 
-      # Convert Markdown to HTML
       html = markdown_converter.convert(rendered_liquid)
 
-      # Convert to AMP
       self.content = convert_to_amp(html)
     end
 
@@ -165,7 +175,6 @@ module Jekyll
     end
   end
 
-  # Minify HTML output (including AMP pages)
   Jekyll::Hooks.register [:documents, :pages], :post_render do |item|
     next unless item.output_ext == ".html"
     item.output = HTMLUtils.minify_html(item.output)
