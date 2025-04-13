@@ -1,31 +1,41 @@
-{% for post in site.posts %}
-<article class="post-container">
-  <div class="post-image">
-    <a href="{{ post.url }}" title="{{ post.title }}">
-      {% if post.url contains "/amp" %}
-        <amp-img 
-          src="{{ post.image }}" 
-          title="{{ post.title }}" 
-          alt="{{ post.title }}" 
-          layout="responsive" 
-          width="16" 
-          height="9">
-        </amp-img>
-      {% else %}
-        <img 
-          data-src="{{ post.image }}" 
-          loading="lazy" 
-          src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAJCAYAAAA7KqwyAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAD6AAAA+gBtXtSawAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAAYSURBVCiRY0xISOBgoAAwUaJ51IBhYwAAuQABOsYCprwAAAAASUVORK5CYII=" 
-          class="lazy" 
-          alt="{{ post.title }}">
-      {% endif %}
-    </a>
-  </div>
+<div itemscope itemtype="https://schema.org/ItemList">
+  {% for post in site.posts %}
+  <article class="post-container" itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement">
+    <meta itemprop="position" content="{{ forloop.index }}">
+    
+    <div class="post-image">
+      <a href="{{ post.url }}" title="{{ post.title }}" itemprop="url">
+        {% if post.url contains "/amp" %}
+          <amp-img 
+            src="{{ post.image }}" 
+            title="{{ post.title }}" 
+            alt="{{ post.title }}" 
+            layout="responsive" 
+            width="16" 
+            height="9"
+            itemprop="image">
+          </amp-img>
+        {% else %}
+          <img 
+            data-src="{{ post.image }}" 
+            loading="lazy" 
+            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAJCAYAAAA7KqwyAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAD6AAAA+gBtXtSawAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAAYSURBVCiRY0xISOBgoAAwUaJ51IBhYwAAuQABOsYCprwAAAAASUVORK5CYII=" 
+            class="lazy" 
+            alt="{{ post.title }}" 
+            itemprop="image">
+        {% endif %}
+      </a>
+    </div>
 
-  <div class="post-content">
-    <h2><a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a></h2>
-    <p class="author"><strong>Author:</strong> {{ post.author }}</p>
-    <p class="summary">{{ post.description }}</p>
-  </div>
-</article>
-{% endfor %}
+    <div class="post-content">
+      <h2>
+        <a href="{{ post.url }}" title="{{ post.title }}" itemprop="name">{{ post.title }}</a>
+      </h2>
+      <p class="author">
+        <strong>Author:</strong> <span itemprop="author">{{ post.author }}</span>
+      </p>
+      <p class="summary" itemprop="description">{{ post.description }}</p>
+    </div>
+  </article>
+  {% endfor %}
+</div>
