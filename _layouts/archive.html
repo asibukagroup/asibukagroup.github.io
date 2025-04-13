@@ -2,35 +2,21 @@
 layout: default
 description: Kumpulan artikel dari kategori yang kamu pilih.
 ---
-<h1 class='main-heading'>Arsip</h1>
-{% if page.title == "Categories" %}
-  <h2>Categories</h2>
+<h1 class='main-heading'>Arsip {% if page.type == "category" %}
+    Kategori: {{ page.title }}
+  {% elsif page.type == "tag" %}
+    Tag: {{ page.title }}
+  {% elsif page.type == "year" %}
+    Arsip Tahun: {{ page.title }}
+  {% elsif page.type == "month" %}
+    Arsip Bulan: {{ page.title }}
+  {% endif %}</h1>
+{% if page.posts and page.posts != empty %}
   <ul>
-    {% for category in site.categories %}
-      <li><a href="{{ site.baseurl }}/kategori/{{ category[0] }}">{{ category[0] }}</a></li>
-    {% endfor %}
-  </ul>
-{% elsif page.title == "Tags" %}
-  <h2>Tags</h2>
-  <ul>
-    {% for tag in site.tags %}
-      <li><a href="{{ site.baseurl }}/tag/{{ tag[0] }}">{{ tag[0] }}</a></li>
-    {% endfor %}
-  </ul>
-{% elsif page.title == "Year Archives" %}
-  <h2>Year Archives</h2>
-  <ul>
-    {% for year in site.posts | group_by_exp: "post", "post.date | date: '%Y'" %}
-      <li><a href="{{ site.baseurl }}/arsip/{{ year.name }}">{{ year.name }}</a></li>
-    {% endfor %}
-  </ul>
-{% elsif page.title == "Month Archives" %}
-  <h2>Month Archives</h2>
-  <ul>
-    {% for month in site.posts | group_by_exp: "post", "post.date | date: '%Y-%m'" %}
-      <li><a href="{{ site.baseurl }}/arsip/{{ month.name | split: '-' | first }}/{{ month.name | split: '-' | last }}">{{ month.name }}</a></li>
+    {% for post in page.posts %}
+      <li><a href="{{ post.url }}">{{ post.title }}</a></li>
     {% endfor %}
   </ul>
 {% else %}
-  <p>No archives available.</p>
+  <p>No posts in this archive.</p>
 {% endif %}
