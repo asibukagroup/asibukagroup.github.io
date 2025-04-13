@@ -15,6 +15,14 @@ module Jekyll
           .gsub(/\s{2,}/, ' ')     # Collapse multiple spaces
           .strip                  # Remove leading/trailing spaces
     end
+
+    def self.minify_css(css)
+      # Minify the CSS by removing unnecessary spaces, newlines, and comments
+      css.gsub(/\s+/, ' ')         # Replace multiple spaces with a single space
+          .gsub(/\/\*.*?\*\//, '') # Remove CSS comments
+          .gsub(/\s?([{:};,])\s?/, '\1')  # Remove spaces around CSS punctuation
+          .strip
+    end
   end
 
   class AmpPage < Page
@@ -93,8 +101,17 @@ module Jekyll
         script.remove unless script["src"]&.include?("https://cdn.ampproject.org/")
       end
 
-      # Convert the AMP HTML to a one-liner and return it
-      HTMLUtils.minify_html(doc.to_html)
+      # Minify the CSS inside <style> tags
+      doc.css("style").each do |style|
+        minified_css = HTMLUtils.minify_css(style.content)
+        style.content = minified_css
+      end
+
+      # Minify HTML content
+      minified_html = HTMLUtils.minify_html(doc.to_html)
+
+      # Return the minified HTML (AMP version)
+      minified_html
     end
   end
 
