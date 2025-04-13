@@ -13,24 +13,19 @@ module Jekyll
       self.data["layout"] = "amp"
       self.data["permalink"] = permalink
       self.data["canonical_url"] = original.url
-      self.data['is_amp'] = true
+      self.data["is_amp"] = true
 
       markdown_converter = site.find_converter_instance(Jekyll::Converters::Markdown)
 
-      # Prepare Liquid payload (same as Jekyll does internally)
       payload = {
         "page" => original.data,
         "site" => site.site_payload["site"]
       }
 
-      # Render Liquid tags inside original.content
       liquid = site.liquid_renderer.file(original.path).parse(original.content)
       rendered_liquid = liquid.render!(payload, registers: { site: site, page: original })
 
-      # Convert the result to HTML with Markdown converter
       html = markdown_converter.convert(rendered_liquid)
-
-      # Convert to AMP
       self.content = convert_to_amp(html)
     end
 
@@ -39,25 +34,48 @@ module Jekyll
     def convert_to_amp(html)
       doc = Nokogiri::HTML::DocumentFragment.parse(html)
 
+      # Convert <img> to <amp-img>
       doc.css("img").each do |img|
         amp_img = Nokogiri::XML::Node.new("amp-img", doc)
-        img.attributes.each { |name, attr| amp_img[name] = attr.value }
+
+        # Copy only AMP-safe attributes
+        %w[src alt width height layout].each do |attr|
+          amp_img[attr] = img[attr] if img[attr]
+        end
+
+        # Set default dimensions/layout if missing
         amp_img["layout"] ||= "responsive"
         amp_img["width"] ||= "600"
         amp_img["height"] ||= "400"
+
+        # Add <noscript> fallback
+        noscript = Nokogiri::XML::Node.new("noscript", doc)
+        fallback_img = Nokogiri::XML::Node.new("img", doc)
+        fallback_img["src"] = img["src"] || ""
+        fallback_img["alt"] = img["alt"] || ""
+        noscript.add_child(fallback_img)
+        amp_img.add_child(noscript)
+
         img.replace(amp_img)
       end
 
+      # Convert <iframe> to <amp-iframe>
       doc.css("iframe").each do |iframe|
         amp_iframe = Nokogiri::XML::Node.new("amp-iframe", doc)
-        iframe.attributes.each { |name, attr| amp_iframe[name] = attr.value }
+
+        %w[src width height layout sandbox].each do |attr|
+          amp_iframe[attr] = iframe[attr] if iframe[attr]
+        end
+
         amp_iframe["layout"] ||= "responsive"
         amp_iframe["sandbox"] ||= "allow-scripts allow-same-origin"
         amp_iframe["width"] ||= "600"
         amp_iframe["height"] ||= "400"
+
         iframe.replace(amp_iframe)
       end
 
+      # Remove all non-AMP scripts
       doc.css("script").each do |script|
         script.remove unless script["src"]&.include?("https://cdn.ampproject.org/")
       end
@@ -73,7 +91,7 @@ module Jekyll
     def generate(site)
       markdown_exts = [".md", ".markdown"]
 
-      # --- Regular Pages ---
+      # Pages
       site.pages.each do |page|
         next if page.url.include?("/amp/")
         next unless markdown_exts.include?(page.extname)
@@ -90,7 +108,7 @@ module Jekyll
         )
       end
 
-      # --- Posts ---
+      # Posts
       site.posts.docs.each do |post|
         next if post.url.include?("/amp/")
 
@@ -106,7 +124,7 @@ module Jekyll
         )
       end
 
-      # --- Archives from jekyll-archives ---
+      # Archives from jekyll-archives
       if site.respond_to?(:archives)
         site.archives.each do |archive|
           next if archive.url.include?("/amp/")
@@ -124,7 +142,7 @@ module Jekyll
         end
       end
 
-      # --- Categories ---
+      # Categories
       site.categories.each do |category, posts|
         page = find_page_by_url(site.pages, "/category/#{category}/")
         next unless page
@@ -142,7 +160,7 @@ module Jekyll
         )
       end
 
-      # --- Tags ---
+      # Tags
       site.tags.each do |tag, posts|
         page = find_page_by_url(site.pages, "/tag/#{tag}/")
         next unless page
@@ -160,9 +178,7 @@ module Jekyll
         )
       end
     end
-    
 
-    # Helper to find generated archive pages by URL
     def find_page_by_url(pages, url)
       pages.find { |page| page.url == url || page.url == "#{url}index.html" }
     end
