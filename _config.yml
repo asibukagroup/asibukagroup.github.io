@@ -59,9 +59,11 @@ safe: false
 # ------------------------------
 # Default Value
 # ------------------------------
+include:
+  - assets/icon/favicon.ico
 defaults:
   - scope:
-      path: "assets/icon"
+      path: "assets/icon/favicon.ico"
       type: "files"
     values:
       permalink: /favicon.ico
