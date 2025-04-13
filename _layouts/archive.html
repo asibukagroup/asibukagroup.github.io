@@ -1,22 +1,44 @@
 ---
 layout: default
 ---
-<h1 class='main-heading'>{% if page.type == "category" %}
-    Kategori: {{ page.title }}
-  {% elsif page.type == "tag" %}
-    Tag: {{ page.title }}
-  {% elsif page.type == "year" %}
-  {% assign year = page.url | split: '/' | last %}
-    Arsip Tahun: {{ year }}
-  {% elsif page.type == "month" %}
-    Arsip Bulan: {{ page.title }}
-  {% endif %}</h1>
+<h1 class='main-heading'>
+    {% if page.type == "category" %}
+      {{ page.title }}
+  
+    {% elsif page.type == "tag" %}
+      {{ page.title }}
+  
+    {% elsif page.type == "year" %}
+      {% assign year = page.url | split: '/' | last %}
+      {{ year }}
+  
+    {% elsif page.type == "month" %}
+      {% assign parts = page.url | split: '/' %}
+      {% assign year = parts[2] %}
+      {% assign month_num = parts[3] %}
+  
+      {% assign bulan = "" %}
+      {% case month_num %}
+        {% when "01" or "1" %} {% assign bulan = "Januari" %}
+        {% when "02" or "2" %} {% assign bulan = "Februari" %}
+        {% when "03" or "3" %} {% assign bulan = "Maret" %}
+        {% when "04" or "4" %} {% assign bulan = "April" %}
+        {% when "05" or "5" %} {% assign bulan = "Mei" %}
+        {% when "06" or "6" %} {% assign bulan = "Juni" %}
+        {% when "07" or "7" %} {% assign bulan = "Juli" %}
+        {% when "08" or "8" %} {% assign bulan = "Agustus" %}
+        {% when "09" or "9" %} {% assign bulan = "September" %}
+        {% when "10" %} {% assign bulan = "Oktober" %}
+        {% when "11" %} {% assign bulan = "November" %}
+        {% when "12" %} {% assign bulan = "Desember" %}
+      {% endcase %}
+  
+      {{ bulan }} {{ year }}
+  
+    {% endif %}
+  </h1>
 {% if page.posts and page.posts != empty %}
-  <ul>
-    {% for post in page.posts %}
-      <li><a href="{{ post.url }}">{{ post.title }}</a></li>
-    {% endfor %}
-  </ul>
+{% include blogpost.html %}
 {% else %}
   <p>Tidak ada konten di arsip ini.</p>
 {% endif %}

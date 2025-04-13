@@ -2,7 +2,6 @@
   {% for post in site.posts %}
   <article class="post-container" itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement">
     <meta itemprop="position" content="{{ forloop.index }}">
-    
     <div class="post-image">
       <a href="{{ post.url }}" title="{{ post.title }}" itemprop="url">
         {% if page.url contains "/amp/" %}
