@@ -5,17 +5,17 @@ module Jekyll
   module HTMLUtils
     def self.minify_html(html)
       doc = Nokogiri::HTML(html)
-      html = doc.to_html
 
-      html.gsub(/>\s+</, '><')    # Remove whitespace between tags
-          .gsub(/\n+/, ' ')       # Remove newlines
-          .gsub(/\s{2,}/, ' ')    # Collapse multiple spaces
-          .gsub(/<!--.*?-->/m, '')# Remove HTML comments
+      html = doc.to_html
+      html.gsub(/>\s+</, '><')
+          .gsub(/\n+/, ' ')
+          .gsub(/\s{2,}/, ' ')
+          .gsub(/<!--.*?-->/m, '') # Remove HTML comments
           .strip
     end
 
     def self.minify_css(css)
-      CssMinify.compress(css)
+      Cssminify.compress(css)
     end
   end
 
@@ -44,7 +44,6 @@ module Jekyll
       rendered_liquid = liquid.render!(payload, registers: { site: site, page: original })
 
       html = markdown_converter.convert(rendered_liquid)
-
       self.content = convert_to_amp(html)
     end
 
@@ -65,7 +64,9 @@ module Jekyll
 
       doc.css("iframe").each do |iframe|
         amp_iframe = Nokogiri::XML::Node.new("amp-iframe", doc)
-        %w[src width height layout sandbox].each { |attr| amp_iframe[attr] = iframe[attr] if iframe[attr] }
+        %w[src width height layout sandbox].each do |attr|
+          amp_iframe[attr] = iframe[attr] if iframe[attr]
+        end
         amp_iframe["layout"] ||= "responsive"
         amp_iframe["sandbox"] ||= "allow-scripts allow-same-origin"
         amp_iframe["width"] ||= "600"
@@ -82,7 +83,7 @@ module Jekyll
         minified_css = HTMLUtils.minify_css(raw_css)
         style.children.remove
         style.add_child(Nokogiri::XML::Text.new(minified_css, doc))
-      end      
+      end
 
       HTMLUtils.minify_html(doc.to_html)
     end
@@ -98,38 +99,47 @@ module Jekyll
       site.pages.each do |page|
         next if page.url.include?("/amp/")
         next unless markdown_exts.include?(page.extname)
-        generate_amp_for(site, page)
+        amp_permalink = File.join((page.data["permalink"] || page.url).sub(%r!/$!, ""), "amp", "/")
+        output_dir = page.url == "/" ? "amp" : amp_permalink.sub(%r!^/!, "").chomp("/")
+
+        site.pages << AmpPage.new(site: site, base: site.source, original: page, permalink: amp_permalink, output_dir: output_dir)
       end
 
       site.posts.docs.each do |post|
         next if post.url.include?("/amp/")
-        generate_amp_for(site, post)
+        amp_permalink = File.join(post.url.sub(%r!/$!, ""), "amp", "/")
+        output_dir = amp_permalink.sub(%r!^/!, "").chomp("/")
+
+        site.pages << AmpPage.new(site: site, base: site.source, original: post, permalink: amp_permalink, output_dir: output_dir)
       end
 
       if site.respond_to?(:archives)
         site.archives.each do |archive|
           next if archive.url.include?("/amp/")
-          generate_amp_for(site, archive)
+          amp_permalink = File.join(archive.url.sub(%r!/$!, ""), "amp", "/")
+          output_dir = amp_permalink.sub(%r!^/!, "").chomp("/")
+
+          site.pages << AmpPage.new(site: site, base: site.source, original: archive, permalink: amp_permalink, output_dir: output_dir)
         end
       end
 
-      site.categories.each do |category, _|
+      site.categories.each do |category, posts|
         page = find_page_by_url(site.pages, "/category/#{category}/")
         next unless page && !page.url.include?("/amp/")
-        generate_amp_for(site, page)
+        amp_permalink = File.join(page.url.sub(%r!/$!, ""), "amp", "/")
+        output_dir = amp_permalink.sub(%r!^/!, "").chomp("/")
+
+        site.pages << AmpPage.new(site: site, base: site.source, original: page, permalink: amp_permalink, output_dir: output_dir)
       end
 
-      site.tags.each do |tag, _|
+      site.tags.each do |tag, posts|
         page = find_page_by_url(site.pages, "/tag/#{tag}/")
         next unless page && !page.url.include?("/amp/")
-        generate_amp_for(site, page)
-      end
-    end
+        amp_permalink = File.join(page.url.sub(%r!/$!, ""), "amp", "/")
+        output_dir = amp_permalink.sub(%r!^/!, "").chomp("/")
 
-    def generate_amp_for(site, original)
-      amp_permalink = File.join((original.data["permalink"] || original.url).sub(%r!/$!, ""), "amp", "/")
-      output_dir = amp_permalink.sub(%r!^/!, "").chomp("/")
-      site.pages << AmpPage.new(site: site, base: site.source, original: original, permalink: amp_permalink, output_dir: output_dir)
+        site.pages << AmpPage.new(site: site, base: site.source, original: page, permalink: amp_permalink, output_dir: output_dir)
+      end
     end
 
     def find_page_by_url(pages, url)
