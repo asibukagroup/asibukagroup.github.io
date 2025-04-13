@@ -44,13 +44,19 @@ module Jekyll
       self.data["canonical_url"] = original.url
       self.data["is_amp"] = true
 
-      markdown_converter = site.find_converter_instance(Jekyll::Converters::Markdown)
-      payload = { "page" => original.data, "site" => site.site_payload["site"] }
-
-      liquid = site.liquid_renderer.file(original.path).parse(original.content)
-      rendered_liquid = liquid.render!(payload, registers: { site: site, page: original })
-
-      html = markdown_converter.convert(rendered_liquid)
+      if original.content.strip.empty?
+        # Likely an archive page (e.g., from jekyll-archives)
+        html = original.output
+      else
+        markdown_converter = site.find_converter_instance(Jekyll::Converters::Markdown)
+        payload = { "page" => original.data, "site" => site.site_payload["site"] }
+      
+        liquid = site.liquid_renderer.file(original.path).parse(original.content)
+        rendered_liquid = liquid.render!(payload, registers: { site: site, page: original })
+      
+        html = markdown_converter.convert(rendered_liquid)
+      end
+      
       self.content = convert_to_amp(html)
     end
 
