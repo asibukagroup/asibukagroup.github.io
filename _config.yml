@@ -61,29 +61,9 @@ safe: false
 # ------------------------------
 defaults:
   - scope:
-      path: ""
+      path: "assets/icons/favicon.ico"
     values:
-      permalink: "/sitemap.xml"
-  - scope:
-      path: "sitemap.xml"
-    values:
-      permalink: "/sitemap.xml"
-  - scope:
-      path: "rss.xml"
-    values:
-      permalink: "/rss.xml"
-  - scope:
-      path: "feed.xml"
-    values:
-      permalink: "/feed.xml"
-  - scope:
-      path: "atom.xml"
-    values:
-      permalink: "/atom.xml"
-  - scope:
-      path: "sw.js"
-    values:
-      permalink: "/sw.js"
+      permalink: "/favicon.ico"
 # ------------------------------
 # Navigation links
 # ------------------------------

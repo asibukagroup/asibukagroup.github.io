@@ -1,3 +1,7 @@
+---
+layout: null
+permalink: /manifest.json
+---
 {
   "name": "ASIBUKA Group",
   "short_name": "ASIBUKA",
