@@ -122,19 +122,43 @@ defaults:
   - scope:
       type: "category"
     values:
-      lang: "id"  # Default language for category archive pages
+      layout: "default"
+      description: "Daftar konten yang ada disortir berdasarkan kategori pilihan."
+      image: "https://asibuka.com/assets/img/ASIBUKA-Blue.webp"
+      author: "ASIBUKA Group"
+      robots: "index, follow"
+      keywords: "kategori, category"
+      lang: "id"
 
   - scope:
       type: "tag"
     values:
-      lang: "id"  # Default language for tag archive pages
+      layout: "default"
+      description: "Daftar konten yang ada disortir berdasarkan tag pilihan."
+      image: "https://asibuka.com/assets/img/ASIBUKA-Blue.webp"
+      author: "ASIBUKA Group"
+      robots: "index, follow"
+      keywords: "kategori, category"
+      lang: "id"
 
   - scope:
       type: "year"
     values:
-      lang: "id"  # Default language for year archive pages
+      layout: "default"
+      description: "Daftar konten yang ada disortir berdasarkan tahun pilihan."
+      image: "https://asibuka.com/assets/img/ASIBUKA-Blue.webp"
+      author: "ASIBUKA Group"
+      robots: "index, follow"
+      keywords: "kategori, category"
+      lang: "id"
 
   - scope:
       type: "month"
     values:
-      lang: "id"  # Default language for month archive pages
+      layout: "default"
+      description: "Daftar konten yang ada disortir berdasarkan bulan pilihan."
+      image: "https://asibuka.com/assets/img/ASIBUKA-Blue.webp"
+      author: "ASIBUKA Group"
+      robots: "index, follow"
+      keywords: "kategori, category"
+      lang: "id"
