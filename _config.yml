@@ -70,6 +70,7 @@ defaults:
       author: "ASIBUKA Group"
       lang: "id"
       is_amp: false
+
   - scope:
       path: ""           # Applies to all pages
       type: "pages"
@@ -78,47 +79,7 @@ defaults:
       author: "ASIBUKA Group"
       lang: "id"
       is_amp: false
-# ------------------------------
-# Navigation links
-# ------------------------------
-nav_links:
-  Beranda: "/"
-  Blog: "/blog/"
-  Hak Cipta: "/hak-cipta/"
-  Hubungi Kami: "/hubungi-kami/"
-  Kebijakan Privasi: "/kebijakan-privasi/"
-  Laman Diskusi: "/diskusi/"
-  Peta Situs: "/peta-situs/"
-  Syarat dan Ketentuan: "/syarat-ketentuan/"
-  Tentang Kami: "/tentang-kami/"
-# ------------------------------
-# Plugins
-# ------------------------------
-plugins_dir: _plugins
-plugins:
-  - jekyll-sitemap
-  - jekyll-archives
-  - ./_plugins/all_in_one.rb
-# ------------------------------
-# Jekyll Archives Plugins
-# ------------------------------
-jekyll-archives:
-  enabled:
-    - categories
-    - tags
-    - year
-    - month
-  layouts:
-    category: archive
-    tag: archive
-    year: archive
-    month: archive
-  permalinks:
-    year: '/arsip/:year/'
-    month: '/arsip/:year/:month/'
-    tag: '/tag/:name/'
-    category: '/kategori/:name/'
-defaults:
+
   - scope:
       type: "category"
     values:
@@ -162,3 +123,43 @@ defaults:
       robots: "index, follow"
       keywords: "kategori, category"
       lang: "id"
+# ------------------------------
+# Navigation links
+# ------------------------------
+nav_links:
+  Beranda: "/"
+  Blog: "/blog/"
+  Hak Cipta: "/hak-cipta/"
+  Hubungi Kami: "/hubungi-kami/"
+  Kebijakan Privasi: "/kebijakan-privasi/"
+  Laman Diskusi: "/diskusi/"
+  Peta Situs: "/peta-situs/"
+  Syarat dan Ketentuan: "/syarat-ketentuan/"
+  Tentang Kami: "/tentang-kami/"
+# ------------------------------
+# Plugins
+# ------------------------------
+plugins_dir: _plugins
+plugins:
+  - jekyll-sitemap
+  - jekyll-archives
+  - ./_plugins/all_in_one.rb
+# ------------------------------
+# Jekyll Archives Plugins
+# ------------------------------
+jekyll-archives:
+  enabled:
+    - categories
+    - tags
+    - year
+    - month
+  layouts:
+    category: archive
+    tag: archive
+    year: archive
+    month: archive
+  permalinks:
+    year: '/arsip/:year/'
+    month: '/arsip/:year/:month/'
+    tag: '/tag/:name/'
+    category: '/kategori/:name/'
