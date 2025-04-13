@@ -1,5 +1,3 @@
-require "nokogiri"
-
 module Jekyll
   class AmpPage < Page
     def initialize(site:, base:, original:, permalink:, output_dir:)
@@ -17,70 +15,18 @@ module Jekyll
 
       markdown_converter = site.find_converter_instance(Jekyll::Converters::Markdown)
 
+      # Prepare Liquid payload
       payload = {
         "page" => original.data,
         "site" => site.site_payload["site"]
       }
 
+      # Render with Liquid
       liquid = site.liquid_renderer.file(original.path).parse(original.content)
       rendered_liquid = liquid.render!(payload, registers: { site: site, page: original })
 
-      html = markdown_converter.convert(rendered_liquid)
-      self.content = convert_to_amp(html)
-    end
-
-    private
-
-    def convert_to_amp(html)
-      doc = Nokogiri::HTML::DocumentFragment.parse(html)
-
-      # Convert <img> to <amp-img>
-      doc.css("img").each do |img|
-        amp_img = Nokogiri::XML::Node.new("amp-img", doc)
-
-        # Copy only AMP-safe attributes
-        %w[src alt width height layout].each do |attr|
-          amp_img[attr] = img[attr] if img[attr]
-        end
-
-        # Set default dimensions/layout if missing
-        amp_img["layout"] ||= "responsive"
-        amp_img["width"] ||= "600"
-        amp_img["height"] ||= "400"
-
-        # Add <noscript> fallback
-        noscript = Nokogiri::XML::Node.new("noscript", doc)
-        fallback_img = Nokogiri::XML::Node.new("img", doc)
-        fallback_img["src"] = img["src"] || ""
-        fallback_img["alt"] = img["alt"] || ""
-        noscript.add_child(fallback_img)
-        amp_img.add_child(noscript)
-
-        img.replace(amp_img)
-      end
-
-      # Convert <iframe> to <amp-iframe>
-      doc.css("iframe").each do |iframe|
-        amp_iframe = Nokogiri::XML::Node.new("amp-iframe", doc)
-
-        %w[src width height layout sandbox].each do |attr|
-          amp_iframe[attr] = iframe[attr] if iframe[attr]
-        end
-
-        amp_iframe["layout"] ||= "responsive"
-        amp_iframe["sandbox"] ||= "allow-scripts allow-same-origin"
-        amp_iframe["width"] ||= "600"
-        amp_iframe["height"] ||= "400"
-
-        iframe.replace(amp_iframe)
-      end
-
-      # Remove all non-AMP scripts
-      doc.css("script").each do |script|
-        script.remove unless script["src"]&.include?("https://cdn.ampproject.org/")
-      end
-
-      doc.to_html
+      # Convert to HTML using markdown (optional)
+      self.content = markdown_converter.convert(rendered_liquid)
     end
   end
 
