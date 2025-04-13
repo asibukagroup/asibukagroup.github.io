@@ -208,21 +208,6 @@ body.dark .main-heading:hover {
   }
 }
 
-/* Fallback for aspect-ratio if not supported */
-@supports not (aspect-ratio: 16 / 9) {
-  .result-image {
-    height: 0;
-    padding-bottom: 56.25%;
-  }
-
-  .result-image img {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-}
-
 /* Dark mode */
 body.dark .result-content a {
   color: #8ab4f8;
