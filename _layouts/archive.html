@@ -6,7 +6,8 @@ layout: default
   {% elsif page.type == "tag" %}
     Tag: {{ page.title }}
   {% elsif page.type == "year" %}
-    Arsip Tahun: {{ page.title }}
+  {% assign year = page.url | split: '/' | last %}
+    Arsip Tahun: {{ year }}
   {% elsif page.type == "month" %}
     Arsip Bulan: {{ page.title }}
   {% endif %}</h1>
@@ -17,5 +18,5 @@ layout: default
     {% endfor %}
   </ul>
 {% else %}
-  <p>No posts in this archive.</p>
+  <p>Tidak ada konten di arsip ini.</p>
 {% endif %}
