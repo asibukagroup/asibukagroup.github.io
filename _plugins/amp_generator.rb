@@ -38,30 +38,47 @@ module Jekyll
 
     def convert_to_amp(html)
       doc = Nokogiri::HTML::DocumentFragment.parse(html)
-
+    
       doc.css("img").each do |img|
         amp_img = Nokogiri::XML::Node.new("amp-img", doc)
-        img.attributes.each { |name, attr| amp_img[name] = attr.value }
+    
+        # Prefer data-src over src for AMP
+        amp_img["src"] = img["data-src"] || img["src"]
+    
+        # Allow only AMP-valid attributes
+        amp_img["alt"] = img["alt"] if img["alt"]
+        amp_img["width"] = img["width"] if img["width"]
+        amp_img["height"] = img["height"] if img["height"]
+        amp_img["layout"] = img["layout"] if img["layout"]
+    
+        # Set defaults if not present
         amp_img["layout"] ||= "responsive"
         amp_img["width"] ||= "600"
         amp_img["height"] ||= "400"
+    
         img.replace(amp_img)
       end
-
+    
       doc.css("iframe").each do |iframe|
         amp_iframe = Nokogiri::XML::Node.new("amp-iframe", doc)
-        iframe.attributes.each { |name, attr| amp_iframe[name] = attr.value }
+    
+        %w[src width height layout sandbox].each do |attr|
+          amp_iframe[attr] = iframe[attr] if iframe[attr]
+        end
+    
         amp_iframe["layout"] ||= "responsive"
         amp_iframe["sandbox"] ||= "allow-scripts allow-same-origin"
         amp_iframe["width"] ||= "600"
         amp_iframe["height"] ||= "400"
+    
         iframe.replace(amp_iframe)
       end
-
+    
+      # Remove non-AMP scripts
       doc.css("script").each do |script|
         script.remove unless script["src"]&.include?("https://cdn.ampproject.org/")
       end
-
+    
       doc.to_html
     end
   end
