@@ -61,9 +61,10 @@ safe: false
 # ------------------------------
 defaults:
   - scope:
-      path: "favicon.ico"
+      path: "assets/icon"
+      type: "files"
     values:
-      permalink: "/favicon.ico"
+      permalink: /favicon.ico
 # ------------------------------
 # Navigation links
 # ------------------------------
