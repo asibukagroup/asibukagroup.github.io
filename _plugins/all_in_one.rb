@@ -153,9 +153,10 @@ module Jekyll
     end
   end
 
-  Jekyll::Hooks.register [:documents, :pages], :post_render do |item|
+  Jekyll::Hooks.register [:pages, :documents], :post_render do |item|
     next unless item.output_ext == ".html"
-    next if item.data["is_amp"] # Skip AMP pages
+    next if item.data["is_amp"]
+    puts "Minifying: #{item.relative_path}"  # Debug output
     item.output = Jekyll::HTMLUtils.minify_html(item.output)
   end
 end
