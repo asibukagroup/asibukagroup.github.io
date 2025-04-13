@@ -1,36 +1,32 @@
 <nav itemscope itemtype='https://schema.org/SiteNavigationElement' aria-label='Sidebar Menu' class="sidebar hide-on-print">
   <div class='nav-section'>
-    <div class="sidebar-heading">Main</div>
+    <div class="sidebar-heading">Utama</div>
     <ul>
       {% for link in site.nav_links %}<li itemprop='name'><a itemprop='url' title='{{ link[0] }}' href='{{ link[1] }}'>{{ link[0] }}</a></li>{% endfor %}
     </ul>
-  
-      <div class="sidebar-heading">Categories</div>
+    <div class="sidebar-heading">Arsip</div>
       <ul>
       <li class="accordion">
         <input type="radio" name="accordion" id="cat1">
-        <label for="cat1">Technology
-          <svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg>
-        </label>
+        <label for="cat1">Kategori<svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></label>
         <div class="content">
-          <a href="#">AI</a>
-          <a href="#">Web Dev</a>
-          <a href="#">Blockchain</a>
+          {% for category in site.categories %}
+          <a href="/kategori/{{ category[0] | downcase }}/" title="{{ category[0] }}">{{ category[0] }}</a> ({{ category[1].size }})
+          {% endfor %}
         </div>
       </li>
       <li class="accordion">
-        <input type="radio" name="accordion" id="cat2">
-        <label for="cat2">Business
-          <svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg>
-        </label>
+        <input type="radio" name="accordion" id="cat1">
+        <label for="cat1">Tag<svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></label>
         <div class="content">
-          <a href="#">Startups</a>
-          <a href="#">Marketing</a>
+          {% for tag in site.tags %}
+          <a href="/tag/{{ tag[0] | downcase }}/" title="{{ tag[0] }}">{{ tag[0] }}</a> ({{ tag[1].size }})
+          {% endfor %}
         </div>
       </li>
     </ul>
   <div class="sidebar-section">
-    <div class="sidebar-heading">Follow Us</div>
+    <div class="sidebar-heading">Ikuti Kami</div>
     <ul class="sidebar-icons">
       <li>
         <a href="https://www.youtube.com/@AsibukaGroup" rel='me nofollow noopener noreferrer' title='YouTube' target="_blank">
