@@ -3,8 +3,8 @@ layout: post
 title: Kebiasaan yang Salah Untuk Mulai Nge-blog
 date: 2025-04-11 00:00:05
 permalink: /kebiasaan-salah-blogger/
-categories: [Opini]
-tags: [Blogging, Blogger]
+categories: [opini]
+tags: [blogging, blogger]
 lang: id
 image: https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjiiAlBKvtNSvw-9P80ogPmrZRQ_fbQn3vl6xD7Q4tnaAsvlRPwumU1mEh94jl1xozSo6Y90sRQXT-xGxFYpsG3YKpV-opUgv2K3hrZiJ9hI0A0QXkx_U78LEh5dn3J-KZF3spnYDU3sUjjfi-JC2DoFLPdBf9HmJHKAKMA-4WoPYqLMhbQl618xrNSzcA/s0-rw/cookies.jpeg
 description: Pendapat pribadi tentang kebiasaan yang salah saat mau mulai nge-blog. Untuk informasi lebih lengkap, silahkan lanjut baca artikel berikut ini.
