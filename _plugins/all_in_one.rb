@@ -14,11 +14,21 @@ module Jekyll
     end
 
     def self.minify_css(css)
-      css.gsub(/\/\*.*?\*\//m, '')   # Remove CSS block comments
-          .gsub(/\s+/, ' ')          # Collapse all whitespace
-          .gsub(/\s*([{:;}])\s*/, '\1') # Remove spaces around CSS symbols
-          .gsub(/;}/, '}')           # Remove unnecessary semicolons
-          .strip
+      return "" if css.nil? || css.empty?
+    
+      # Remove comments, including multi-line
+      css = css.gsub(/\/\*[^*]*\*+([^/*][^*]*\*+)*\//, '')
+    
+      # Remove spaces around punctuation
+      css = css.gsub(/\s*([{}:;,])\s*/, '\1')
+    
+      # Remove trailing semicolons inside blocks
+      css = css.gsub(/;}/, '}')
+    
+      # Collapse multiple spaces and remove leading/trailing whitespace
+      css = css.gsub(/\s+/, ' ').strip
+    
+      css
     end
 
     def self.minify_js(js)

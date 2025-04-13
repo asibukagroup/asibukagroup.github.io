@@ -1,9 +1,4 @@
-:root{
---font:normal normal 1rem Arial,Helvetica, sans-serif;
---theme-color:#004AAD;
---white:#fff;
---black:#000;
-}
+:root{--font:normal normal 1rem Arial,Helvetica,sans-serif;--theme-color:#004AAD;--white:#fff;--black:#000;}
 *{box-sizing:border-box}
 ::-webkit-scrollbar{width:10px;height:10px}
 ::-webkit-scrollbar-thumb{background-color:var(--theme-color);border:.05em solid var(--theme-color);background-clip:padding-box;cursor:pointer;border-radius:8px;-webkit-border-radius:8px}
