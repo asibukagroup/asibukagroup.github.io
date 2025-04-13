@@ -78,42 +78,6 @@ defaults:
       author: "ASIBUKA Group"
       lang: "id"
       is_amp: false
-  - scope:
-      type: category
-    values:
-      layout: "archive"
-      description: "Kumpulan artikel berdasarkan kategori."
-      lang: "id"
-      keywords: "ASIBUKA, ASIBUKA Group, Bisnis, Investasi, UMKM"
-      robots: "index, follow"
-      image: "https://asibuka.com/assets/img/ASIBUKA-Blue.webp"
-  - scope:
-      type: tag
-    values:
-      layout: "archive"
-      description: "Artikel berdasarkan tag yang digunakan."
-      lang: "id"
-      keywords: "ASIBUKA, ASIBUKA Group, Bisnis, Investasi, UMKM"
-      robots: "index, follow"
-      image: "https://asibuka.com/assets/img/ASIBUKA-Blue.webp"
-  - scope:
-      type: year
-    values:
-      layout: "archive"
-      description: "Artikel berdasarkan tahun terbit."
-      lang: "id"
-      keywords: "ASIBUKA, ASIBUKA Group, Bisnis, Investasi, UMKM"
-      robots: "index, follow"
-      image: "https://asibuka.com/assets/img/ASIBUKA-Blue.webp"
-  - scope:
-      type: month
-    values:
-      layout: "archive"
-      description: "Artikel berdasarkan bulan dan tahun."
-      lang: "id"
-      keywords: "ASIBUKA, ASIBUKA Group, Bisnis, Investasi, UMKM"
-      robots: "index, follow"
-      image: "https://asibuka.com/assets/img/ASIBUKA-Blue.webp"
 # ------------------------------
 # Navigation links
 # ------------------------------
@@ -167,3 +131,23 @@ jekyll-archives:
   month:
     title_prefix: "Arsip Bulan "
     description_prefix: "Kumpulan artikel dari bulan "
+defaults:
+  - scope:
+      type: "category"
+    values:
+      lang: "id"  # Default language for category archive pages
+
+  - scope:
+      type: "tag"
+    values:
+      lang: "id"  # Default language for tag archive pages
+
+  - scope:
+      type: "year"
+    values:
+      lang: "id"  # Default language for year archive pages
+
+  - scope:
+      type: "month"
+    values:
+      lang: "id"  # Default language for month archive pages
