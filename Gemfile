@@ -3,5 +3,8 @@ source "https://rubygems.org"
 gem "jekyll"
 gem "jekyll-archives"
 gem "jekyll-sitemap"
-gem 'nokogiri'
-gem 'tzinfo'
+gem "nokogiri"
+gem "tzinfo"
+gem "brotli"
+gem "zlib"
+gem "mini_magick"

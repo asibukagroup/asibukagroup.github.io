@@ -79,7 +79,7 @@ plugins_dir: _plugins
 plugins:
   - jekyll-sitemap
   - jekyll-archives
-  - ./_plugins/amp_generator.rb
+  - ./_plugins/all-in-one.rb
 # ------------------------------
 # Jekyll Archives Plugins
 # ------------------------------
