@@ -50,6 +50,9 @@ collections:
   products:
     output: true
     permalink: /produk/:title/
+  programs:
+    output: true
+    permalink: /program/:title/
 # ------------------------------
 # 🌐 Other Settings
 # ------------------------------
@@ -72,6 +75,7 @@ defaults:
       type: "pages"
     values:
       layout: "post"
+      author: "ASIBUKA Group"
       is_amp: false
 # ------------------------------
 # Navigation links
@@ -109,7 +113,7 @@ jekyll-archives:
     year: archive
     month: archive
   permalinks:
-    year: '/archives/:year/'
-    month: '/archives/:year/:month/'
+    year: '/arsip/:year/'
+    month: '/arsip/:year/:month/'
     tag: '/tag/:name/'
-    category: '/category/:name/'
+    category: '/kategori/:name/'
