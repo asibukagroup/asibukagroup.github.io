@@ -1,29 +1,26 @@
 require "nokogiri"
-require "brotli"
-require "zlib"
-require "stringio"
 
 module Jekyll
   module HTMLUtils
     def self.minify_html(html)
-      html = html.gsub(/<!--.*?-->/m, "")               # Remove HTML comments
-      html = html.gsub(/>\s+</, '><')                   # Collapse tag whitespace
+      # Collapse whitespace between tags
+      html = html.gsub(/>\s+</, '><')
 
-      # Minify inline CSS
-      html = html.gsub(/<style\b[^>]*>(.*?)<\/style>/m) do
-        content = $1.gsub(/\/\*.*?\*\//m, "")
-                    .gsub(/\s+/, " ")
-                    .gsub(/\s*([{}:;,])\s*/, '\1')
+      # Minify inline CSS in <style> blocks
+      html = html.gsub(/<style\b[^>]*>(.*?)<\/style>/m) do |match|
+        content = $1.gsub(/\/\*.*?\*\//m, "") # Remove CSS comments
+                    .gsub(/\s+/, " ")          # Collapse whitespace
+                    .gsub(/\s*([{}:;,])\s*/, '\1') # Remove space around tokens
                     .strip
         "<style>#{content}</style>"
       end
 
-      # Minify inline JS
-      html = html.gsub(/<script(?![^>]*\bsrc=)[^>]*>(.*?)<\/script>/m) do
-        content = $1.gsub(/\/\/[^\n]*/, "")
-                    .gsub(/\/\*.*?\*\//m, "")
-                    .gsub(/\s+/, " ")
-                    .gsub(/\s*([{}();=:+,\-*\/<>])\s*/, '\1')
+      # Minify inline JS in <script> blocks (not src)
+      html = html.gsub(/<script(?![^>]*\bsrc=)[^>]*>(.*?)<\/script>/m) do |match|
+        content = $1.gsub(/\/\/[^\n]*/, "")    # Remove single-line comments
+                    .gsub(/\/\*.*?\*\//m, "")  # Remove multi-line comments
+                    .gsub(/\s+/, " ")          # Collapse whitespace
+                    .gsub(/\s*([{}();=:+,\-*\/<>])\s*/, '\1') # Remove space around tokens
                     .strip
         "<script>#{content}</script>"
       end
@@ -192,28 +189,9 @@ module Jekyll
     end
   end
 
-  # Minify HTML content
+  # Minify all HTML output, including AMP
   Jekyll::Hooks.register [:documents, :pages], :post_render do |item|
     next unless item.output_ext == ".html"
     item.output = HTMLUtils.minify_html(item.output)
-  end
-
-  # Compress with Brotli and Gzip
-  Jekyll::Hooks.register [:documents, :pages], :post_write do |item|
-    path = item.destination(item.site.dest)
-    ext = File.extname(path)
-
-    next unless File.exist?(path) && %w[.html .js .css].include?(ext)
-
-    raw = File.binread(path)
-
-    # Brotli
-    brotli = Brotli.deflate(raw)
-    File.write("#{path}.br", brotli, mode: "wb")
-
-    # Gzip
-    gz = StringIO.new
-    Zlib::GzipWriter.wrap(gz) { |gz_io| gz_io.write(raw) }
-    File.write("#{path}.gz", gz.string, mode: "wb")
   end
 end
