@@ -45,12 +45,23 @@ module Jekyll
       self.data["is_amp"] = true
 
       markdown_converter = site.find_converter_instance(Jekyll::Converters::Markdown)
-      payload = { "page" => original.data, "site" => site.site_payload["site"] }
+      content = if original.respond_to?(:content) && original.content
+                   original.content
+                elsif original.respond_to?(:output) && original.output
+                   original.output
+                else
+                   ""
+                end
 
-      liquid = site.liquid_renderer.file(original.path || original.relative_path).parse(original.content)
-      rendered_liquid = liquid.render!(payload, registers: { site: site, page: original })
+      if original.extname =~ /^\.md/i
+        payload = { "page" => original.data, "site" => site.site_payload["site"] }
+        liquid = site.liquid_renderer.file(original.path || original.relative_path).parse(content)
+        rendered = liquid.render!(payload, registers: { site: site, page: original })
+        html = markdown_converter.convert(rendered)
+      else
+        html = content
+      end
 
-      html = markdown_converter.convert(rendered_liquid)
       self.content = convert_to_amp(html)
     end
 
@@ -121,17 +132,18 @@ module Jekyll
         site.pages << AmpPage.new(site: site, base: site.source, original: post, permalink: amp_permalink, output_dir: output_dir)
       end
 
-      archives = site.pages.select { |page| page.data["jekyll-archives"] }
-      archives.each do |archive|
-        next if archive.url.include?("/amp/")
-        amp_permalink = File.join(archive.url.sub(%r!/$!, ""), "amp", "/")
-        output_dir = amp_permalink.sub(%r!^/!, "").chomp("/")
-        site.pages << AmpPage.new(site: site, base: site.source, original: archive, permalink: amp_permalink, output_dir: output_dir)
+      if site.respond_to?(:archives)
+        site.archives.each do |archive|
+          next if archive.url.include?("/amp/")
+          amp_permalink = File.join(archive.url.sub(%r!/$!, ""), "amp", "/")
+          output_dir = amp_permalink.sub(%r!^/!, "").chomp("/")
+          site.pages << AmpPage.new(site: site, base: site.source, original: archive, permalink: amp_permalink, output_dir: output_dir)
+        end
       end
 
       site.categories.each do |category, _|
-        category_name = category.downcase
-        page = find_page_by_url(site.pages, "/kategori/#{category_name}/")
+        url = "/kategori/#{category.downcase}/"
+        page = find_page_by_url(site.pages, url)
         next unless page && !page.url.include?("/amp/")
         amp_permalink = File.join(page.url.sub(%r!/$!, ""), "amp", "/")
         output_dir = amp_permalink.sub(%r!^/!, "").chomp("/")
@@ -139,8 +151,8 @@ module Jekyll
       end
 
       site.tags.each do |tag, _|
-        tag_name = tag.downcase
-        page = find_page_by_url(site.pages, "/tag/#{tag_name}/")
+        url = "/tag/#{tag.downcase}/"
+        page = find_page_by_url(site.pages, url)
         next unless page && !page.url.include?("/amp/")
         amp_permalink = File.join(page.url.sub(%r!/$!, ""), "amp", "/")
         output_dir = amp_permalink.sub(%r!^/!, "").chomp("/")
@@ -155,6 +167,8 @@ module Jekyll
 
   Jekyll::Hooks.register [:pages, :documents], :post_render do |item|
     next unless item.output_ext == ".html"
+    next if item.data["is_amp"]
+    puts "Minifying: #{item.relative_path}"  # Debug output
     item.output = Jekyll::HTMLUtils.minify_html(item.output)
   end
 end
