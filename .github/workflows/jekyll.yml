@@ -41,6 +41,9 @@ jobs:
       
       - name: Build AMP version
         run: bundle exec jekyll build
+        
+      - name: Copy favicon to root
+        run: cp assets/icons/favicon.ico _site/favicon.ico
 
       - name: Upload GitHub Pages artifact
         uses: actions/upload-pages-artifact@v3
