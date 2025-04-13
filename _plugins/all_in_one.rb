@@ -6,6 +6,23 @@ module Jekyll
       # Remove spaces and newlines between HTML tags, without touching text content
       html.gsub(/>\s+</, '><').strip
     end
+
+    def self.minify_css(css)
+      # Remove CSS comments
+      css = css.gsub(/\/\*.*?\*\//m, '')
+
+      # Remove unnecessary whitespace, but preserve spaces within strings
+      css = css.gsub(/:\s+/ , ':')  # Remove spaces after colons
+                 .gsub(/\s+/ , ' ')  # Reduce multiple spaces to single space
+                 .gsub(/\s*([{};:>,])\s*/, '\1')  # Remove spaces around CSS symbols
+                 .gsub(/\s*([=><~^$|*])\s*/, '\1')  # Remove spaces around operators
+
+      # Preserve space inside " and '
+      css = css.gsub(/"[^"]*"/) { |match| match.gsub(/\s+/, ' ') }
+               .gsub(/'[^']*'/) { |match| match.gsub(/\s+/, ' ') }
+
+      css.strip
+    end
   end
 
   class AmpPage < Page
@@ -185,5 +202,11 @@ module Jekyll
     next unless item.output_ext == ".html"
     next if item.data["is_amp"]
     item.output = HTMLUtils.minify_html(item.output)
+  end
+
+  # Minify all CSS files
+  Jekyll::Hooks.register [:documents, :pages], :post_render do |item|
+    next unless item.output_ext == ".css"
+    item.output = HTMLUtils.minify_css(item.output)
   end
 end
