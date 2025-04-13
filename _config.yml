@@ -65,10 +65,10 @@ safe: false
 defaults:
   - scope:
       path: ""           # Applies to the whole site
-      type: "posts"      # Or "pages" or a collection name
     values:
-      layout: "post"
+      layout: "default"
       author: "ASIBUKA Group"
+      lang: "id"
       is_amp: false
   - scope:
       path: ""           # Applies to all pages
