@@ -76,9 +76,9 @@ robots: noindex, nofollow
       const wrapper = document.createElement('div');
       wrapper.className = 'search-result';
       wrapper.innerHTML = `
-        ${item.image ? `<div class="result-image"><img src="${item.image}" alt="${item.title}" /></div>` : ''}
+        ${item.image ? `<div class="result-image"><a href="${item.url}" title="${item.title}"><img src="${item.image}" alt="${item.title}" /></a></div>` : ''}
         <div class="result-content">
-          <h2><a href="${item.url}">${item.title}</a></h2>
+          <h2><a href="${item.url}" title="${item.title}">${item.title}</a></h2>
           ${item.author ? `<p class="author"><strong>Author:</strong> ${item.author}</p>` : ''}
           <p class="summary">${item.content}</p>
         </div>
@@ -110,6 +110,7 @@ robots: noindex, nofollow
   max-width: 30%;
   position: relative;
   background-color: #eee;
+  overflow: hidden;
 }
 
 .result-image::before {
@@ -163,10 +164,15 @@ robots: noindex, nofollow
     flex-direction: column;
   }
 
-  .result-image,
+  .result-image {
+    flex: 0 0 100%;
+    max-width: 100%;
+    padding-top: 56.25%; /* Maintain 16:9 aspect ratio */
+  }
+
   .result-content {
     max-width: 100%;
-    flex: 100%;
+    flex: 1;
   }
 }
 
