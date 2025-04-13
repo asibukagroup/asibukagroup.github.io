@@ -3,8 +3,17 @@ require "nokogiri"
 module Jekyll
   module HTMLUtils
     def self.minify_html(html)
-      # Remove spaces and newlines between HTML tags, without touching text content
-      html.gsub(/>\s+</, '><').strip
+      # Parse the HTML with Nokogiri to ensure we handle it correctly.
+      doc = Nokogiri::HTML(html)
+
+      # Minify the HTML by removing unnecessary whitespace between tags
+      html = doc.to_html
+
+      # Remove spaces and newlines between HTML tags and trim leading/trailing spaces
+      html.gsub(/>\s+</, '><')    # Remove whitespace between tags
+          .gsub(/\n+/, ' ')       # Remove newlines
+          .gsub(/\s{2,}/, ' ')     # Collapse multiple spaces
+          .strip                  # Remove leading/trailing spaces
     end
   end
 
@@ -37,7 +46,7 @@ module Jekyll
       # Convert Markdown to HTML
       html = markdown_converter.convert(rendered_liquid)
 
-      # Convert to AMP
+      # Convert to AMP and apply minification
       self.content = convert_to_amp(html)
     end
 
@@ -46,6 +55,7 @@ module Jekyll
     def convert_to_amp(html)
       doc = Nokogiri::HTML::DocumentFragment.parse(html)
 
+      # Convert <img> to <amp-img>
       doc.css("img").each do |img|
         amp_img = Nokogiri::XML::Node.new("amp-img", doc)
 
@@ -62,6 +72,7 @@ module Jekyll
         img.replace(amp_img)
       end
 
+      # Convert <iframe> to <amp-iframe>
       doc.css("iframe").each do |iframe|
         amp_iframe = Nokogiri::XML::Node.new("amp-iframe", doc)
 
@@ -77,11 +88,13 @@ module Jekyll
         iframe.replace(amp_iframe)
       end
 
+      # Remove non-AMP <script> tags
       doc.css("script").each do |script|
         script.remove unless script["src"]&.include?("https://cdn.ampproject.org/")
       end
 
-      doc.to_html
+      # Convert the AMP HTML to a one-liner and return it
+      HTMLUtils.minify_html(doc.to_html)
     end
   end
 
