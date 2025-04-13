@@ -51,7 +51,8 @@ module Jekyll
 
     def convert_to_amp(html)
       doc = Nokogiri::HTML::DocumentFragment.parse(html)
-
+    
+      # Convert <img> to <amp-img>
       doc.css("img").each do |img|
         amp_img = Nokogiri::XML::Node.new("amp-img", doc)
         amp_img["src"] = img["data-src"] || img["src"]
@@ -61,7 +62,8 @@ module Jekyll
         amp_img["layout"] = img["layout"] || "responsive"
         img.replace(amp_img)
       end
-
+    
+      # Convert <iframe> to <amp-iframe>
       doc.css("iframe").each do |iframe|
         amp_iframe = Nokogiri::XML::Node.new("amp-iframe", doc)
         %w[src width height layout sandbox].each do |attr|
@@ -73,18 +75,20 @@ module Jekyll
         amp_iframe["height"] ||= "400"
         iframe.replace(amp_iframe)
       end
-
+    
+      # Remove non-AMP <script> tags
       doc.css("script").each do |script|
         script.remove unless script["src"]&.include?("https://cdn.ampproject.org/")
       end
-
+    
+      # 🔥 Minify CSS inside <style> tags
       doc.css("style").each do |style|
-        raw_css = style.inner_html
+        raw_css = style.content
         minified_css = HTMLUtils.minify_css(raw_css)
-        style.children.remove
-        style.add_child(Nokogiri::XML::Text.new(minified_css, doc))
+        style.content = minified_css
       end
-
+    
+      # Minify final HTML
       HTMLUtils.minify_html(doc.to_html)
     end
   end
