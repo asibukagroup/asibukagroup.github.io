@@ -44,7 +44,6 @@ module Jekyll
       self.data["canonical_url"] = original.url
       self.data["is_amp"] = true
 
-      # Handle archive pages by using the output HTML
       html = if original.content.strip.empty? # Archive pages, so use output instead
                original.output
              else
@@ -128,11 +127,13 @@ module Jekyll
       end
 
       # Handle archives (categories, tags, year, month)
-      site.archives.each do |archive|
-        next if archive.url.include?("/amp/")  # Skip if AMP version exists
-        amp_permalink = File.join(archive.url.sub(%r!/$!, ""), "amp", "/")
+      site.pages.each do |archive_page|
+        # Only consider archive pages from jekyll-archives plugin
+        next unless archive_page.data["jekyll-archives"] && !archive_page.url.include?("/amp/")
+
+        amp_permalink = File.join(archive_page.url.sub(%r!/$!, ""), "amp", "/")
         output_dir = amp_permalink.sub(%r!^/!, "").chomp("/")
-        site.pages << AmpPage.new(site: site, base: site.source, original: archive, permalink: amp_permalink, output_dir: output_dir)
+        site.pages << AmpPage.new(site: site, base: site.source, original: archive_page, permalink: amp_permalink, output_dir: output_dir)
       end
 
       # Handle categories
