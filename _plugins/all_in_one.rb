@@ -4,27 +4,28 @@ module Jekyll
   module HTMLUtils
     def self.minify_html(html)
       doc = Nokogiri::HTML(html)
+      html = doc.to_html
 
-      # Minify the CSS in all <style> tags using Ruby logic
-      doc.css("style").each do |style|
-        minified = style.content
-          .gsub(/\/\*.*?\*\//m, '')          # Remove CSS comments
-          .gsub(/\s*([{}:;,])\s*/, '\1')     # Remove spaces around CSS punctuation
-          .gsub(/\s+/, ' ')                  # Collapse whitespace
-          .gsub(/;}/, '}')                   # Remove trailing semicolon before }
+      html.gsub(/>\s+</, '><')       # Remove whitespace between tags
+          .gsub(/\n+/, ' ')          # Remove newlines
+          .gsub(/\s{2,}/, ' ')       # Collapse multiple spaces
+          .gsub(/<!--.*?-->/m, '')   # Remove HTML comments
           .strip
-        style.content = minified
-      end
+    end
 
-      # Remove HTML comments
-      doc.xpath('//comment()').each(&:remove)
+    def self.minify_css(css)
+      css.gsub(/\/\*.*?\*\//m, '')   # Remove CSS block comments
+          .gsub(/\s+/, ' ')          # Collapse all whitespace
+          .gsub(/\s*([{:;}])\s*/, '\1') # Remove spaces around CSS symbols
+          .gsub(/;}/, '}')           # Remove unnecessary semicolons
+          .strip
+    end
 
-      # Return cleaned and minified HTML
-      doc.to_html
-        .gsub(/>\s+</, '><')   # Remove spaces and line breaks between tags
-        .gsub(/\n+/, '')       # Remove newlines
-        .gsub(/\s{2,}/, ' ')   # Collapse multiple spaces
-        .strip
+    def self.minify_js(js)
+      js.gsub(/\/\/.*$/, '')         # Remove single-line comments
+         .gsub(/\/\*.*?\*\//m, '')   # Remove multi-line comments
+         .gsub(/\s+/, ' ')           # Collapse whitespace
+         .strip
     end
   end
 
@@ -43,17 +44,12 @@ module Jekyll
       self.data["is_amp"] = true
 
       markdown_converter = site.find_converter_instance(Jekyll::Converters::Markdown)
-
-      payload = {
-        "page" => original.data,
-        "site" => site.site_payload["site"]
-      }
+      payload = { "page" => original.data, "site" => site.site_payload["site"] }
 
       liquid = site.liquid_renderer.file(original.path).parse(original.content)
       rendered_liquid = liquid.render!(payload, registers: { site: site, page: original })
 
       html = markdown_converter.convert(rendered_liquid)
-
       self.content = convert_to_amp(html)
     end
 
@@ -83,7 +79,19 @@ module Jekyll
       end
 
       doc.css("script").each do |script|
-        script.remove unless script["src"]&.include?("https://cdn.ampproject.org/")
+        if script["src"]&.include?("https://cdn.ampproject.org/")
+          # Do not alter AMP CDN scripts
+          next
+        elsif script.children.any?
+          cleaned_js = HTMLUtils.minify_js(script.content)
+          script.content = cleaned_js
+        else
+          script.remove
+        end
+      end
+
+      doc.css("style").each do |style|
+        style.content = HTMLUtils.minify_css(style.content)
       end
 
       HTMLUtils.minify_html(doc.to_html)
@@ -101,42 +109,42 @@ module Jekyll
         next if page.url.include?("/amp/")
         next unless markdown_exts.include?(page.extname)
 
-        generate_amp_page(site, page, page.url)
+        amp_permalink = File.join((page.data["permalink"] || page.url).sub(%r!/$!, ""), "amp", "/")
+        output_dir = page.url == "/" ? "amp" : amp_permalink.sub(%r!^/!, "").chomp("/")
+        site.pages << AmpPage.new(site: site, base: site.source, original: page, permalink: amp_permalink, output_dir: output_dir)
       end
 
       site.posts.docs.each do |post|
         next if post.url.include?("/amp/")
-        generate_amp_page(site, post, post.url)
+        amp_permalink = File.join(post.url.sub(%r!/$!, ""), "amp", "/")
+        output_dir = amp_permalink.sub(%r!^/!, "").chomp("/")
+        site.pages << AmpPage.new(site: site, base: site.source, original: post, permalink: amp_permalink, output_dir: output_dir)
       end
 
       if site.respond_to?(:archives)
         site.archives.each do |archive|
           next if archive.url.include?("/amp/")
-          generate_amp_page(site, archive, archive.url)
+          amp_permalink = File.join(archive.url.sub(%r!/$!, ""), "amp", "/")
+          output_dir = amp_permalink.sub(%r!^/!, "").chomp("/")
+          site.pages << AmpPage.new(site: site, base: site.source, original: archive, permalink: amp_permalink, output_dir: output_dir)
         end
       end
 
       site.categories.each do |category, _|
         page = find_page_by_url(site.pages, "/category/#{category}/")
-        generate_amp_page(site, page, page.url) if page && !page.url.include?("/amp/")
+        next unless page && !page.url.include?("/amp/")
+        amp_permalink = File.join(page.url.sub(%r!/$!, ""), "amp", "/")
+        output_dir = amp_permalink.sub(%r!^/!, "").chomp("/")
+        site.pages << AmpPage.new(site: site, base: site.source, original: page, permalink: amp_permalink, output_dir: output_dir)
       end
 
       site.tags.each do |tag, _|
         page = find_page_by_url(site.pages, "/tag/#{tag}/")
-        generate_amp_page(site, page, page.url) if page && !page.url.include?("/amp/")
+        next unless page && !page.url.include?("/amp/")
+        amp_permalink = File.join(page.url.sub(%r!/$!, ""), "amp", "/")
+        output_dir = amp_permalink.sub(%r!^/!, "").chomp("/")
+        site.pages << AmpPage.new(site: site, base: site.source, original: page, permalink: amp_permalink, output_dir: output_dir)
       end
-    end
-
-    def generate_amp_page(site, original, url)
-      amp_permalink = File.join((original.data["permalink"] || url).sub(%r!/$!, ""), "amp", "/")
-      output_dir = url == "/" ? "amp" : amp_permalink.sub(%r!^/!, "").chomp("/")
-      site.pages << AmpPage.new(
-        site: site,
-        base: site.source,
-        original: original,
-        permalink: amp_permalink,
-        output_dir: output_dir
-      )
     end
 
     def find_page_by_url(pages, url)
@@ -144,9 +152,9 @@ module Jekyll
     end
   end
 
-  # Minify both AMP and non-AMP HTML outputs
   Jekyll::Hooks.register [:documents, :pages], :post_render do |item|
     next unless item.output_ext == ".html"
-    item.output = HTMLUtils.minify_html(item.output)
+    next if item.data["is_amp"] # Skip AMP pages
+    item.output = Jekyll::HTMLUtils.minify_html(item.output)
   end
 end
