@@ -16,10 +16,10 @@ module Jekyll
 
     def self.minify_css(css)
       css.gsub(/\/\*.*?\*\//m, '')   # Remove CSS block comments
-          .gsub(/\s+/, ' ')          # Collapse all whitespace
-          .gsub(/\s*([{:;}])\s*/, '\1') # Remove spaces around CSS symbols
-          .gsub(/;}/, '}')           # Remove unnecessary semicolons
-          .strip
+         .gsub(/\s+/, ' ')           # Collapse all whitespace
+         .gsub(/\s*([{:;}])\s*/, '\1') # Remove spaces around CSS symbols
+         .gsub(/;}/, '}')            # Remove unnecessary semicolons
+         .strip
     end
 
     def self.minify_js(js)
@@ -45,30 +45,19 @@ module Jekyll
       self.data["is_amp"] = true
 
       markdown_converter = site.find_converter_instance(Jekyll::Converters::Markdown)
-      content = if original.respond_to?(:content) && original.content
-                   original.content
-                elsif original.respond_to?(:output) && original.output
-                   original.output
-                else
-                   ""
-                end
+      payload = { "page" => original.data, "site" => site.site_payload["site"] }
 
-      if original.extname =~ /^\.md/i
-        payload = { "page" => original.data, "site" => site.site_payload["site"] }
-        liquid = site.liquid_renderer.file(original.path || original.relative_path).parse(content)
-        rendered = liquid.render!(payload, registers: { site: site, page: original })
-        html = markdown_converter.convert(rendered)
-      else
-        html = content
-      end
+      liquid = site.liquid_renderer.file(original.path).parse(original.content)
+      rendered_liquid = liquid.render!(payload, registers: { site: site, page: original })
 
+      html = markdown_converter.convert(rendered_liquid)
       self.content = convert_to_amp(html)
     end
 
     private
 
     def convert_to_amp(html)
-      doc = Nokogiri::HTML::DocumentFragment.parse(html)
+      doc = Nokogiri::HTML::Document.parse(html)  # ✅ Full document context
 
       doc.css("img").each do |img|
         amp_img = Nokogiri::XML::Node.new("amp-img", doc)
@@ -142,8 +131,8 @@ module Jekyll
       end
 
       site.categories.each do |category, _|
-        url = "/kategori/#{category.downcase}/"
-        page = find_page_by_url(site.pages, url)
+        slug = category.downcase
+        page = find_page_by_url(site.pages, "/kategori/#{slug}/")
         next unless page && !page.url.include?("/amp/")
         amp_permalink = File.join(page.url.sub(%r!/$!, ""), "amp", "/")
         output_dir = amp_permalink.sub(%r!^/!, "").chomp("/")
@@ -151,8 +140,8 @@ module Jekyll
       end
 
       site.tags.each do |tag, _|
-        url = "/tag/#{tag.downcase}/"
-        page = find_page_by_url(site.pages, url)
+        slug = tag.downcase
+        page = find_page_by_url(site.pages, "/tag/#{slug}/")
         next unless page && !page.url.include?("/amp/")
         amp_permalink = File.join(page.url.sub(%r!/$!, ""), "amp", "/")
         output_dir = amp_permalink.sub(%r!^/!, "").chomp("/")
