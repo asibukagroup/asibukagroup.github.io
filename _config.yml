@@ -61,7 +61,7 @@ safe: false
 # ------------------------------
 defaults:
   - scope:
-      path: "assets/icons/favicon.ico"
+      path: assets/icons/favicon.ico
     values:
       permalink: "/favicon.ico"
 # ------------------------------
