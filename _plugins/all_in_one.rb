@@ -112,6 +112,7 @@ module Jekyll
     def generate(site)
       markdown_exts = [".md", ".markdown"]
 
+      # Generate AMP for pages
       site.pages.each do |page|
         next if page.url.include?("/amp/")
         next unless markdown_exts.include?(page.extname)
@@ -121,6 +122,7 @@ module Jekyll
         site.pages << AmpPage.new(site: site, base: site.source, original: page, permalink: amp_permalink, output_dir: output_dir)
       end
 
+      # Generate AMP for posts
       site.posts.docs.each do |post|
         next if post.url.include?("/amp/")
 
@@ -129,10 +131,12 @@ module Jekyll
         site.pages << AmpPage.new(site: site, base: site.source, original: post, permalink: amp_permalink, output_dir: output_dir)
       end
 
+      # Generate AMP for archive pages
       if site.respond_to?(:archives)
         site.archives.each do |archive|
           next if archive.url.include?("/amp/")
 
+          # Ensure archive pages are correctly processed
           amp_permalink = File.join(archive.url.sub(%r!/$!, ""), "amp", "/")
           output_dir = amp_permalink.sub(%r!^/!, "").chomp("/")
           site.pages << AmpPage.new(site: site, base: site.source, original: archive, permalink: amp_permalink, output_dir: output_dir)
