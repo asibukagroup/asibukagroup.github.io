@@ -6,28 +6,26 @@ module Jekyll
       @dir  = output_dir
       @name = "index.html"
       process(@name)
-
+    
       self.data = original.data.dup
       self.data["layout"] = "amp"
       self.data["permalink"] = permalink
       self.data["canonical_url"] = original.url
       self.data["is_amp"] = true
-
+      self.data["url"] = File.join("/", output_dir, @name).gsub(%r!/index\.html$!, "/")
+    
       markdown_converter = site.find_converter_instance(Jekyll::Converters::Markdown)
-
-      # Prepare Liquid payload
+    
       payload = {
         "page" => original.data,
         "site" => site.site_payload["site"]
       }
-
-      # Render with Liquid
+    
       liquid = site.liquid_renderer.file(original.path).parse(original.content)
       rendered_liquid = liquid.render!(payload, registers: { site: site, page: original })
-
-      # Convert to HTML using markdown (optional)
+    
       self.content = markdown_converter.convert(rendered_liquid)
-    end
+    end    
   end
 
   class AmpGenerator < Generator
