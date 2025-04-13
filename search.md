@@ -7,7 +7,7 @@ description: Silahkan cari konten yang kamu perlukan menggunakan form ini.
 robots: noindex, nofollow
 ---
 <h1 class="main-heading">Hasil Pencarian</h1>
-<div id="results" class="search-results"></div>
+<div id="results" class="post-containers"></div>
 <script src="https://unpkg.com/lunr/lunr.js"></script>
 <script>
   document.addEventListener('DOMContentLoaded', function () {
@@ -73,10 +73,10 @@ robots: noindex, nofollow
     }
 
     function renderResult(item) {
-      const wrapper = document.createElement('div');
-      wrapper.className = 'search-result';
+      const wrapper = document.createElement('article');
+      wrapper.className = 'post-container';
       wrapper.innerHTML = `
-        ${item.image ? `<div class="result-image"><a href="${item.url}" title="${item.title}"><img src="${item.image}" alt="${item.title}" /></a></div>` : ''}
+        ${item.image ? `<div class="post-image"><a href="${item.url}" title="${item.title}"><img src="${item.image}" alt="${item.title}" /></a></div>` : ''}
         <div class="result-content">
           <h2><a href="${item.url}" title="${item.title}">${item.title}</a></h2>
           ${item.author ? `<p class="author"><strong>Author:</strong> ${item.author}</p>` : ''}
@@ -90,14 +90,14 @@ robots: noindex, nofollow
 
 
 <style>
-.search-results {
+.post-containers {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
   margin-top: 2rem;
 }
 
-.search-result {
+.post-container {
   display: flex;
   gap: 1rem;
   border-bottom: 1px solid #ccc;
@@ -105,7 +105,7 @@ robots: noindex, nofollow
   flex-wrap: wrap;
 }
 
-.result-image {
+.post-image {
   flex: 0 0 30%;
   max-width: 30%;
   position: relative;
@@ -113,13 +113,13 @@ robots: noindex, nofollow
   overflow: hidden;
 }
 
-.result-image::before {
+.post-image::before {
   content: "";
   display: block;
   padding-top: 56.25%; /* This maintains the 16:9 aspect ratio */
 }
 
-.result-image img {
+.post-image img {
   position: absolute;
   width: 100%;
   height: 100%;
@@ -160,11 +160,11 @@ robots: noindex, nofollow
 
 /* Responsive for small screens */
 @media (max-width: 768px) {
-  .search-result {
+  .post-container {
     flex-direction: column;
   }
 
-  .result-image {
+  .post-image {
     flex: 0 0 100%;
     max-width: 100%;
     padding-top: 56.25%; /* Maintain 16:9 aspect ratio */
@@ -185,7 +185,7 @@ body.dark .author {
   color: #aaa;
 }
 
-body.dark .search-result {
+body.dark .post-container {
   border-color: #444;
 }
 
