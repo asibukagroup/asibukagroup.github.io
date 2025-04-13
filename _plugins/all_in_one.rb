@@ -21,8 +21,8 @@ module Jekyll
 
     def self.minify_css(css)
       # Minify the CSS by removing unnecessary spaces, newlines, and comments
+      css = remove_css_comments(css)
       css.gsub(/\s+/, ' ')         # Replace multiple spaces with a single space
-          .gsub(/\/\*.*?\*\//, '') # Remove CSS comments
           .gsub(/\s?([{:};,])\s?/, '\1')  # Remove spaces around CSS punctuation
           .strip
     end
@@ -30,6 +30,11 @@ module Jekyll
     def self.remove_html_comments(html)
       # Remove all HTML comments using a regular expression
       html.gsub(/<!--.*?-->/m, '')
+    end
+
+    def self.remove_css_comments(css)
+      # Remove all CSS comments using a regular expression
+      css.gsub(/\/\*.*?\*\//m, '')
     end
   end
 
