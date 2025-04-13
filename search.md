@@ -109,9 +109,13 @@ robots: noindex, nofollow
   flex: 0 0 30%;
   max-width: 30%;
   position: relative;
-  overflow: hidden;
   background-color: #eee;
-  padding-bottom: 56.25%; /* This maintains the 16:9 aspect ratio */
+}
+
+.result-image::before {
+  content: "";
+  display: block;
+  padding-top: 56.25%; /* This maintains the 16:9 aspect ratio */
 }
 
 .result-image img {
