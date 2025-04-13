@@ -3,47 +3,48 @@ require "nokogiri"
 module Jekyll
   module HTMLUtils
     def self.minify_html(html)
-      doc = Nokogiri::HTML::DocumentFragment.parse(html)
+      doc = Nokogiri::HTML(html)
 
-      # Minify inline <style> blocks
+      # Minify CSS in <style>
       doc.css("style").each do |style|
         style.content = minify_css(style.content)
       end
 
-      # Minify inline style attributes
+      # Minify inline styles
       doc.css("*[style]").each do |el|
         el["style"] = minify_css(el["style"])
       end
 
-      # Minify safe inline <script> blocks
+      # Minify inline JS (skip external scripts and structured data)
       doc.css("script").each do |script|
         next if script["src"]
-        next if script["type"] == "application/ld+json" # skip JSON-LD
+        next if script["type"] == "application/ld+json"
         script.content = minify_js(script.content)
       end
 
       # Remove HTML comments
-      doc.traverse do |node|
-        node.remove if node.comment?
-      end
+      doc.xpath('//comment()').each(&:remove)
 
-      # Collapse spaces between tags and remove line breaks
-      doc.to_html.gsub(/>\s+</, '><').gsub(/[\n\r\t]+/, '').strip
+      # Final minification: safe whitespace cleanup
+      doc.to_html
+         .gsub(/>\s+</, '><')     # Remove whitespace between tags
+         .gsub(/\s+/, ' ')        # Collapse whitespace
+         .strip
     end
 
     def self.minify_css(css)
       css.gsub(/\/\*.*?\*\//m, '')             # Remove comments
-         .gsub(/\s*([{}:;,])\s*/, '\1')        # Remove space around symbols
-         .gsub(/\s+/, ' ')                     # Collapse multiple spaces
-         .gsub(/;\}/, '}')                     # Remove final semicolon
+         .gsub(/\s*([{}:;,])\s*/, '\1')        # Tighten up
+         .gsub(/\s+/, ' ')                     # Collapse whitespace
+         .gsub(/;\}/, '}')                     # Remove last semicolon
          .strip
     end
 
     def self.minify_js(js)
-      js.gsub(/\/\/.*$/, '')                   # Remove single-line comments
-        .gsub(/\/\*.*?\*\//m, '')              # Remove block comments
-        .gsub(/[\n\r\t]+/, ' ')                # Remove line breaks
-        .gsub(/\s+/, ' ')                      # Collapse spaces
+      js.gsub(/\/\/.*$/, '')                   # Line comments
+        .gsub(/\/\*.*?\*\//m, '')              # Block comments
+        .gsub(/[\n\r\t]+/, ' ')                # Newlines
+        .gsub(/\s+/, ' ')                      # Collapse whitespace
         .strip
     end
   end
@@ -82,6 +83,7 @@ module Jekyll
     def convert_to_amp(html)
       doc = Nokogiri::HTML::DocumentFragment.parse(html)
 
+      # Convert <img> to <amp-img>
       doc.css("img").each do |img|
         amp_img = Nokogiri::XML::Node.new("amp-img", doc)
         amp_img["src"] = img["data-src"] || img["src"]
@@ -92,6 +94,7 @@ module Jekyll
         img.replace(amp_img)
       end
 
+      # Convert <iframe> to <amp-iframe>
       doc.css("iframe").each do |iframe|
         amp_iframe = Nokogiri::XML::Node.new("amp-iframe", doc)
         %w[src width height layout sandbox].each do |attr|
@@ -104,11 +107,12 @@ module Jekyll
         iframe.replace(amp_iframe)
       end
 
+      # Remove disallowed <script> tags
       doc.css("script").each do |script|
         script.remove unless script["src"]&.include?("https://cdn.ampproject.org/")
       end
 
-      HTMLUtils.minify_html(doc.to_html)
+      doc.to_html
     end
   end
 
@@ -119,22 +123,16 @@ module Jekyll
     def generate(site)
       markdown_exts = [".md", ".markdown"]
 
+      # Pages
       site.pages.each do |page|
         next if page.url.include?("/amp/")
         next unless markdown_exts.include?(page.extname)
-
         amp_permalink = File.join((page.data["permalink"] || page.url).sub(%r!/$!, ""), "amp", "/")
         output_dir = page.url == "/" ? "amp" : amp_permalink.sub(%r!^/!, "").chomp("/")
-
-        site.pages << AmpPage.new(
-          site: site,
-          base: site.source,
-          original: page,
-          permalink: amp_permalink,
-          output_dir: output_dir
-        )
+        site.pages << AmpPage.new(site: site, base: site.source, original: page, permalink: amp_permalink, output_dir: output_dir)
       end
 
+      # Posts
       site.posts.docs.each do |post|
         next if post.url.include?("/amp/")
         amp_permalink = File.join(post.url.sub(%r!/$!, ""), "amp", "/")
@@ -142,6 +140,7 @@ module Jekyll
         site.pages << AmpPage.new(site: site, base: site.source, original: post, permalink: amp_permalink, output_dir: output_dir)
       end
 
+      # Archives (jekyll-archives plugin)
       if site.respond_to?(:archives)
         site.archives.each do |archive|
           next if archive.url.include?("/amp/")
@@ -151,19 +150,19 @@ module Jekyll
         end
       end
 
-      site.categories.each do |category, _posts|
+      # Categories
+      site.categories.each do |category, _|
         page = find_page_by_url(site.pages, "/category/#{category}/")
-        next unless page
-        next if page.url.include?("/amp/")
+        next unless page && !page.url.include?("/amp/")
         amp_permalink = File.join(page.url.sub(%r!/$!, ""), "amp", "/")
         output_dir = amp_permalink.sub(%r!^/!, "").chomp("/")
         site.pages << AmpPage.new(site: site, base: site.source, original: page, permalink: amp_permalink, output_dir: output_dir)
       end
 
-      site.tags.each do |tag, _posts|
+      # Tags
+      site.tags.each do |tag, _|
         page = find_page_by_url(site.pages, "/tag/#{tag}/")
-        next unless page
-        next if page.url.include?("/amp/")
+        next unless page && !page.url.include?("/amp/")
         amp_permalink = File.join(page.url.sub(%r!/$!, ""), "amp", "/")
         output_dir = amp_permalink.sub(%r!^/!, "").chomp("/")
         site.pages << AmpPage.new(site: site, base: site.source, original: page, permalink: amp_permalink, output_dir: output_dir)
@@ -171,12 +170,14 @@ module Jekyll
     end
 
     def find_page_by_url(pages, url)
-      pages.find { |page| page.url == url || page.url == "#{url}index.html" }
+      pages.find { |p| p.url == url || p.url == "#{url}index.html" }
     end
   end
 
+  # Minify all non-AMP pages after rendering
   Jekyll::Hooks.register [:documents, :pages], :post_render do |item|
     next unless item.output_ext == ".html"
+    next if item.data["is_amp"]
     item.output = HTMLUtils.minify_html(item.output)
   end
 end
