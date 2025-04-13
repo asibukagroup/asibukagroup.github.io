@@ -23,7 +23,6 @@ url: "https://www.asibuka.com"
 image: "https://asibuka.com/assets/img/ASIBUKA-Blue.webp"
 date: 2023-06-19 00:00:05
 timezone: "Asia/Jakarta"
-robots: "index, follow"
 lang: "id"
 categories: [-]
 tags: [ASIBUKA, ASIBUKA Blog]
@@ -64,7 +63,7 @@ safe: false
 # ------------------------------
 defaults:
   - scope:
-      path: ""           # Applies to the whole site
+      path: ""           # Applies to all posts
       type: "posts"
     values:
       layout: "default"
@@ -84,21 +83,37 @@ defaults:
     values:
       layout: "archive"
       description: "Kumpulan artikel berdasarkan kategori."
+      lang: "id"
+      keywords: "ASIBUKA, ASIBUKA Group, Bisnis, Investasi, UMKM"
+      robots: "index, follow"
+      image: "https://asibuka.com/assets/img/ASIBUKA-Blue.webp"
   - scope:
       type: tag
     values:
       layout: "archive"
       description: "Artikel berdasarkan tag yang digunakan."
+      lang: "id"
+      keywords: "ASIBUKA, ASIBUKA Group, Bisnis, Investasi, UMKM"
+      robots: "index, follow"
+      image: "https://asibuka.com/assets/img/ASIBUKA-Blue.webp"
   - scope:
       type: year
     values:
       layout: "archive"
       description: "Artikel berdasarkan tahun terbit."
+      lang: "id"
+      keywords: "ASIBUKA, ASIBUKA Group, Bisnis, Investasi, UMKM"
+      robots: "index, follow"
+      image: "https://asibuka.com/assets/img/ASIBUKA-Blue.webp"
   - scope:
       type: month
     values:
       layout: "archive"
       description: "Artikel berdasarkan bulan dan tahun."
+      lang: "id"
+      keywords: "ASIBUKA, ASIBUKA Group, Bisnis, Investasi, UMKM"
+      robots: "index, follow"
+      image: "https://asibuka.com/assets/img/ASIBUKA-Blue.webp"
 # ------------------------------
 # Navigation links
 # ------------------------------
