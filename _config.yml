@@ -117,7 +117,7 @@ defaults:
       type: "month"
     values:
       layout: default
-      description: Daftar konten yang ada disortir berdasarkan bulan pilihan.
+      des   cription: Daftar konten yang ada disortir berdasarkan bulan pilihan.
       image: https://asibuka.com/assets/img/ASIBUKA-Blue.webp
       author: ASIBUKA Group
       robots: index, follow
