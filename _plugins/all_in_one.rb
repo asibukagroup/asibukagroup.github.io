@@ -3,6 +3,9 @@ require "nokogiri"
 module Jekyll
   module HTMLUtils
     def self.minify_html(html)
+      # Remove HTML comments
+      html = remove_html_comments(html)
+
       # Parse the HTML with Nokogiri to ensure we handle it correctly.
       doc = Nokogiri::HTML(html)
 
@@ -22,6 +25,11 @@ module Jekyll
           .gsub(/\/\*.*?\*\//, '') # Remove CSS comments
           .gsub(/\s?([{:};,])\s?/, '\1')  # Remove spaces around CSS punctuation
           .strip
+    end
+
+    def self.remove_html_comments(html)
+      # Remove all HTML comments using a regular expression
+      html.gsub(/<!--.*?-->/m, '')
     end
   end
 
