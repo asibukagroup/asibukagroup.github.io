@@ -65,6 +65,7 @@ safe: false
 defaults:
   - scope:
       path: ""           # Applies to the whole site
+      type: "posts"
     values:
       layout: "default"
       author: "ASIBUKA Group"
@@ -76,7 +77,28 @@ defaults:
     values:
       layout: "post"
       author: "ASIBUKA Group"
+      lang: "id"
       is_amp: false
+  - scope:
+      type: category
+    values:
+      layout: "archive"
+      description: "Kumpulan artikel berdasarkan kategori."
+  - scope:
+      type: tag
+    values:
+      layout: "archive"
+      description: "Artikel berdasarkan tag yang digunakan."
+  - scope:
+      type: year
+    values:
+      layout: "archive"
+      description: "Artikel berdasarkan tahun terbit."
+  - scope:
+      type: month
+    values:
+      layout: "archive"
+      description: "Artikel berdasarkan bulan dan tahun."
 # ------------------------------
 # Navigation links
 # ------------------------------
@@ -117,3 +139,16 @@ jekyll-archives:
     month: '/arsip/:year/:month/'
     tag: '/tag/:name/'
     category: '/kategori/:name/'
+  seo:
+  category:
+    title_prefix: "Kategori: "
+    description_prefix: "Kumpulan artikel dalam kategori "
+  tag:
+    title_prefix: "Tag: "
+    description_prefix: "Kumpulan artikel dengan tag "
+  year:
+    title_prefix: "Arsip Tahun "
+    description_prefix: "Kumpulan artikel yang diterbitkan pada tahun "
+  month:
+    title_prefix: "Arsip Bulan "
+    description_prefix: "Kumpulan artikel dari bulan "
