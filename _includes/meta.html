@@ -4,29 +4,29 @@
     <meta content='origin-when-crossorigin' name='referrer'>
     <meta content='general' name='rating'>
     <meta content='global' name='distribution'>
-    <meta content='{{ page.lang | default: site.defaults.lang }}' name='language'>
-    <meta content='{{ page.lang | default: site.defaults.lang }}' name='geo.country'>
+    <meta content='{{ page.lang | default: site.lang }}' name='language'>
+    <meta content='{{ page.lang | default: site.lang }}' name='geo.country'>
     <meta content='global' name='target'>
     <meta content='global' name='distribution'>
-    <title>{{ page.title | default: site.defaults.title }}</title>
-    <meta content='{{ page.title | default: site.defaults.title }}' name='title'>
-    <meta name="description" content="{{ page.description | default: site.defaults.description }}">
-    <meta name="keywords" content="{{ page.tags | default: site.defaults.tags }}">
-    <meta name="author" content="{{ page.author | default: site.defaults.author }}">
-    <meta name="robots" content="{{ page.robots | default: site.defaults.robots }}">
+    <title>{{ page.title | default: site.title }}</title>
+    <meta content='{{ page.title | default: site.title }}' name='title'>
+    <meta name="description" content="{{ page.description | default: site.description }}">
+    <meta name="keywords" content="{{ page.tags | default: site.tags }}">
+    <meta name="author" content="{{ page.author | default: site.author }}">
+    <meta name="robots" content="{{ page.robots | default: site.robots }}">
     <!-- Facebook Open Graph -->
-    <meta property="og:title" content="{{ page.title | default: site.defaults.title }}">
-    <meta property="og:description" content="{{ page.description | default: site.defaults.description }}">
-    <meta property="og:image" content="{{ page.image | default: site.defaults.image }}">
+    <meta property="og:title" content="{{ page.title | default: site.title }}">
+    <meta property="og:description" content="{{ page.description | default: site.description }}">
+    <meta property="og:image" content="{{ page.image | default: site.image }}">
     <meta property="og:url" content="{{ site.url }}{{ page.url | replace:'index.html','' }}">
     <meta property="og:type" content="website">
-    <meta content='{{ page.title | default: site.defaults.title }}' property='og:headline'>
-    <meta content='{{ site.title | default: site.defaults.title }}' property='og:site_name'>
+    <meta content='{{ page.title | default: site.title }}' property='og:headline'>
+    <meta content='{{ site.title | default: site.title }}' property='og:site_name'>
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="{{ page.title | default: site.defaults.title }}">
-    <meta name="twitter:description" content="{{ page.description | default: site.defaults.description }}">
-    <meta name="twitter:image" content="{{ page.image | default: site.defaults.image }}">
+    <meta name="twitter:title" content="{{ page.title | default: site.title }}">
+    <meta name="twitter:description" content="{{ page.description | default: site.description }}">
+    <meta name="twitter:image" content="{{ page.image | default: site.image }}">
     <!-- PWA -->
     <meta content='/' name='msapplication-starturl'>
     <meta content='yes' name='mobile-web-app-capable'>
@@ -60,5 +60,5 @@
     <!-- Verification -->
     <meta name='dmca-site-verification' content='OWJ0Vk5lWTVjNzRLMWxFcis4NythQT090'>
     <!-- Canonical -->
-    <link rel="canonical" hreflang='{{ page.lang | default: site.defaults.lang }}' href="{{ site.url }}{{ page.url | replace:'index.html','' }}">{% unless page.url contains '/amp/' %}<link rel='amphtml' href="{{ site.url }}{{ page.url | replace:'index.html','' }}amp/">{% endunless %}
+    <link rel="canonical" hreflang='{{ page.lang | default: site.lang }}' href="{{ site.url }}{{ page.url | replace:'index.html','' }}">{% unless page.url contains '/amp/' %}<link rel='amphtml' href="{{ site.url }}{{ page.url | replace:'index.html','' }}amp/">{% endunless %}
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
