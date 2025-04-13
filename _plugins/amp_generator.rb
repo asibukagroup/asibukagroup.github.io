@@ -3,29 +3,8 @@ require "nokogiri"
 module Jekyll
   module HTMLUtils
     def self.minify_html(html)
-      # Collapse whitespace between tags
-      html = html.gsub(/>\s+</, '><')
-
-      # Minify inline CSS in <style> blocks
-      html = html.gsub(/<style\b[^>]*>(.*?)<\/style>/m) do |match|
-        content = $1.gsub(/\/\*.*?\*\//m, "") # Remove CSS comments
-                    .gsub(/\s+/, " ")          # Collapse whitespace
-                    .gsub(/\s*([{}:;,])\s*/, '\1') # Remove space around tokens
-                    .strip
-        "<style>#{content}</style>"
-      end
-
-      # Minify inline JS in <script> blocks (not src)
-      html = html.gsub(/<script(?![^>]*\bsrc=)[^>]*>(.*?)<\/script>/m) do |match|
-        content = $1.gsub(/\/\/[^\n]*/, "")    # Remove single-line comments
-                    .gsub(/\/\*.*?\*\//m, "")  # Remove multi-line comments
-                    .gsub(/\s+/, " ")          # Collapse whitespace
-                    .gsub(/\s*([{}();=:+,\-*\/<>])\s*/, '\1') # Remove space around tokens
-                    .strip
-        "<script>#{content}</script>"
-      end
-
-      html.strip
+      # Remove spaces and newlines between HTML tags, without touching text content
+      html.gsub(/>\s+</, '><').strip
     end
   end
 
@@ -45,15 +24,20 @@ module Jekyll
 
       markdown_converter = site.find_converter_instance(Jekyll::Converters::Markdown)
 
+      # Prepare Liquid payload
       payload = {
         "page" => original.data,
         "site" => site.site_payload["site"]
       }
 
+      # Render Liquid
       liquid = site.liquid_renderer.file(original.path).parse(original.content)
       rendered_liquid = liquid.render!(payload, registers: { site: site, page: original })
 
+      # Convert Markdown to HTML
       html = markdown_converter.convert(rendered_liquid)
+
+      # Convert to AMP
       self.content = convert_to_amp(html)
     end
 
@@ -64,25 +48,32 @@ module Jekyll
 
       doc.css("img").each do |img|
         amp_img = Nokogiri::XML::Node.new("amp-img", doc)
+
         amp_img["src"] = img["data-src"] || img["src"]
         amp_img["alt"] = img["alt"] if img["alt"]
         amp_img["width"] = img["width"] if img["width"]
         amp_img["height"] = img["height"] if img["height"]
-        amp_img["layout"] = img["layout"] || "responsive"
+        amp_img["layout"] = img["layout"] if img["layout"]
+
+        amp_img["layout"] ||= "responsive"
         amp_img["width"] ||= "600"
         amp_img["height"] ||= "400"
+
         img.replace(amp_img)
       end
 
       doc.css("iframe").each do |iframe|
         amp_iframe = Nokogiri::XML::Node.new("amp-iframe", doc)
+
         %w[src width height layout sandbox].each do |attr|
           amp_iframe[attr] = iframe[attr] if iframe[attr]
         end
+
         amp_iframe["layout"] ||= "responsive"
         amp_iframe["sandbox"] ||= "allow-scripts allow-same-origin"
         amp_iframe["width"] ||= "600"
         amp_iframe["height"] ||= "400"
+
         iframe.replace(amp_iframe)
       end
 
@@ -149,7 +140,7 @@ module Jekyll
         end
       end
 
-      site.categories.each do |category, _posts|
+      site.categories.each do |category, posts|
         page = find_page_by_url(site.pages, "/category/#{category}/")
         next unless page
         next if page.url.include?("/amp/")
@@ -166,7 +157,7 @@ module Jekyll
         )
       end
 
-      site.tags.each do |tag, _posts|
+      site.tags.each do |tag, posts|
         page = find_page_by_url(site.pages, "/tag/#{tag}/")
         next unless page
         next if page.url.include?("/amp/")
@@ -189,9 +180,10 @@ module Jekyll
     end
   end
 
-  # Minify all HTML output, including AMP
+  # Minify only non-AMP HTML pages/documents
   Jekyll::Hooks.register [:documents, :pages], :post_render do |item|
     next unless item.output_ext == ".html"
+    next if item.data["is_amp"]
     item.output = HTMLUtils.minify_html(item.output)
   end
 end
