@@ -40,7 +40,7 @@ module Jekyll
           permalink: "#{permalink}"
           type: #{type}
           #{type}: "#{val}"
-          ---
+          ---  
         YAML
 
         File.write(File.join(dir, filename), content)
@@ -60,7 +60,7 @@ module Jekyll
           permalink: "#{permalink_year}"
           type: year
           year: #{year}
-          ---
+          ---  
         YAML
         File.write(File.join(dir, filename_year), content_year)
 
@@ -79,7 +79,7 @@ module Jekyll
             type: month
             year: #{year}
             month: #{month}
-            ---
+            ---  
           YAML
           File.write(File.join(dir, filename_month), content_month)
         end

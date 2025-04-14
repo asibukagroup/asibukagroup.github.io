@@ -110,6 +110,7 @@ nav_links:
 plugins_dir: _plugins
 plugins:
   - jekyll-sitemap
+  - ./_plugins/archive_generator.rb
   - ./_plugins/all_in_one.rb
 # ------------------------------
 # Include
