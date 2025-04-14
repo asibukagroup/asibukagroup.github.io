@@ -180,7 +180,6 @@ module Jekyll
   # Minify non-AMP HTML output
   Jekyll::Hooks.register [:pages, :documents], :post_render do |item|
     next unless item.output_ext == ".html"
-    next if item.data["is_amp"]
     item.output = Jekyll::HTMLUtils.minify_html(item.output)
   end
 end
