@@ -3,7 +3,38 @@ layout: default
 ---
 
 <h1 class='main-heading'>
-{{ page.title }}
+  {% assign url_parts = page.url | split: '/' %}
+  
+  {% if url_parts[1] and url_parts[2] %}
+    <!-- Month archive (e.g., /2025/08/) -->
+    {% assign month_number = url_parts[2] %}
+    {% assign year = url_parts[1] %}
+    {% capture month_names %}
+      "Januari", "Februari", "Maret", "April", "Mei", "Juni", 
+      "Juli", "Agustus", "September", "Oktober", "November", "Desember"
+    {% endcapture %}
+    {% assign month_names_array = month_names | split: ',' %}
+    {% assign month_name = month_names_array[month_number | minus: 1] %}
+    
+    {{ month_name | strip }} {{ year }}
+  
+  {% elsif url_parts[1] %}
+    <!-- Year archive (e.g., /2025/) -->
+    {% assign year = url_parts[1] %}
+    {{ year }}
+
+  {% elsif page.category %}
+    <!-- Category archive -->
+    {{ page.category | capitalize }}
+  
+  {% elsif page.tags %}
+    <!-- Tag archive -->
+    {{ page.tags | first | capitalize }}
+
+  {% else %}
+    <!-- Default (general archive page) -->
+    Arsip
+  {% endif %}
 </h1>
 <p>Year: {{ page.year }}</p>
 <p>Month: {{ page.month }}</p>
