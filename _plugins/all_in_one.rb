@@ -1,6 +1,7 @@
 require "jekyll"
 require "nokogiri"
 
+# Utility module for HTML, CSS, and JS minification
 module Jekyll
   module HTMLUtils
     def self.minify_html(html)
@@ -12,27 +13,28 @@ module Jekyll
           .gsub(/\s{2,}/, ' ')       # Collapse multiple spaces
           .gsub(/<!--.*?-->/m, '')   # Remove HTML comments
           .gsub(/;}/, '}')           # Remove unnecessary semicolons
-          .gsub(/\/\*.*?\*\//m, '')  # Remove CSS block comments
+          .gsub(/\/\*.*?\*\//m, '')  # Remove CSS comments
           .gsub(/\s+/, ' ')          # Collapse all whitespace
           .strip
     end
 
     def self.minify_css(css)
-      css.gsub(/\/\*.*?\*\//m, '')           # Remove CSS block comments
-         .gsub(/\s+/, ' ')                   # Collapse all whitespace
-         .gsub(/\s*([{:;}])\s*/, '\1')       # Remove spaces around CSS symbols
-         .gsub(/;}/, '}')                    # Remove unnecessary semicolons
+      css.gsub(/\/\*.*?\*\//m, '')
+         .gsub(/\s+/, ' ')
+         .gsub(/\s*([{:;}])\s*/, '\1')
+         .gsub(/;}/, '}')
          .strip
     end
 
     def self.minify_js(js)
-      js.gsub(/\/\/.*$/, '')                 # Remove single-line comments
-         .gsub(/\/\*.*?\*\//m, '')           # Remove multi-line comments
-         .gsub(/\s+/, ' ')                   # Collapse whitespace
+      js.gsub(/\/\/.*$/, '')
+         .gsub(/\/\*.*?\*\//m, '')
+         .gsub(/\s+/, ' ')
          .strip
     end
   end
 
+  # Custom Page class for AMP pages
   class AmpPage < Page
     def initialize(site:, base:, original:, permalink:, output_dir:)
       @site = site
@@ -42,21 +44,24 @@ module Jekyll
       process(@name)
 
       self.data = original.data.dup
-      self.data["layout"] = "amp"
+      self.data["layout"] = original.data["layout"] # Use same layout as original
       self.data["permalink"] = permalink
       self.data["canonical_url"] = original.url
       self.data["is_amp"] = true
 
-      html = if original.content.strip.empty? || original.output.to_s.strip != ''
+      html = if original.output.to_s.strip != ""
                original.output.to_s
              else
+               payload = {
+                 "page" => original.data,
+                 "site" => site.site_payload["site"]
+               }
+
+               template = site.liquid_renderer.file(original.path).parse(original.content.to_s)
+               rendered = template.render!(payload, registers: { site: site, page: original })
+
                markdown_converter = site.find_converter_instance(Jekyll::Converters::Markdown)
-               payload = { "page" => original.data, "site" => site.site_payload["site"] }
-
-               liquid = site.liquid_renderer.file(original.path).parse(original.content)
-               rendered_liquid = liquid.render!(payload, registers: { site: site, page: original })
-
-               markdown_converter.convert(rendered_liquid)
+               markdown_converter.convert(rendered)
              end
 
       self.content = convert_to_amp(html)
@@ -106,6 +111,7 @@ module Jekyll
     end
   end
 
+  # Main generator class for AMP pages
   class AmpGenerator < Generator
     safe true
     priority :low
@@ -113,7 +119,6 @@ module Jekyll
     def generate(site)
       markdown_exts = [".md", ".markdown"]
 
-      # Regular Pages
       site.pages.each do |page|
         next if page.url.include?("/amp/")
         next unless markdown_exts.include?(page.extname)
@@ -124,16 +129,15 @@ module Jekyll
         site.pages << AmpPage.new(site: site, base: site.source, original: page, permalink: amp_permalink, output_dir: output_dir)
       end
 
-      # Posts
       site.posts.docs.each do |post|
         next if post.url.include?("/amp/")
+
         amp_permalink = File.join(post.url.sub(%r!/$!, ""), "amp", "/")
         output_dir = amp_permalink.sub(%r!^/!, "").chomp("/")
 
         site.pages << AmpPage.new(site: site, base: site.source, original: post, permalink: amp_permalink, output_dir: output_dir)
       end
 
-      # Custom collections (e.g., _products, _pages if configured as a collection)
       site.collections.each do |name, collection|
         next if ["posts", "drafts", "pages"].include?(name)
 
@@ -142,17 +146,10 @@ module Jekyll
           amp_permalink = File.join(doc.url.sub(%r!/$!, ""), "amp", "/")
           output_dir = amp_permalink.sub(%r!^/!, "").chomp("/")
 
-          site.pages << AmpPage.new(
-            site: site,
-            base: site.source,
-            original: doc,
-            permalink: amp_permalink,
-            output_dir: output_dir
-          )
+          site.pages << AmpPage.new(site: site, base: site.source, original: doc, permalink: amp_permalink, output_dir: output_dir)
         end
       end
 
-      # Custom category and tag pages (assumes /kategori/ and /tag/ structure)
       site.categories.each do |category, _|
         url = "/kategori/#{category.downcase}/"
         add_custom_amp_page(site, url)
@@ -175,7 +172,7 @@ module Jekyll
     end
   end
 
-  # Generate AMP versions for jekyll-archives pages after render
+  # Post-render hook: generate AMP for jekyll-archives
   Jekyll::Hooks.register :pages, :post_render do |page|
     next if page.data["is_amp"]
     next unless page.data["jekyll-archives"]
@@ -184,7 +181,7 @@ module Jekyll
     amp_permalink = File.join(page.url.sub(%r!/$!, ""), "amp", "/")
     output_dir = amp_permalink.sub(%r!^/!, "").chomp("/")
 
-    amp_page = Jekyll::AmpPage.new(
+    amp_page = AmpPage.new(
       site: page.site,
       base: page.site.source,
       original: page,
@@ -192,10 +189,12 @@ module Jekyll
       output_dir: output_dir
     )
 
+    # Use rendered HTML output directly
+    amp_page.content = amp_page.send(:convert_to_amp, page.output.to_s)
     page.site.pages << amp_page
   end
 
-  # Minify non-AMP HTML output
+  # Global hook: minify HTML for all pages and documents
   Jekyll::Hooks.register [:pages, :documents], :post_render do |item|
     next unless item.output_ext == ".html"
     item.output = Jekyll::HTMLUtils.minify_html(item.output)
