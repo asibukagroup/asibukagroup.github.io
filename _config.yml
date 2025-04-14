@@ -98,7 +98,6 @@ plugins_dir: _plugins
 plugins:
   - jekyll-archives
   - jekyll-sitemap
-  - ./_plugins/archive_generator.rb
   - ./_plugins/all_in_one.rb
 # ------------------------------
 # Jekyll Archives
