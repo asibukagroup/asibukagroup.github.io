@@ -70,6 +70,9 @@ collections:
 disqus_shortname: "asibukagroup"
 future: true
 safe: false
+verbose: true  # Enable verbose output for debugging
+incremental: true
+destination: "_site"  # Make sure this is where Jekyll builds the site
 # ------------------------------
 # Default Value
 # ------------------------------
@@ -117,3 +120,29 @@ plugins:
 # ------------------------------
 include:
   - _pages
+# ------------------------------
+# Taxonomy
+# ------------------------------
+taxonomy:
+  category:
+    name: "Category"
+    plural_name: "Categories"
+    path: "kategori"  # Custom path for categories
+  tag:
+    name: "Tag"
+    plural_name: "Tags"
+    path: "tag"  # Custom path for tags
+  author:
+    name: "Author"
+    plural_name: "Authors"
+    path: "penulis"  # Custom path for authors
+  year:
+    name: "Year"
+    plural_name: "Years"
+    path: "arsip"  # Custom path for year-based archives
+# ------------------------------
+# Layouts
+# ------------------------------
+layouts:
+  default: "default.html"
+  archive: "archive.html"
