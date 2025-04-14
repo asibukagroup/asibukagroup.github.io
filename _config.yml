@@ -52,6 +52,18 @@ collections:
   programs:
     output: true
     permalink: /program/:title/
+  categories:
+    output: true
+    permalink: /kategori/:tag/
+  tags:
+    output: true
+    permalink: /tag/:category/
+  year:
+    output: true
+    permalink: /arsip/:year/
+  month:
+    output: true
+    permalink: /arsip/:year/:month/
 # ------------------------------
 # 🌐 Other Settings
 # ------------------------------

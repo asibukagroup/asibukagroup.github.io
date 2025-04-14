@@ -97,7 +97,7 @@ module Jekyll
 
       # Minify and remove inline <script> tags
       doc.css("script").each do |script|
-        if script["src"]&.include?("https://cdn.ampproject.org/")
+        if script["src"]&.include?("https://cdn.ampproject.org/") # Skip AMP library scripts
           next
         elsif script.children.any?
           cleaned_js = HTMLUtils.minify_js(script.content)
@@ -176,9 +176,12 @@ module Jekyll
 
       posts = site.posts.docs
 
+      # Generate archive pages for tags, categories, and authors
       generate_taxonomy_pages("tag", posts.flat_map(&:tags).uniq, archive_dir)
       generate_taxonomy_pages("category", posts.flat_map(&:categories).uniq, archive_dir)
       generate_taxonomy_pages("author", posts.map { |p| p.data["author"] }.compact.uniq, archive_dir)
+
+      # Generate date-based archives
       generate_date_archives(posts, archive_dir)
     end
 
@@ -200,11 +203,17 @@ module Jekyll
           permalink: "#{permalink}"
           type: #{type}
           #{type}: "#{val}"
-          ---
+          ---  
         YAML
 
         # Write the generated archive page file
-        File.write(File.join(dir, filename), content)
+        archive_page = File.join(dir, filename)
+        File.write(archive_page, content)
+
+        # Create AMP version of the archive page
+        amp_permalink = File.join(permalink, "amp", "/")
+        amp_output_dir = File.join(dir, "amp")
+        site.pages << AmpPage.new(site: site, base: site.source, original: archive_page, permalink: amp_permalink, output_dir: amp_output_dir)
       end
     end
 
