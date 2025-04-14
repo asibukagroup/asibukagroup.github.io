@@ -11,6 +11,10 @@ module Jekyll
           .gsub(/\n+/, ' ')          # Remove newlines
           .gsub(/\s{2,}/, ' ')       # Collapse multiple spaces
           .gsub(/<!--.*?-->/m, '')   # Remove HTML comments
+          .gsub(/;}/, '}')           # Remove unnecessary semicolons
+          .gsub(/\/\*.*?\*\//m, '')   # Remove CSS block comments
+          .gsub(/\s+/, ' ')          # Collapse all whitespace
+          .gsub(/\s*([{:;}])\s*/, '\1') # Remove spaces around CSS symbols
           .strip
     end
 
