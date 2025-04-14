@@ -12,23 +12,23 @@ module Jekyll
           .gsub(/\s{2,}/, ' ')       # Collapse multiple spaces
           .gsub(/<!--.*?-->/m, '')   # Remove HTML comments
           .gsub(/;}/, '}')           # Remove unnecessary semicolons
-          .gsub(/\/\*.*?\*\//m, '')   # Remove CSS block comments
+          .gsub(/\/\*.*?\*\//m, '')  # Remove CSS block comments
           .gsub(/\s+/, ' ')          # Collapse all whitespace
           .strip
     end
 
     def self.minify_css(css)
-      css.gsub(/\/\*.*?\*\//m, '')   # Remove CSS block comments
-          .gsub(/\s+/, ' ')          # Collapse all whitespace
-          .gsub(/\s*([{:;}])\s*/, '\1') # Remove spaces around CSS symbols
-          .gsub(/;}/, '}')           # Remove unnecessary semicolons
-          .strip
+      css.gsub(/\/\*.*?\*\//m, '')           # Remove CSS block comments
+         .gsub(/\s+/, ' ')                   # Collapse all whitespace
+         .gsub(/\s*([{:;}])\s*/, '\1')       # Remove spaces around CSS symbols
+         .gsub(/;}/, '}')                    # Remove unnecessary semicolons
+         .strip
     end
 
     def self.minify_js(js)
-      js.gsub(/\/\/.*$/, '')         # Remove single-line comments
-         .gsub(/\/\*.*?\*\//m, '')   # Remove multi-line comments
-         .gsub(/\s+/, ' ')           # Collapse whitespace
+      js.gsub(/\/\/.*$/, '')                 # Remove single-line comments
+         .gsub(/\/\*.*?\*\//m, '')           # Remove multi-line comments
+         .gsub(/\s+/, ' ')                   # Collapse whitespace
          .strip
     end
   end
@@ -131,6 +131,25 @@ module Jekyll
         output_dir = amp_permalink.sub(%r!^/!, "").chomp("/")
 
         site.pages << AmpPage.new(site: site, base: site.source, original: post, permalink: amp_permalink, output_dir: output_dir)
+      end
+
+      # Custom collections (e.g., _products, _pages if configured as a collection)
+      site.collections.each do |name, collection|
+        next if ["posts", "drafts", "pages"].include?(name)
+
+        collection.docs.each do |doc|
+          next if doc.url.include?("/amp/")
+          amp_permalink = File.join(doc.url.sub(%r!/$!, ""), "amp", "/")
+          output_dir = amp_permalink.sub(%r!^/!, "").chomp("/")
+
+          site.pages << AmpPage.new(
+            site: site,
+            base: site.source,
+            original: doc,
+            permalink: amp_permalink,
+            output_dir: output_dir
+          )
+        end
       end
 
       # Custom category and tag pages (assumes /kategori/ and /tag/ structure)
