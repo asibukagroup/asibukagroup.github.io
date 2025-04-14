@@ -26,7 +26,6 @@ timezone: "Asia/Jakarta"
 lang: "id"
 categories: [-]
 tags: [ASIBUKA, ASIBUKA Blog]
-markdown: kramdown
 # ------------------------------
 # 👤 Author Info
 # ------------------------------
@@ -43,24 +42,12 @@ collections:
   posts:
     output: true
     permalink: /:title/
+  pages:
+    output: true
+    permalink: /:title/
   products:
     output: true
     permalink: /produk/:title/
-  programs:
-    output: true
-    permalink: /program/:title/
-  categories:
-    output: true
-    permalink: /kategori/:tag/
-  tags:
-    output: true
-    permalink: /tag/:category/
-  year:
-    output: true
-    permalink: /arsip/:year/
-  month:
-    output: true
-    permalink: /arsip/:year/:month/
 # ------------------------------
 # 🌐 Other Settings
 # ------------------------------
@@ -69,7 +56,7 @@ future: true
 safe: false
 verbose: true  # Enable verbose output for debugging
 incremental: true
-destination: "_site"  # Make sure this is where Jekyll builds the site
+markdown: kramdown
 # ------------------------------
 # Default Value
 # ------------------------------
@@ -109,37 +96,26 @@ nav_links:
 # ------------------------------
 plugins_dir: _plugins
 plugins:
+  - jekyll-archives
   - jekyll-sitemap
   - ./_plugins/archive_generator.rb
   - ./_plugins/all_in_one.rb
 # ------------------------------
-# Include
+# Jekyll Archives
 # ------------------------------
-include:
-  - _pages
-# ------------------------------
-# Taxonomy
-# ------------------------------
-taxonomy:
-  category:
-    name: "Category"
-    plural_name: "Categories"
-    path: "kategori"  # Custom path for categories
-  tag:
-    name: "Tag"
-    plural_name: "Tags"
-    path: "tag"  # Custom path for tags
-  author:
-    name: "Author"
-    plural_name: "Authors"
-    path: "penulis"  # Custom path for authors
-  year:
-    name: "Year"
-    plural_name: "Years"
-    path: "arsip"  # Custom path for year-based archives
-# ------------------------------
-# Layouts
-# ------------------------------
-layouts:
-  default: "default.html"
-  archive: "archive.html"
+jekyll-archives:
+  enabled:
+    - year
+    - month
+    - categories
+    - tags
+  layouts:
+    year: archive
+    month: archive
+    tag: archive
+    category: archive
+  permalinks:
+    year: '/:year/'
+    month: '/:year/:month/'
+    tag: '/tag/:name/'
+    category: '/kategori/:name/'

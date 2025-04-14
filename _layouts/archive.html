@@ -1,29 +1,13 @@
 ---
 layout: default
 ---
-{% assign posts = site.posts | where_exp: "post", "true" %}
-{% if page.type == "tag" %}
-  {% assign posts = posts | where_exp: "post", "post.tags contains page.tag" %}
-{% elsif page.type == "category" %}
-  {% assign posts = posts | where_exp: "post", "post.categories contains page.category" %}
-{% elsif page.type == "author" %}
-  {% assign posts = posts | where_exp: "post", "post.author == page.author" %}
-{% elsif page.type == "year" %}
-  {% assign posts = posts | where_exp: "post", "post.date | date: '%Y' == page.year" %}
-{% elsif page.type == "month" %}
-  {% assign posts = posts | where_exp: "post", "post.date | date: '%Y-%m' == page.year | append: '-' | append: page.month" %}
-{% endif %}
-
-<p>{{ page.layout }}</p>
-<p>{{ page.type }}</p>
-
 <h1 class='main-heading'>
   {{ page.title }}
 </h1>
 
 {% if posts and posts != empty %}
 <div itemscope itemtype="https://schema.org/ItemList">
-    {% for post in posts %}
+  {% for post in page.posts %}
     <article class="post-container" itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement">
       <meta itemprop="position" content="{{ forloop.index }}">
       <div class="post-image">

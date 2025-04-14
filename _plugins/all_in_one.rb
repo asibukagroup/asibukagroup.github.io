@@ -43,7 +43,7 @@ module Jekyll
       process(@name)
 
       self.data = original.data.dup
-      self.data["layout"] = original.data["layout"]
+      self.data["layout"] ||= original.data["layout"] # Use original layout
       self.data["permalink"] = permalink
       self.data["canonical_url"] = original.url
       self.data["is_amp"] = true
@@ -152,7 +152,7 @@ module Jekyll
     end
   end
 
-  # Hook: Minify final HTML output for all pages and documents (AMP or not)
+  # Hook: Minify final HTML output for all pages and documents
   Jekyll::Hooks.register [:pages, :documents], :post_render do |item|
     next unless item.output_ext == ".html"
     item.output = Jekyll::HTMLUtils.minify_html(item.output)
