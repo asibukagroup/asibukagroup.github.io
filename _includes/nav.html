@@ -43,7 +43,7 @@
           {% assign authors = site.posts | map: "author" | uniq | compact %}
           {% for author in authors %}
           {% assign slug = author | downcase | replace: ' ', '-' %}
-          <a href="/penulis/{{ slug }}/" title="{{ author }}">{{ author }}</a>
+          <a href="/penulis/{{ author | slugify }}/" title="{{ author }}">{{ author }}</a>
           {% endfor %}
         </div>
       </li>
