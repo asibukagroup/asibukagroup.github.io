@@ -41,6 +41,7 @@ module Jekyll
       @dir  = output_dir
       @name = "index.html"
       process(@name)
+      @relative_path = original.relative_path
 
       self.data = original.data.dup
       self.data["layout"] ||= original.data["layout"] # Use original layout
