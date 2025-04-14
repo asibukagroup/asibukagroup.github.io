@@ -109,7 +109,7 @@ jekyll-archives:
     - categories
     - tags
     - authors
-  layouts: archive
+  layout: archive
   permalinks:
     year: '/:year/'
     month: '/:year/:month/'
