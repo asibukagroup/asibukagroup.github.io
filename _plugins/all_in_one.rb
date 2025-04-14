@@ -237,6 +237,47 @@ module Jekyll
 
         # Generate monthly archives for each year
         (1..12).each do |month|
+          matching = posts.select { |p| p.data["date"].year == year && p.data["date"].month == month }
+          next if matching.empty?
+
+          filename_month = "_auto_month_#{year}_#{month.to_s.rjust(2, "0")}.md"
+          permalink_month = "/arsip/#{year}/#{month.to_s.rjust(2, "0")}/"
+          content_month = <<~YAML
+            ---
+            layout: archive
+            title: "Arsip #{year}/#{month.to_s.rjust(2, "0")}"
+            permalink: "#{permalink_month}"
+            type: month
+            year: #{year}
+            month: #{month}
+            ---
+          YAML
+          File.write(File.join(dir, filename_month), content_month)
+        end
+      end
+    end
+
+
+    # Generate archive pages for year and month-based archives
+    def generate_date_archives(posts, dir)
+      years = posts.map { |p| p.date.year }.uniq
+
+      years.each do |year|
+        filename_year = "_auto_year_#{year}.md"
+        permalink_year = "/arsip/#{year}/"
+        content_year = <<~YAML
+          ---
+          layout: archive
+          title: "Arsip #{year}"
+          permalink: "#{permalink_year}"
+          type: year
+          year: #{year}
+          ---
+        YAML
+        File.write(File.join(dir, filename_year), content_year)
+
+        # Generate monthly archives for each year
+        (1..12).each do |month|
           matching = posts.select { |p| p.date.year == year && p.date.month == month }
           next if matching.empty?
 
