@@ -14,7 +14,6 @@ module Jekyll
           .gsub(/;}/, '}')           # Remove unnecessary semicolons
           .gsub(/\/\*.*?\*\//m, '')   # Remove CSS block comments
           .gsub(/\s+/, ' ')          # Collapse all whitespace
-          .gsub(/\s*([{:;}])\s*/, '\1') # Remove spaces around CSS symbols
           .strip
     end
 
