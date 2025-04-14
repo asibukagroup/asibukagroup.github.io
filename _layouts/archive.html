@@ -7,6 +7,17 @@ robots: index, follow
 keywords: bulan, arsip
 lang: id
 ---
+{% if page.type == "tag" %}
+  {% assign posts = site.posts | where_exp: "p", "p.tags contains page.tag" %}
+{% elsif page.type == "category" %}
+  {% assign posts = site.posts | where_exp: "p", "p.categories contains page.category" %}
+{% elsif page.type == "author" %}
+  {% assign posts = site.posts | where: "author", page.author %}
+{% elsif page.type == "year" %}
+  {% assign posts = site.posts | where_exp: "p", "p.date | date: '%Y' == page.year | to_s" %}
+{% elsif page.type == "month" %}
+  {% assign posts = site.posts | where_exp: "p", "p.date | date: '%Y-%m' == page.year | append: '-' | append: page.month | date: '%Y-%m'" %}
+{% endif %}
 <p>{{ page.layout }}</p>
 <p>{{ page.type }}</p>
 <h1 class='main-heading'>

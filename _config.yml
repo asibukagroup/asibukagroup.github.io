@@ -79,50 +79,6 @@ defaults:
       author: "ASIBUKA Group"
       lang: "id"
       is_amp: false
-
-  - scope:
-      type: "category"
-    values:
-      layout: default
-      description: Daftar konten yang ada disortir berdasarkan kategori pilihan.
-      image: https://asibuka.com/assets/img/ASIBUKA-Blue.webp
-      author: ASIBUKA Group
-      robots: index, follow
-      keywords: kategori, category
-      lang: id
-
-  - scope:
-      type: "tag"
-    values:
-      layout: default
-      description: Daftar konten yang ada disortir berdasarkan tag pilihan.
-      image: https://asibuka.com/assets/img/ASIBUKA-Blue.webp
-      author: ASIBUKA Group
-      robots: index, follow
-      keywords: tag, kata kunci, keyword
-      lang: id
-
-  - scope:
-      type: "year"
-    values:
-      layout: default
-      description: Daftar konten yang ada disortir berdasarkan tahun pilihan.
-      image: https://asibuka.com/assets/img/ASIBUKA-Blue.webp
-      author: ASIBUKA Group
-      robots: index, follow
-      keywords: tahun, arsip
-      lang: id
-
-  - scope:
-      type: "month"
-    values:
-      layout: default
-      des   cription: Daftar konten yang ada disortir berdasarkan bulan pilihan.
-      image: https://asibuka.com/assets/img/ASIBUKA-Blue.webp
-      author: ASIBUKA Group
-      robots: index, follow
-      keywords: bulan, arsip
-      lang: id
 # ------------------------------
 # Navigation links
 # ------------------------------
@@ -142,24 +98,7 @@ nav_links:
 plugins_dir: _plugins
 plugins:
   - jekyll-sitemap
-  - jekyll-archives
   - ./_plugins/all_in_one.rb
 # ------------------------------
 # Jekyll Archives Plugins
 # ------------------------------
-jekyll-archives:
-  enabled:
-    - categories
-    - tags
-    - year
-    - month
-  layouts:
-    category: archive
-    tag: archive
-    year: archive
-    month: archive
-  permalinks:
-    year: '/arsip/:year/'
-    month: '/arsip/:year/:month/'
-    tag: '/tag/:name/'
-    category: '/kategori/:name/'
