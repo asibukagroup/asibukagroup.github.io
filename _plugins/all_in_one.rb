@@ -3,36 +3,41 @@ require "nokogiri"
 require "fileutils"
 
 module Jekyll
+  # Utility module for minifying HTML, CSS, and JavaScript
   module HTMLUtils
+    # Minifies the HTML content by removing unnecessary spaces and comments
     def self.minify_html(html)
       doc = Nokogiri::HTML(html)
       html = doc.to_html
-      html.gsub(/>\s+</, '><')
-          .gsub(/\n+/, ' ')
-          .gsub(/\s{2,}/, ' ')
-          .gsub(/<!--.*?-->/m, '')
-          .gsub(/;}/, '}')
-          .gsub(/\/\*.*?\*\//m, '')
-          .gsub(/\s+/, ' ')
-          .strip
+      html.gsub(/>\s+</, '><')   # Remove spaces between tags
+          .gsub(/\n+/, ' ')      # Remove newlines
+          .gsub(/\s{2,}/, ' ')    # Replace multiple spaces with a single space
+          .gsub(/<!--.*?-->/m, '')  # Remove comments
+          .gsub(/;}/, '}')       # Fix CSS style minification
+          .gsub(/\/\*.*?\*\//m, '') # Remove CSS comments
+          .gsub(/\s+/, ' ')       # Clean up any remaining spaces
+          .strip                 # Remove trailing/leading whitespace
     end
 
+    # Minifies CSS content by removing extra spaces and comments
     def self.minify_css(css)
-      css.gsub(/\/\*.*?\*\//m, '')
-         .gsub(/\s+/, ' ')
-         .gsub(/\s*([{:;}])\s*/, '\1')
-         .gsub(/;}/, '}')
-         .strip
+      css.gsub(/\/\*.*?\*\//m, '')  # Remove CSS comments
+         .gsub(/\s+/, ' ')         # Replace multiple spaces with a single space
+         .gsub(/\s*([{:;}])\s*/, '\1')  # Remove spaces around CSS symbols
+         .gsub(/;}/, '}')           # Remove unnecessary semicolons in CSS
+         .strip                    # Remove any trailing spaces
     end
 
+    # Minifies JavaScript content by removing comments and extra spaces
     def self.minify_js(js)
-      js.gsub(/\/\/.*$/, '')
-         .gsub(/\/\*.*?\*\//m, '')
-         .gsub(/\s+/, ' ')
-         .strip
+      js.gsub(/\/\/.*$/, '')       # Remove single-line comments
+         .gsub(/\/\*.*?\*\//m, '') # Remove multi-line comments
+         .gsub(/\s+/, ' ')         # Remove extra spaces
+         .strip                    # Clean up any remaining whitespace
     end
   end
 
+  # Custom Page class for AMP pages
   class AmpPage < Page
     def initialize(site:, base:, original:, permalink:, output_dir:)
       @site = site
@@ -47,6 +52,7 @@ module Jekyll
       self.data["canonical_url"] = original.url
       self.data["is_amp"] = true
 
+      # Determine the content (either from markdown or existing HTML)
       html = if original.content.strip.empty? || original.output.to_s.strip != ''
                original.output.to_s
              else
@@ -57,14 +63,17 @@ module Jekyll
                markdown_converter.convert(rendered_liquid)
              end
 
+      # Convert the content to AMP-friendly format
       self.content = convert_to_amp(html)
     end
 
     private
 
+    # Converts the HTML to AMP-compatible format (removes or modifies certain tags)
     def convert_to_amp(html)
       doc = Nokogiri::HTML::DocumentFragment.parse(html)
 
+      # Convert <img> tags to <amp-img> tags
       doc.css("img").each do |img|
         amp_img = Nokogiri::XML::Node.new("amp-img", doc)
         amp_img["src"] = img["data-src"] || img["src"]
@@ -75,6 +84,7 @@ module Jekyll
         img.replace(amp_img)
       end
 
+      # Convert <iframe> tags to <amp-iframe> tags
       doc.css("iframe").each do |iframe|
         amp_iframe = Nokogiri::XML::Node.new("amp-iframe", doc)
         %w[src width height layout sandbox].each { |attr| amp_iframe[attr] = iframe[attr] if iframe[attr] }
@@ -85,6 +95,7 @@ module Jekyll
         iframe.replace(amp_iframe)
       end
 
+      # Minify and remove inline <script> tags
       doc.css("script").each do |script|
         if script["src"]&.include?("https://cdn.ampproject.org/")
           next
@@ -96,50 +107,58 @@ module Jekyll
         end
       end
 
+      # Minify the inline <style> tags
       doc.css("style").each do |style|
         style.content = HTMLUtils.minify_css(style.content)
       end
 
+      # Return the final minified HTML
       HTMLUtils.minify_html(doc.to_html)
     end
   end
 
+  # Main generator class to generate AMP pages and archives
   class AllInOneGenerator < Generator
     safe true
     priority :low
 
+    # Main method for generating AMP pages and archives
     def generate(site)
-      generate_amp(site)
-      generate_archives(site)
+      generate_amp(site)       # Generate AMP versions for pages and posts
+      generate_archives(site)  # Generate archives for tags, categories, authors, and dates
     end
 
+    # Generate AMP pages for posts, pages, and collections
     def generate_amp(site)
       markdown_exts = [".md", ".markdown"]
 
       site.pages.each do |page|
-        next if page.url.include?("/amp/")
-        next unless markdown_exts.include?(page.extname)
+        next if page.url.include?("/amp/") # Skip already AMP pages
+        next unless markdown_exts.include?(page.extname) # Only process markdown files
 
         amp_permalink = File.join((page.data["permalink"] || page.url).sub(%r!/$!, ""), "amp", "/")
         output_dir = page.url == "/" ? "amp" : amp_permalink.sub(%r!^/!, "").chomp("/")
 
+        # Create AMP page for each page
         site.pages << AmpPage.new(site: site, base: site.source, original: page, permalink: amp_permalink, output_dir: output_dir)
       end
 
       site.posts.docs.each do |post|
-        next if post.url.include?("/amp/")
+        next if post.url.include?("/amp/") # Skip already AMP pages
         amp_permalink = File.join(post.url.sub(%r!/$!, ""), "amp", "/")
         output_dir = amp_permalink.sub(%r!^/!, "").chomp("/")
 
+        # Create AMP page for each post
         site.pages << AmpPage.new(site: site, base: site.source, original: post, permalink: amp_permalink, output_dir: output_dir)
       end
 
       site.collections.each do |name, collection|
-        next if ["posts", "drafts", "pages"].include?(name)
+        next if ["posts", "drafts", "pages"].include?(name)  # Skip certain collections
 
+        # Create AMP pages for other collections (e.g., products)
         collection.docs.each do |doc|
-          next if doc.url.include?("/amp/")
-          next unless markdown_exts.include?(doc.extname)
+          next if doc.url.include?("/amp/")  # Skip already AMP pages
+          next unless markdown_exts.include?(doc.extname)  # Only process markdown files
 
           amp_permalink = File.join(doc.url.sub(%r!/$!, ""), "amp", "/")
           output_dir = amp_permalink.sub(%r!^/!, "").chomp("/")
@@ -149,10 +168,11 @@ module Jekyll
       end
     end
 
+    # Generate archive pages for tags, categories, authors, and date-based archives
     def generate_archives(site)
       archive_dir = "_pages"
       FileUtils.mkdir_p(archive_dir)
-      Dir.glob("#{archive_dir}/_auto_*.md").each { |f| File.delete(f) }
+      Dir.glob("#{archive_dir}/_auto_*.md").each { |f| File.delete(f) } # Clean up old archives
 
       posts = site.posts.docs
 
@@ -162,9 +182,10 @@ module Jekyll
       generate_date_archives(posts, archive_dir)
     end
 
+    # Generate archive pages for tags, categories, and authors
     def generate_taxonomy_pages(type, values, dir)
       values.each do |val|
-        slug = val.downcase.strip.gsub(/\s+/, "-")
+        slug = val.downcase.strip.gsub(/\s+/, "-") # Normalize taxonomy names
         filename = "_auto_#{type}_#{slug}.md"
         permalink = case type
                     when "tag" then "/tag/#{slug}/"
@@ -182,10 +203,12 @@ module Jekyll
           ---
         YAML
 
+        # Write the generated archive page file
         File.write(File.join(dir, filename), content)
       end
     end
 
+    # Generate archive pages for year and month-based archives
     def generate_date_archives(posts, dir)
       years = posts.map { |p| p.date.year }.uniq
 
@@ -203,6 +226,7 @@ module Jekyll
         YAML
         File.write(File.join(dir, filename_year), content_year)
 
+        # Generate monthly archives for each year
         (1..12).each do |month|
           matching = posts.select { |p| p.date.year == year && p.date.month == month }
           next if matching.empty?
@@ -225,6 +249,7 @@ module Jekyll
     end
   end
 
+  # Hook to minify the HTML output after rendering
   Jekyll::Hooks.register [:pages, :documents], :post_render do |item|
     next unless item.output_ext == ".html"
     item.output = Jekyll::HTMLUtils.minify_html(item.output)

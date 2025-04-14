@@ -18,61 +18,60 @@ lang: id
 {% elsif page.type == "month" %}
   {% assign posts = site.posts | where_exp: "p", "p.date | date: '%Y-%m' == page.year | append: '-' | append: page.month | date: '%Y-%m'" %}
 {% endif %}
+
 <p>{{ page.layout }}</p>
 <p>{{ page.type }}</p>
+
 <h1 class='main-heading'>
     {% if page.type == "category" %}
       {{ page.title }}
-  
     {% elsif page.type == "tag" %}
       {{ page.title }}
-  
     {% elsif page.type == "year" %}
       {% assign year = page.url | split: '/' | last %}
       {{ year }}
-  
     {% elsif page.type == "month" %}
       {% assign parts = page.url | split: '/' %}
       {% assign year = parts[2] %}
       {% assign month_num = parts[3] %}
-  
+
       {% assign bulan = "" %}
       {% case month_num %}
-        {% when "01" or "1" %} {% assign bulan = "Januari" %}
-        {% when "02" or "2" %} {% assign bulan = "Februari" %}
-        {% when "03" or "3" %} {% assign bulan = "Maret" %}
-        {% when "04" or "4" %} {% assign bulan = "April" %}
-        {% when "05" or "5" %} {% assign bulan = "Mei" %}
-        {% when "06" or "6" %} {% assign bulan = "Juni" %}
-        {% when "07" or "7" %} {% assign bulan = "Juli" %}
-        {% when "08" or "8" %} {% assign bulan = "Agustus" %}
-        {% when "09" or "9" %} {% assign bulan = "September" %}
+        {% when "01" %} {% assign bulan = "Januari" %}
+        {% when "02" %} {% assign bulan = "Februari" %}
+        {% when "03" %} {% assign bulan = "Maret" %}
+        {% when "04" %} {% assign bulan = "April" %}
+        {% when "05" %} {% assign bulan = "Mei" %}
+        {% when "06" %} {% assign bulan = "Juni" %}
+        {% when "07" %} {% assign bulan = "Juli" %}
+        {% when "08" %} {% assign bulan = "Agustus" %}
+        {% when "09" %} {% assign bulan = "September" %}
         {% when "10" %} {% assign bulan = "Oktober" %}
         {% when "11" %} {% assign bulan = "November" %}
         {% when "12" %} {% assign bulan = "Desember" %}
       {% endcase %}
-  
+
       {{ bulan }} {{ year }}
-  
     {% endif %}
-  </h1>
-{% if page.posts and page.posts != empty %}
+</h1>
+
+{% if posts and posts != empty %}
 <div itemscope itemtype="https://schema.org/ItemList">
-    {% for post in page.posts %}
+    {% for post in posts %}
     <article class="post-container" itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement">
       <meta itemprop="position" content="{{ forloop.index }}">
       <div class="post-image">
         <a href="{{ post.url }}" title="{{ post.title }}" itemprop="url">
-    <img src="{{ post.image }}"
-      width="1600"
-      height="900"
-      loading="lazy" 
-      class="lazy" 
-      alt="{{ post.title }}"
-      title="{{ post.title }}">
+          <img src="{{ post.image }}"
+            width="1600"
+            height="900"
+            loading="lazy" 
+            class="lazy" 
+            alt="{{ post.title }}"
+            title="{{ post.title }}">
         </a>
       </div>
-  
+
       <div class="post-content">
         <h2>
           <a href="{{ post.url }}" title="{{ post.title }}" itemprop="name">{{ post.title }}</a>
@@ -84,7 +83,7 @@ lang: id
       </div>
     </article>
     {% endfor %}
-  </div>  
+</div>  
 {% else %}
   <p>Tidak ada konten di arsip ini.</p>
 {% endif %}
