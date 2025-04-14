@@ -110,7 +110,7 @@ module Jekyll
 
   class AmpGenerator < Generator
     safe true
-    priority :low
+    priority :lowest
 
     def generate(site)
       markdown_exts = [".md", ".markdown"]

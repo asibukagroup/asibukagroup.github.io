@@ -10,9 +10,7 @@ layout: default
   {% elsif page.category %}
     {{ page.category | capitalize }}
   {% elsif page.tags %}
-    {{ page.tags | first | capitalize }} <!-- Get first tag and capitalize -->
-  {% else %}
-    Arsip
+    {{ page.tags | first | capitalize }}
   {% endif %}
 </h1>
 
