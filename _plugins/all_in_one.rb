@@ -1,12 +1,13 @@
 require "jekyll"
 require "nokogiri"
-require "fileutils"
 
+# Utility module for HTML, CSS, and JS minification
 module Jekyll
   module HTMLUtils
     def self.minify_html(html)
       doc = Nokogiri::HTML(html)
       html = doc.to_html
+
       html.gsub(/>\s+</, '><')
           .gsub(/\n+/, ' ')
           .gsub(/\s{2,}/, ' ')
@@ -52,8 +53,10 @@ module Jekyll
              else
                markdown_converter = site.find_converter_instance(Jekyll::Converters::Markdown)
                payload = { "page" => original.data, "site" => site.site_payload["site"] }
+
                liquid = site.liquid_renderer.file(original.path).parse(original.content)
                rendered_liquid = liquid.render!(payload, registers: { site: site, page: original })
+
                markdown_converter.convert(rendered_liquid)
              end
 
@@ -69,7 +72,6 @@ module Jekyll
         amp_img = Nokogiri::XML::Node.new("amp-img", doc)
         amp_img["src"] = img["data-src"] || img["src"]
         amp_img["alt"] = img["alt"] if img["alt"]
-        amp_img["title"] = img["title"] if img["title"]
         amp_img["width"] = img["width"] || "600"
         amp_img["height"] = img["height"] || "400"
         amp_img["layout"] = img["layout"] || "responsive"
@@ -105,16 +107,11 @@ module Jekyll
     end
   end
 
-  class AllInOneGenerator < Generator
+  class AmpGenerator < Generator
     safe true
     priority :low
 
     def generate(site)
-      generate_amp(site)
-      generate_archives(site)
-    end
-
-    def generate_amp(site)
       markdown_exts = [".md", ".markdown"]
 
       site.pages.each do |page|
@@ -140,92 +137,22 @@ module Jekyll
 
         collection.docs.each do |doc|
           next if doc.url.include?("/amp/")
-          next unless markdown_exts.include?(doc.extname)
-
           amp_permalink = File.join(doc.url.sub(%r!/$!, ""), "amp", "/")
           output_dir = amp_permalink.sub(%r!^/!, "").chomp("/")
 
-          site.pages << AmpPage.new(site: site, base: site.source, original: doc, permalink: amp_permalink, output_dir: output_dir)
-        end
-      end
-    end
-
-    def generate_archives(site)
-      archive_dir = "_pages"
-      FileUtils.mkdir_p(archive_dir)
-      Dir.glob("#{archive_dir}/_auto_*.md").each { |f| File.delete(f) }
-
-      posts = site.posts.docs
-
-      generate_taxonomy_pages("tag", posts.flat_map(&:tags).uniq, archive_dir)
-      generate_taxonomy_pages("category", posts.flat_map(&:categories).uniq, archive_dir)
-      generate_taxonomy_pages("author", posts.map { |p| p.data["author"] }.compact.uniq, archive_dir)
-      generate_date_archives(posts, archive_dir)
-    end
-
-    def generate_taxonomy_pages(type, values, dir)
-      values.each do |val|
-        slug = val.downcase.strip.gsub(/\s+/, "-")
-        filename = "_auto_#{type}_#{slug}.md"
-        permalink = case type
-                    when "tag" then "/tag/#{slug}/"
-                    when "category" then "/kategori/#{slug}/"
-                    when "author" then "/penulis/#{slug}/"
-                    end
-
-        content = <<~YAML
-          ---
-          layout: archive
-          title: "#{val.capitalize}"
-          permalink: "#{permalink}"
-          type: #{type}
-          #{type}: "#{val}"
-          ---
-        YAML
-
-        File.write(File.join(dir, filename), content)
-      end
-    end
-
-    def generate_date_archives(posts, dir)
-      years = posts.map { |p| p.date.year }.uniq
-
-      years.each do |year|
-        filename_year = "_auto_year_#{year}.md"
-        permalink_year = "/arsip/#{year}/"
-        content_year = <<~YAML
-          ---
-          layout: archive
-          title: "Arsip #{year}"
-          permalink: "#{permalink_year}"
-          type: year
-          year: #{year}
-          ---
-        YAML
-        File.write(File.join(dir, filename_year), content_year)
-
-        (1..12).each do |month|
-          matching = posts.select { |p| p.date.year == year && p.date.month == month }
-          next if matching.empty?
-
-          filename_month = "_auto_month_#{year}_#{month.to_s.rjust(2, "0")}.md"
-          permalink_month = "/arsip/#{year}/#{month.to_s.rjust(2, "0")}/"
-          content_month = <<~YAML
-            ---
-            layout: archive
-            title: "Arsip #{year}/#{month.to_s.rjust(2, "0")}"
-            permalink: "#{permalink_month}"
-            type: month
-            year: #{year}
-            month: #{month}
-            ---
-          YAML
-          File.write(File.join(dir, filename_month), content_month)
+          site.pages << AmpPage.new(
+            site: site,
+            base: site.source,
+            original: doc,
+            permalink: amp_permalink,
+            output_dir: output_dir
+          )
         end
       end
     end
   end
 
+  # Hook: Minify final HTML output for all pages and documents (AMP or not)
   Jekyll::Hooks.register [:pages, :documents], :post_render do |item|
     next unless item.output_ext == ".html"
     item.output = Jekyll::HTMLUtils.minify_html(item.output)

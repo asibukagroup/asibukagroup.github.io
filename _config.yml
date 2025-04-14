@@ -112,5 +112,7 @@ plugins:
   - jekyll-sitemap
   - ./_plugins/all_in_one.rb
 # ------------------------------
-# Jekyll Archives Plugins
+# Include
 # ------------------------------
+include:
+  - _pages

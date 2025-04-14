@@ -1,58 +1,24 @@
 ---
 layout: default
-description: Daftar konten yang ada disortir sesuai pilihan arsip.
-image: https://asibuka.com/assets/img/ASIBUKA-Blue.webp
-author: ASIBUKA Group
-robots: index, follow
-keywords: bulan, arsip
-lang: id
 ---
+{% assign posts = site.posts | where_exp: "post", "true" %}
 {% if page.type == "tag" %}
-  {% assign posts = site.posts | where_exp: "p", "p.tags contains page.tag" %}
+  {% assign posts = posts | where_exp: "post", "post.tags contains page.tag" %}
 {% elsif page.type == "category" %}
-  {% assign posts = site.posts | where_exp: "p", "p.categories contains page.category" %}
+  {% assign posts = posts | where_exp: "post", "post.categories contains page.category" %}
 {% elsif page.type == "author" %}
-  {% assign posts = site.posts | where: "author", page.author %}
+  {% assign posts = posts | where_exp: "post", "post.author == page.author" %}
 {% elsif page.type == "year" %}
-  {% assign posts = site.posts | where_exp: "p", "p.date | date: '%Y' == page.year | to_s" %}
+  {% assign posts = posts | where_exp: "post", "post.date | date: '%Y' == page.year" %}
 {% elsif page.type == "month" %}
-  {% assign posts = site.posts | where_exp: "p", "p.date | date: '%Y-%m' == page.year | append: '-' | append: page.month | date: '%Y-%m'" %}
+  {% assign posts = posts | where_exp: "post", "post.date | date: '%Y-%m' == page.year | append: '-' | append: page.month" %}
 {% endif %}
 
 <p>{{ page.layout }}</p>
 <p>{{ page.type }}</p>
 
 <h1 class='main-heading'>
-    {% if page.type == "category" %}
-      {{ page.title }}
-    {% elsif page.type == "tag" %}
-      {{ page.title }}
-    {% elsif page.type == "year" %}
-      {% assign year = page.url | split: '/' | last %}
-      {{ year }}
-    {% elsif page.type == "month" %}
-      {% assign parts = page.url | split: '/' %}
-      {% assign year = parts[2] %}
-      {% assign month_num = parts[3] %}
-
-      {% assign bulan = "" %}
-      {% case month_num %}
-        {% when "01" %} {% assign bulan = "Januari" %}
-        {% when "02" %} {% assign bulan = "Februari" %}
-        {% when "03" %} {% assign bulan = "Maret" %}
-        {% when "04" %} {% assign bulan = "April" %}
-        {% when "05" %} {% assign bulan = "Mei" %}
-        {% when "06" %} {% assign bulan = "Juni" %}
-        {% when "07" %} {% assign bulan = "Juli" %}
-        {% when "08" %} {% assign bulan = "Agustus" %}
-        {% when "09" %} {% assign bulan = "September" %}
-        {% when "10" %} {% assign bulan = "Oktober" %}
-        {% when "11" %} {% assign bulan = "November" %}
-        {% when "12" %} {% assign bulan = "Desember" %}
-      {% endcase %}
-
-      {{ bulan }} {{ year }}
-    {% endif %}
+  {{ page.title }}
 </h1>
 
 {% if posts and posts != empty %}
