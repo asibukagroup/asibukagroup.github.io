@@ -115,4 +115,4 @@ jekyll-archives:
     month: '/:year/:month/'
     tag: '/tag/:name/'
     category: '/kategori/:name/'
-    authors: '/penulis/:name/'
+    authors: '/penulis/:author/'
