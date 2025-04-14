@@ -3,15 +3,7 @@ layout: default
 ---
 
 <h1 class='main-heading'>
-  {% if page.year and page.month %}
-    {{ page.month | date: "%B" | capitalize }} {{ page.year }}
-  {% elsif page.year %}
-    {{ page.year }}
-  {% elsif page.category %}
-    {{ page.category | capitalize }}
-  {% elsif page.tags %}
-    {{ page.tags | first | capitalize }}
-  {% endif %}
+{{ page.title }}
 </h1>
 <p>Year: {{ page.year }}</p>
 <p>Month: {{ page.month }}</p>
