@@ -11,7 +11,5 @@ robots: index, follow
 lang: id
 ---
 <h1 class='main-heading'>{{ page.title }}</h1>
-
-{{ page.description }}
-
-{% include image.html src="https://asibuka.com/assets/img/ASIBUKA-Blue.webp" title="Logo ASIUBKA" width="300" height="250" layout="fixed" %}
+<p>{{ page.description }}</p>
+<img src='https://asibuka.com/assets/img/ASIBUKA-Blue.webp' width='300' height='300' alt='Logo ASIUBKA' title='Logo ASIUBKA'>
