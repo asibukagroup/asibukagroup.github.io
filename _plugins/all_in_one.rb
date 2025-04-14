@@ -213,10 +213,32 @@ module Jekyll
     next if page.data["is_amp"]
     next unless page.data["jekyll-archives"]
     next if page.url.include?("/amp/")
-
+  
+    # Fallback: infer type from URL if not explicitly defined
+    archive_type = page.data["type"]
+    if archive_type.nil?
+      archive_type = if page.url.include?("/tag/")
+                       "tag"
+                     elsif page.url.include?("/kategori/") || page.url.include?("/category/")
+                       "category"
+                     elsif page.url =~ %r!/20\d{2}/\d{2}/!
+                       "month"
+                     elsif page.url =~ %r!/20\d{2}/!
+                       "year"
+                     end
+    end
+  
+    # Inject inferred type into data for AMP copy
+    amp_data = page.data.merge({
+      "type" => archive_type,
+      "jekyll-archives" => true,
+      "is_amp" => true,
+      "canonical_url" => page.url
+    })
+  
     amp_permalink = File.join(page.url.sub(%r!/$!, ""), "amp", "/")
     output_dir = amp_permalink.sub(%r!^/!, "").chomp("/")
-
+  
     amp_page = Jekyll::AmpPage.new(
       site: page.site,
       base: page.site.source,
@@ -224,9 +246,11 @@ module Jekyll
       permalink: amp_permalink,
       output_dir: output_dir
     )
-
+  
+    amp_page.data.merge!(amp_data)  # ✅ Ensure AMP page has `type`, `jekyll-archives`, etc.
     page.site.pages << amp_page
   end
+  
 
   # Hook: Minify final HTML output for all pages and documents (AMP or not)
   Jekyll::Hooks.register [:pages, :documents], :post_render do |item|
