@@ -43,9 +43,6 @@ collections:
   posts:
     output: true
     permalink: /:title/
-  pages:
-    output: true
-    permalink: /:title/
   products:
     output: true
     permalink: /produk/:title/
