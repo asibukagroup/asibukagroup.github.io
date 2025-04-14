@@ -69,15 +69,6 @@ defaults:
       author: "ASIBUKA Group"
       lang: "id"
       is_amp: false
-
-  - scope:
-      path: ""           # Applies to all pages
-      type: "pages"
-    values:
-      layout: "post"
-      author: "ASIBUKA Group"
-      lang: "id"
-      is_amp: false
 # ------------------------------
 # Navigation links
 # ------------------------------
@@ -98,6 +89,7 @@ plugins_dir: _plugins
 plugins:
   - jekyll-archives
   - jekyll-sitemap
+  - ./_plugins/all_in_one.rb
 # ------------------------------
 # Jekyll Archives
 # ------------------------------
