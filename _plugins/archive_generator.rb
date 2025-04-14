@@ -19,6 +19,7 @@ module Jekyll
       generate_taxonomy_pages("tag", posts.flat_map { |p| p.data["tags"] || [] }.uniq, archive_dir)
       generate_taxonomy_pages("category", posts.flat_map { |p| p.data["categories"] || [] }.uniq, archive_dir)
       generate_taxonomy_pages("author", posts.map { |p| p.data["author"] }.compact.uniq, archive_dir)
+      generate_taxonomy_pages("year", posts.map { |p| p.date.year }.uniq, archive_dir) # Make sure year is included
       generate_date_archives(posts, archive_dir)
     end
 
@@ -31,6 +32,7 @@ module Jekyll
                     when "tag" then "/tag/#{slug}/"
                     when "category" then "/kategori/#{slug}/"
                     when "author" then "/penulis/#{slug}/"
+                    when "year" then "/arsip/#{slug}/"  # Fixed: added path for year-based archive
                     end
 
         content = <<~YAML
