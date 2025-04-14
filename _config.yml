@@ -108,11 +108,9 @@ jekyll-archives:
     - month
     - categories
     - tags
-    - authors
   layout: archive
   permalinks:
     year: '/:year/'
     month: '/:year/:month/'
     tag: '/tag/:name/'
     category: '/kategori/:name/'
-    authors: '/penulis/:author/'
