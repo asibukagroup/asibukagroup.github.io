@@ -18,7 +18,7 @@ body.dark{background:#181818;color:var(--white)}
 body.dark .main-heading{color:var(--theme-color)}
 body.dark .main-heading::after{background:linear-gradient(90deg,var(--theme-color),#fff);opacity:.9}
 body.dark .main-heading:hover{text-shadow:0 0 10px #004aadcc}
-.one-column-wrapper{margin:0 auto}
+.one-column-wrapper,.ads{margin:0 auto}
 /* A (Hyperlink) */
 a{background-color:transparent;-webkit-text-decoration-skip:objects;text-decoration:none;color:var(--theme-color)}
 body.dark a{color:var(--white)}
