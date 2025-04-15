@@ -7,7 +7,7 @@ module Jekyll
     priority :normal
 
     def generate(site)
-      # Create AMP pages for posts, pages, and archives
+      # Generate AMP pages for posts, pages, and archives
       generate_amp_pages_for_posts(site)
       generate_amp_pages_for_pages(site)
       generate_amp_pages_for_archives(site)
@@ -40,7 +40,7 @@ module Jekyll
     def generate_amp_page(site, item)
       # Create a new AMP page by duplicating the original
       amp_page = Jekyll::Page.new(site, site.source, "_pages", "#{item.url}amp/")
-      
+
       # Copy original front matter and add 'is_amp' flag
       amp_page.data = item.data.clone
       amp_page.data["is_amp"] = true
@@ -48,6 +48,12 @@ module Jekyll
       
       # Set AMP permalink
       amp_page.data["permalink"] = "#{item.url}amp/"
+
+      # Render the content (HTML output)
+      rendered_content = site.layouts[item.data["layout"]].render(item.site_payload.merge("content" => item.content))
+
+      # Copy the rendered HTML content
+      amp_page.content = rendered_content
 
       # Write the AMP page
       site.pages << amp_page
