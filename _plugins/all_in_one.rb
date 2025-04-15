@@ -1,57 +1,56 @@
-require "jekyll"
+require 'jekyll'
+require 'fileutils'
 
 module Jekyll
   class AmpGenerator < Generator
     safe true
-    priority :low
+    priority :normal
 
     def generate(site)
-      all_docs = []
-
-      # Include all relevant collections
-      collections_to_include = %w(posts pages products)
-      collections_to_include.each do |coll|
-        all_docs.concat(site.collections[coll]&.docs || [])
-      end
-
-      # Include root .md pages
-      all_docs.concat(site.pages.select { |page| page.path.end_with?(".md") })
-
-      # Include archive pages (optional, if they are treated as Pages)
-      archive_pages = site.pages.select { |page| page.data["layout"] == "archive" }
-      all_docs.concat(archive_pages)
-
-      amp_pages = []
-
-      all_docs.each do |doc|
-        next if doc.data["is_amp"] # skip if already AMP
-
-        amp_doc = doc.dup
-        amp_doc.data = Jekyll::Utils.deep_merge_hashes(doc.data, {})
-
-        # Derive AMP permalink
-        base_url = ensure_slash(doc.url)
-        amp_doc.data["permalink"] = File.join(base_url, "amp/")
-
-        # Set AMP-specific values
-        amp_doc.data["is_amp"] = true
-
-        # Retain the original layout
-        original_layout = doc.data["layout"] || "default"
-        amp_doc.data["layout"] = original_layout
-
-        # Set AMP path
-        amp_doc.instance_variable_set(:@path, nil) # let Jekyll auto-generate
-        amp_pages << amp_doc
-      end
-
-      site.pages.concat(amp_pages)
+      # Create AMP pages for posts, pages, and archives
+      generate_amp_pages_for_posts(site)
+      generate_amp_pages_for_pages(site)
+      generate_amp_pages_for_archives(site)
     end
 
-    private
+    def generate_amp_pages_for_posts(site)
+      site.posts.docs.each do |post|
+        generate_amp_page(site, post)
+      end
+    end
 
-    def ensure_slash(path)
-      path.end_with?("/") ? path : "#{path}/"
+    def generate_amp_pages_for_pages(site)
+      site.pages.each do |page|
+        # Create AMP version for normal pages (not in posts)
+        generate_amp_page(site, page) unless page.url.include?("amp")
+      end
+    end
+
+    def generate_amp_pages_for_archives(site)
+      # Handle archive pages (tag, category, year, month)
+      site.pages.each do |page|
+        # Skip non-archive pages
+        next unless page.data["layout"] == "archive"
+        
+        # Create AMP version for archive pages
+        generate_amp_page(site, page)
+      end
+    end
+
+    def generate_amp_page(site, item)
+      # Create a new AMP page by duplicating the original
+      amp_page = Jekyll::Page.new(site, site.source, "_pages", "#{item.url}amp/")
+      
+      # Copy original front matter and add 'is_amp' flag
+      amp_page.data = item.data.clone
+      amp_page.data["is_amp"] = true
+      amp_page.data["layout"] = item.data["layout"]  # Use original layout
+      
+      # Set AMP permalink
+      amp_page.data["permalink"] = "#{item.url}amp/"
+
+      # Write the AMP page
+      site.pages << amp_page
     end
   end
 end
