@@ -6,15 +6,38 @@ robots: index, follow
 ---
 
 <h1 class='main-heading'>
-  {% if page.type == "month" %}
   {% assign url_parts = page.url | split: '/' %}
-  {% assign year = url_parts[1] %}
-  {% assign raw_month = url_parts[2] | plus: 0 %}
+{% assign year = url_parts[1] %}
+{% assign raw_month = url_parts[2] | plus: 0 %}
 
-  {% assign month_names = "Januari,Februari,Maret,April,Mei,Juni,Juli,Agustus,September,Oktober,November,Desember" | split: ',' %}
-  {% assign month_name = month_names[raw_month | minus: 1] %}
+{% if raw_month == 1 %}
+  {% assign month_name = "Januari" %}
+{% elsif raw_month == 2 %}
+  {% assign month_name = "Februari" %}
+{% elsif raw_month == 3 %}
+  {% assign month_name = "Maret" %}
+{% elsif raw_month == 4 %}
+  {% assign month_name = "April" %}
+{% elsif raw_month == 5 %}
+  {% assign month_name = "Mei" %}
+{% elsif raw_month == 6 %}
+  {% assign month_name = "Juni" %}
+{% elsif raw_month == 7 %}
+  {% assign month_name = "Juli" %}
+{% elsif raw_month == 8 %}
+  {% assign month_name = "Agustus" %}
+{% elsif raw_month == 9 %}
+  {% assign month_name = "September" %}
+{% elsif raw_month == 10 %}
+  {% assign month_name = "Oktober" %}
+{% elsif raw_month == 11 %}
+  {% assign month_name = "November" %}
+{% elsif raw_month == 12 %}
+  {% assign month_name = "Desember" %}
+{% endif %}
 
-  {{ month_name }} {{ year }}
+{{ month_name }} {{ year }}
+
   {% elseif page.type == "year" %}
     {% assign year = page.url | split: '/' | second %}
     {{ year }}
