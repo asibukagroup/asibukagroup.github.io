@@ -111,36 +111,51 @@ module Jekyll
   class AmpGenerator < Generator
     safe false
     priority :lowest
-
+  
     def generate(site)
       markdown_exts = [".md", ".markdown"]
-
+  
       site.pages.each do |page|
         next if page.url.include?("/amp/")
-        next unless markdown_exts.include?(page.extname)
-
+        is_archive = %w[year month day tag category].include?(page.data["type"])
+        is_html = page.extname == ".html"
+  
+        next unless markdown_exts.include?(page.extname) || is_archive
+  
         amp_permalink = File.join((page.data["permalink"] || page.url).sub(%r!/$!, ""), "amp", "/")
         output_dir = page.url == "/" ? "amp" : amp_permalink.sub(%r!^/!, "").chomp("/")
-
-        site.pages << AmpPage.new(site: site, base: site.source, original: page, permalink: amp_permalink, output_dir: output_dir)
+  
+        site.pages << AmpPage.new(
+          site: site,
+          base: site.source,
+          original: page,
+          permalink: amp_permalink,
+          output_dir: output_dir
+        )
       end
-
+  
       site.posts.docs.each do |post|
         next if post.url.include?("/amp/")
         amp_permalink = File.join(post.url.sub(%r!/$!, ""), "amp", "/")
         output_dir = amp_permalink.sub(%r!^/!, "").chomp("/")
-
-        site.pages << AmpPage.new(site: site, base: site.source, original: post, permalink: amp_permalink, output_dir: output_dir)
+  
+        site.pages << AmpPage.new(
+          site: site,
+          base: site.source,
+          original: post,
+          permalink: amp_permalink,
+          output_dir: output_dir
+        )
       end
-
+  
       site.collections.each do |name, collection|
-        next if ["posts", "drafts", "pages"].include?(name)
-
+        next if %w[posts drafts pages].include?(name)
+  
         collection.docs.each do |doc|
           next if doc.url.include?("/amp/")
           amp_permalink = File.join(doc.url.sub(%r!/$!, ""), "amp", "/")
           output_dir = amp_permalink.sub(%r!^/!, "").chomp("/")
-
+  
           site.pages << AmpPage.new(
             site: site,
             base: site.source,
@@ -152,6 +167,7 @@ module Jekyll
       end
     end
   end
+  
 
   # Hook: Minify final HTML output for all pages and documents
   Jekyll::Hooks.register [:pages, :documents], :post_render do |item|
