@@ -149,7 +149,7 @@ module Jekyll
       end
   
       site.collections.each do |name, collection|
-        next if %w[posts drafts pages].include?(name)
+        next if %w[drafts].include?(name)
   
         collection.docs.each do |doc|
           next if doc.url.include?("/amp/")
