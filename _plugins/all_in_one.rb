@@ -8,19 +8,19 @@ module Jekyll
     def self.minify_html(html)
       doc = Nokogiri::HTML(html)
       html = doc.to_html
-
-      # Remove comments, line breaks between tags, and excess spaces
+    
+      # Remove comments and reduce tag spacing without touching attribute values
       html = html.gsub(/<!--.*?-->/m, '')
-                 .gsub(/>\s+</, '><')
-                 .gsub(/\n+/, ' ')
+                 .gsub(/>\s+</, '><')        # Remove whitespace between tags
+                 .gsub(/\n+/, ' ')           # Remove newlines
                  .gsub(/;}/, '}')
-                 .gsub(/\/\*.*?\*\//m, '')
-
-      # Collapse multiple spaces only if not inside quotes (to preserve AMP bindings)
+                 .gsub(/\/\*.*?\*\//m, '')   # Remove CSS comments
+    
+      # Collapse extra spaces outside of quoted strings
       html = html.gsub(/("[^"]*"|'[^']*')|(\s{2,})/) do |match|
         match.start_with?('"', "'") ? match : ' '
       end
-
+    
       html.strip
     end
 

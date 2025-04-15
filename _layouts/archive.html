@@ -4,7 +4,6 @@ title: Arsip
 description: Kumpulan artikel yang diurutkan berdasakan arsip terpilih.
 robots: index, follow
 ---
-
 <h1 class='main-heading'>
   {% if page.type == "month" %}
   {% assign url_parts = page.url | split: '/' %}
@@ -73,8 +72,6 @@ robots: index, follow
 {% endif %}
 
 </h1>
-<p>Year: {{ page.year }}</p>
-<p>Month: {{ page.month }}</p>
 {% if page.posts and page.posts != empty %}
   <div itemscope itemtype="https://schema.org/ItemList">
     {% for post in page.posts %}
