@@ -28,6 +28,7 @@ module Jekyll
       
         html.strip
       end
+    end
 
     def self.minify_css(css)
       css.gsub(/\/\*.*?\*\//m, '')
