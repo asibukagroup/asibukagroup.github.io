@@ -7,21 +7,14 @@ robots: index, follow
 
 <h1 class='main-heading'>
   {% if page.type == "month" %}
-    <!-- Month archive (e.g., /2025/08/) -->
-    {% assign url_parts = page.url | split: '/' %}
-{% assign year = url_parts[1] %}
-{% assign month_number = url_parts[2] %}
+  {% assign url_parts = page.url | split: '/' %}
+  {% assign year = url_parts[1] %}
+  {% assign raw_month = url_parts[2] | plus: 0 %} {# This strips leading zero #}
 
-{% capture month_names %}
-  "Januari", "Februari", "Maret", "April", "Mei", "Juni", 
-  "Juli", "Agustus", "September", "Oktober", "November", "Desember"
-{% endcapture %}
-{% assign month_names_array = month_names | split: ',' %}
-{% assign month_name = month_names_array[month_number | minus: 1] %}
+  {% assign month_names = "Januari,Februari,Maret,April,Mei,Juni,Juli,Agustus,September,Oktober,November,Desember" | split: ',' %}
+  {% assign month_name = month_names[raw_month | minus: 1] %}
 
-{{ month_name | strip }} {{ year }}
-
-  
+  {{ month_name }} {{ year }}
   {% elsif page.type == "year" %}
     <!-- Year archive (e.g., /2025/) -->
     {% assign year = page.url | split: '/' | second %}
