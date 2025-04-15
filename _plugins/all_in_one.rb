@@ -38,9 +38,15 @@ module Jekyll
     end
 
     def generate_amp_page(site, item)
+      # Generate the AMP page path (in _pages folder, with 'amp' subfolder)
+      amp_page_path = File.join(site.source, "_pages", item.url, "amp")
+      
+      # Ensure the directory exists
+      FileUtils.mkdir_p(File.dirname(amp_page_path))
+      
       # Create a new AMP page by duplicating the original
       amp_page = Jekyll::Page.new(site, site.source, "_pages", "#{item.url}amp/")
-
+      
       # Copy original front matter and add 'is_amp' flag
       amp_page.data = item.data.clone
       amp_page.data["is_amp"] = true
@@ -48,10 +54,10 @@ module Jekyll
       
       # Set AMP permalink
       amp_page.data["permalink"] = "#{item.url}amp/"
-
+      
       # Render the content (HTML output)
       rendered_content = site.layouts[item.data["layout"]].render(item.site_payload.merge("content" => item.content))
-
+      
       # Copy the rendered HTML content
       amp_page.content = rendered_content
 
