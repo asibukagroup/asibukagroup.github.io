@@ -109,7 +109,7 @@ module Jekyll
   end
 
   class AmpGenerator < Generator
-    safe true
+    safe false
     priority :lowest
 
     def generate(site)

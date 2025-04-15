@@ -54,8 +54,6 @@ collections:
 disqus_shortname: "asibukagroup"
 future: true
 safe: false
-verbose: true  # Enable verbose output for debugging
-incremental: true
 markdown: kramdown
 # ------------------------------
 # Default Value
