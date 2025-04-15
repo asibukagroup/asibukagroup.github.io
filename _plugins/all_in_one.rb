@@ -1,33 +1,26 @@
 require "jekyll"
 require "nokogiri"
 
-# Utility module for HTML, CSS, and JS minification
 module Jekyll
   module HTMLUtils
-    # Safely minify HTML output, preserving AMP attributes like [class]="..."
+    # Minify HTML without breaking AMP attributes like [class]
     def self.minify_html(html)
-      doc = Nokogiri::HTML(html)
+      doc = Nokogiri::HTML::DocumentFragment.parse(html)
       html = doc.to_html
-      def self.minify_html(html)
-        doc = Nokogiri::HTML::DocumentFragment.parse(html)
-        html = doc.to_html
-      
-        html = html.gsub(/<!--.*?-->/m, '')
-                   .gsub(/>\s+</, '><')
-                   .gsub(/\n+/, ' ')
-                   .gsub(/;}/, '}')
-                   .gsub(/\/\*.*?\*\//m, '')
-      
-        html = html.gsub(/("[^"]*"|'[^']*')|(\s{2,})/) do
-          if $1 # keep quoted strings
-            $1
-          else
-            ' '
-          end
-        end
-      
-        html.strip
+
+      # Remove comments, but preserve AMP attributes like [class]
+      html = html.gsub(/<!--.*?-->/m, '')
+                 .gsub(/>\s+</, '><')              # Remove whitespace between tags
+                 .gsub(/\n+/, ' ')
+                 .gsub(/;}/, '}')
+                 .gsub(/\/\*.*?\*\//m, '')         # Remove CSS comments
+
+      # Collapse extra spaces outside quotes and brackets (preserve [class]="...")
+      html = html.gsub(/("[^"]*"|'[^']*'|\[[^\]]+\])|(\s{2,})/) do
+        $1 ? $1 : ' '
       end
+
+      html.strip
     end
 
     def self.minify_css(css)
@@ -46,7 +39,6 @@ module Jekyll
     end
   end
 
-  # Represents a generated AMP version of a page/post/archive
   class AmpPage < Page
     def initialize(site:, base:, original:, permalink:, output_dir:)
       @site = site
@@ -56,14 +48,12 @@ module Jekyll
       process(@name)
       @relative_path = original.relative_path
 
-      # Copy original front matter and mark as AMP
       self.data = original.data.dup
       self.data["layout"] ||= original.data["layout"]
       self.data["permalink"] = permalink
       self.data["canonical_url"] = original.url
       self.data["is_amp"] = true
 
-      # Get the original HTML content (already rendered)
       html = if original.output&.strip&.length&.positive?
                original.output.to_s
              else
@@ -81,11 +71,9 @@ module Jekyll
 
     private
 
-    # Convert basic HTML into valid AMP-compliant HTML
     def convert_to_amp(html)
       doc = Nokogiri::HTML::DocumentFragment.parse(html)
 
-      # Replace <img> with <amp-img>
       doc.css("img").each do |img|
         amp_img = Nokogiri::XML::Node.new("amp-img", doc)
         amp_img["src"] = img["data-src"] || img["src"]
@@ -96,7 +84,6 @@ module Jekyll
         img.replace(amp_img)
       end
 
-      # Replace <iframe> with <amp-iframe>
       doc.css("iframe").each do |iframe|
         amp_iframe = Nokogiri::XML::Node.new("amp-iframe", doc)
         %w[src width height layout sandbox].each { |attr| amp_iframe[attr] = iframe[attr] if iframe[attr] }
@@ -107,7 +94,6 @@ module Jekyll
         iframe.replace(amp_iframe)
       end
 
-      # Minify and preserve scripts if needed (AMP requires scripts to be limited)
       doc.css("script").each do |script|
         if script["src"]&.include?("https://cdn.ampproject.org/")
           next
@@ -118,17 +104,14 @@ module Jekyll
         end
       end
 
-      # Minify inline <style> blocks
       doc.css("style").each do |style|
         style.content = HTMLUtils.minify_css(style.content)
       end
 
-      # Return the final AMP HTML
       HTMLUtils.minify_html(doc.to_html)
     end
   end
 
-  # Generator that creates AMP versions of posts, pages, and archives
   class AmpGenerator < Generator
     safe false
     priority :lowest
@@ -136,7 +119,6 @@ module Jekyll
     def generate(site)
       markdown_exts = [".md", ".markdown"]
 
-      # Process standard pages
       site.pages.each do |page|
         next if page.url.include?("/amp/")
         is_archive = %w[year month day tag category].include?(page.data["type"])
@@ -154,7 +136,6 @@ module Jekyll
         )
       end
 
-      # Process blog posts
       site.posts.docs.each do |post|
         next if post.url.include?("/amp/")
         amp_permalink = File.join(post.url.sub(%r!/$!, ""), "amp", "/")
@@ -169,7 +150,6 @@ module Jekyll
         )
       end
 
-      # Process custom collections and archive pages (including jekyll-archives)
       site.collections.each do |name, collection|
         next if %w[drafts].include?(name)
 
@@ -192,7 +172,6 @@ module Jekyll
     end
   end
 
-  # Hook to minify all HTML output after rendering
   Jekyll::Hooks.register [:pages, :documents], :post_render do |item|
     next unless item.output_ext == ".html"
     item.output = Jekyll::HTMLUtils.minify_html(item.output)
