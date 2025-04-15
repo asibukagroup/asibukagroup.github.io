@@ -6,44 +6,72 @@ robots: index, follow
 ---
 
 <h1 class='main-heading'>
+  {% if page.type == "month" %}
   {% assign url_parts = page.url | split: '/' %}
-{% assign year = url_parts[1] %}
-{% assign raw_month = url_parts[2] | plus: 0 %}
+  {% assign year = url_parts[1] %}
+  {% assign raw_month = url_parts[2] | plus: 0 %}
 
-{% if raw_month == 1 %}
-  {% assign month_name = "Januari" %}
-{% elsif raw_month == 2 %}
-  {% assign month_name = "Februari" %}
-{% elsif raw_month == 3 %}
-  {% assign month_name = "Maret" %}
-{% elsif raw_month == 4 %}
-  {% assign month_name = "April" %}
-{% elsif raw_month == 5 %}
-  {% assign month_name = "Mei" %}
-{% elsif raw_month == 6 %}
-  {% assign month_name = "Juni" %}
-{% elsif raw_month == 7 %}
-  {% assign month_name = "Juli" %}
-{% elsif raw_month == 8 %}
-  {% assign month_name = "Agustus" %}
-{% elsif raw_month == 9 %}
-  {% assign month_name = "September" %}
-{% elsif raw_month == 10 %}
-  {% assign month_name = "Oktober" %}
-{% elsif raw_month == 11 %}
-  {% assign month_name = "November" %}
-{% elsif raw_month == 12 %}
-  {% assign month_name = "Desember" %}
-{% endif %}
+  {% if raw_month == 1 %}
+    {% assign month_name = "Januari" %}
+  {% else %}
+    {% if raw_month == 2 %}
+      {% assign month_name = "Februari" %}
+    {% else %}
+      {% if raw_month == 3 %}
+        {% assign month_name = "Maret" %}
+      {% else %}
+        {% if raw_month == 4 %}
+          {% assign month_name = "April" %}
+        {% else %}
+          {% if raw_month == 5 %}
+            {% assign month_name = "Mei" %}
+          {% else %}
+            {% if raw_month == 6 %}
+              {% assign month_name = "Juni" %}
+            {% else %}
+              {% if raw_month == 7 %}
+                {% assign month_name = "Juli" %}
+              {% else %}
+                {% if raw_month == 8 %}
+                  {% assign month_name = "Agustus" %}
+                {% else %}
+                  {% if raw_month == 9 %}
+                    {% assign month_name = "September" %}
+                  {% else %}
+                    {% if raw_month == 10 %}
+                      {% assign month_name = "Oktober" %}
+                    {% else %}
+                      {% if raw_month == 11 %}
+                        {% assign month_name = "November" %}
+                      {% else %}
+                        {% if raw_month == 12 %}
+                          {% assign month_name = "Desember" %}
+                        {% else %}
+                          {% assign month_name = "Bulan tidak dikenal" %}
+                        {% endif %}
+                      {% endif %}
+                    {% endif %}
+                  {% endif %}
+                {% endif %}
+              {% endif %}
+            {% endif %}
+          {% endif %}
+        {% endif %}
+      {% endif %}
+    {% endif %}
+  {% endif %}
 
-{{ month_name }} {{ year }}
+  {{ month_name }} {{ year }}
 
-  {% elsif page.type == "year" %}
+{% else %}
+  {% if page.type == "year" %}
     {% assign year = page.url | split: '/' | second %}
     {{ year }}
-    {% else %}
-  {{ page.title }}
+  {% else %}
+    {{ page.title }}
   {% endif %}
+{% endif %}
+
 </h1>
 <p>Year: {{ page.year }}</p>
 <p>Month: {{ page.month }}</p>
