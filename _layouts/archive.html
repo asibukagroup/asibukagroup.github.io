@@ -1,5 +1,8 @@
 ---
 layout: default
+title: Arsip
+description: Kumpulan artikel yang diurutkan berdasakan arsip terpilih.
+robots: index, follow
 ---
 
 <h1 class='main-heading'>
@@ -33,7 +36,7 @@ layout: default
 
   {% else %}
     <!-- Default (general archive page) -->
-    Arsip
+    {{ page.title }}
   {% endif %}
 </h1>
 <p>Year: {{ page.year }}</p>
@@ -43,7 +46,6 @@ layout: default
     {% for post in page.posts %}
       <article class="post-container" itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement">
         <meta itemprop="position" content="{{ forloop.index }}">
-
         <div class="post-image">
           <a href="{{ post.url | relative_url }}" title="{{ post.title }}" itemprop="url">
             <img 
