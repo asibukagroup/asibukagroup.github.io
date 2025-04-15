@@ -8,21 +8,26 @@ module Jekyll
     def self.minify_html(html)
       doc = Nokogiri::HTML(html)
       html = doc.to_html
-    
-      # Remove comments and reduce tag spacing without touching attribute values
-      html = html.gsub(/<!--.*?-->/m, '')
-                 .gsub(/>\s+</, '><')        # Remove whitespace between tags
-                 .gsub(/\n+/, ' ')           # Remove newlines
-                 .gsub(/;}/, '}')
-                 .gsub(/\/\*.*?\*\//m, '')   # Remove CSS comments
-    
-      # Collapse extra spaces outside of quoted strings
-      html = html.gsub(/("[^"]*"|'[^']*')|(\s{2,})/) do |match|
-        match.start_with?('"', "'") ? match : ' '
+      def self.minify_html(html)
+        doc = Nokogiri::HTML::DocumentFragment.parse(html)
+        html = doc.to_html
+      
+        html = html.gsub(/<!--.*?-->/m, '')
+                   .gsub(/>\s+</, '><')
+                   .gsub(/\n+/, ' ')
+                   .gsub(/;}/, '}')
+                   .gsub(/\/\*.*?\*\//m, '')
+      
+        html = html.gsub(/("[^"]*"|'[^']*')|(\s{2,})/) do
+          if $1 # keep quoted strings
+            $1
+          else
+            ' '
+          end
+        end
+      
+        html.strip
       end
-    
-      html.strip
-    end
 
     def self.minify_css(css)
       css.gsub(/\/\*.*?\*\//m, '')
