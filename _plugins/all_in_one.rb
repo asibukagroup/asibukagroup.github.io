@@ -1,161 +1,57 @@
 require "jekyll"
-require "nokogiri"
 
-# Utility module for HTML, CSS, and JS minification
 module Jekyll
-  module HTMLUtils
-    def self.minify_html(html)
-      doc = Nokogiri::HTML(html)
-      html = doc.to_html
+  class AmpGenerator < Generator
+    safe true
+    priority :low
 
-      html.gsub(/>\s+</, '><')
-          .gsub(/\n+/, ' ')
-          .gsub(/\s{2,}/, ' ')
-          .gsub(/<!--.*?-->/m, '')
-          .gsub(/;}/, '}')
-          .gsub(/\/\*.*?\*\//m, '')
-          .gsub(/\s+/, ' ')
-          .strip
-    end
+    def generate(site)
+      all_docs = []
 
-    def self.minify_css(css)
-      css.gsub(/\/\*.*?\*\//m, '')
-         .gsub(/\s+/, ' ')
-         .gsub(/\s*([{:;}])\s*/, '\1')
-         .gsub(/;}/, '}')
-         .strip
-    end
+      # Include all relevant collections
+      collections_to_include = %w(posts pages products)
+      collections_to_include.each do |coll|
+        all_docs.concat(site.collections[coll]&.docs || [])
+      end
 
-    def self.minify_js(js)
-      js.gsub(/\/\/.*$/, '')
-         .gsub(/\/\*.*?\*\//m, '')
-         .gsub(/\s+/, ' ')
-         .strip
-    end
-  end
+      # Include root .md pages
+      all_docs.concat(site.pages.select { |page| page.path.end_with?(".md") })
 
-  class AmpPage < Page
-    def initialize(site:, base:, original:, permalink:, output_dir:)
-      @site = site
-      @base = base
-      @dir  = output_dir
-      @name = "index.html"
-      process(@name)
-      @relative_path = original.relative_path
+      # Include archive pages (optional, if they are treated as Pages)
+      archive_pages = site.pages.select { |page| page.data["layout"] == "archive" }
+      all_docs.concat(archive_pages)
 
-      self.data = original.data.dup
-      self.data["layout"] ||= original.data["layout"] # Use original layout
-      self.data["permalink"] = permalink
-      self.data["canonical_url"] = original.url
-      self.data["is_amp"] = true
+      amp_pages = []
 
-      html = if original.content.strip.empty? || original.output.to_s.strip != ''
-               original.output.to_s
-             else
-               markdown_converter = site.find_converter_instance(Jekyll::Converters::Markdown)
-               payload = { "page" => original.data, "site" => site.site_payload["site"] }
+      all_docs.each do |doc|
+        next if doc.data["is_amp"] # skip if already AMP
 
-               liquid = site.liquid_renderer.file(original.path).parse(original.content)
-               rendered_liquid = liquid.render!(payload, registers: { site: site, page: original })
+        amp_doc = doc.dup
+        amp_doc.data = Jekyll::Utils.deep_merge_hashes(doc.data, {})
 
-               markdown_converter.convert(rendered_liquid)
-             end
+        # Derive AMP permalink
+        base_url = ensure_slash(doc.url)
+        amp_doc.data["permalink"] = File.join(base_url, "amp/")
 
-      self.content = convert_to_amp(html)
+        # Set AMP-specific values
+        amp_doc.data["is_amp"] = true
+
+        # Retain the original layout
+        original_layout = doc.data["layout"] || "default"
+        amp_doc.data["layout"] = original_layout
+
+        # Set AMP path
+        amp_doc.instance_variable_set(:@path, nil) # let Jekyll auto-generate
+        amp_pages << amp_doc
+      end
+
+      site.pages.concat(amp_pages)
     end
 
     private
 
-    def convert_to_amp(html)
-      doc = Nokogiri::HTML::DocumentFragment.parse(html)
-
-      doc.css("img").each do |img|
-        amp_img = Nokogiri::XML::Node.new("amp-img", doc)
-        amp_img["src"] = img["data-src"] || img["src"]
-        amp_img["alt"] = img["alt"] if img["alt"]
-        amp_img["width"] = img["width"] || "600"
-        amp_img["height"] = img["height"] || "400"
-        amp_img["layout"] = img["layout"] || "responsive"
-        img.replace(amp_img)
-      end
-
-      doc.css("iframe").each do |iframe|
-        amp_iframe = Nokogiri::XML::Node.new("amp-iframe", doc)
-        %w[src width height layout sandbox].each { |attr| amp_iframe[attr] = iframe[attr] if iframe[attr] }
-        amp_iframe["width"] ||= "600"
-        amp_iframe["height"] ||= "400"
-        amp_iframe["layout"] ||= "responsive"
-        amp_iframe["sandbox"] ||= "allow-scripts allow-same-origin"
-        iframe.replace(amp_iframe)
-      end
-
-      doc.css("script").each do |script|
-        if script["src"]&.include?("https://cdn.ampproject.org/")
-          next
-        elsif script.children.any?
-          cleaned_js = HTMLUtils.minify_js(script.content)
-          script.content = cleaned_js
-        else
-          script.remove
-        end
-      end
-
-      doc.css("style").each do |style|
-        style.content = HTMLUtils.minify_css(style.content)
-      end
-
-      HTMLUtils.minify_html(doc.to_html)
+    def ensure_slash(path)
+      path.end_with?("/") ? path : "#{path}/"
     end
-  end
-
-  class AmpGenerator < Generator
-    safe false
-    priority :lowest
-
-    def generate(site)
-      markdown_exts = [".md", ".markdown"]
-
-      site.pages.each do |page|
-        next if page.url.include?("/amp/")
-        next unless markdown_exts.include?(page.extname)
-
-        amp_permalink = File.join((page.data["permalink"] || page.url).sub(%r!/$!, ""), "amp", "/")
-        output_dir = page.url == "/" ? "amp" : amp_permalink.sub(%r!^/!, "").chomp("/")
-
-        site.pages << AmpPage.new(site: site, base: site.source, original: page, permalink: amp_permalink, output_dir: output_dir)
-      end
-
-      site.posts.docs.each do |post|
-        next if post.url.include?("/amp/")
-        amp_permalink = File.join(post.url.sub(%r!/$!, ""), "amp", "/")
-        output_dir = amp_permalink.sub(%r!^/!, "").chomp("/")
-
-        site.pages << AmpPage.new(site: site, base: site.source, original: post, permalink: amp_permalink, output_dir: output_dir)
-      end
-
-      site.collections.each do |name, collection|
-        next if ["posts", "drafts", "pages"].include?(name)
-
-        collection.docs.each do |doc|
-          next if doc.url.include?("/amp/")
-          amp_permalink = File.join(doc.url.sub(%r!/$!, ""), "amp", "/")
-          output_dir = amp_permalink.sub(%r!^/!, "").chomp("/")
-
-          site.pages << AmpPage.new(
-            site: site,
-            base: site.source,
-            original: doc,
-            permalink: amp_permalink,
-            output_dir: output_dir
-          )
-        end
-      end
-    end
-  end
-
-  # Hook: Minify final HTML output for all pages and documents
-  Jekyll::Hooks.register [:pages, :documents], :post_render do |item|
-    next unless item.output_ext == ".html"
-    item.output = Jekyll::HTMLUtils.minify_html(item.output)
   end
 end

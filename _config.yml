@@ -88,6 +88,10 @@ plugins:
   - jekyll-archives
   - jekyll-sitemap
   - ./_plugins/all_in_one.rb
+whitelist:
+  - jekyll-archives
+  - jekyll-sitemap
+  - ./_plugins/all_in_one.rb
 # ------------------------------
 # Jekyll Archives
 # ------------------------------
