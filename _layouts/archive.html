@@ -9,14 +9,13 @@ robots: index, follow
   {% if page.type == "month" %}
   {% assign url_parts = page.url | split: '/' %}
   {% assign year = url_parts[1] %}
-  {% assign raw_month = url_parts[2] | plus: 0 %} {# This strips leading zero #}
+  {% assign raw_month = url_parts[2] | plus: 0 %}
 
   {% assign month_names = "Januari,Februari,Maret,April,Mei,Juni,Juli,Agustus,September,Oktober,November,Desember" | split: ',' %}
   {% assign month_name = month_names[raw_month | minus: 1] %}
 
   {{ month_name }} {{ year }}
-  {% elsif page.type == "year" %}
-    <!-- Year archive (e.g., /2025/) -->
+  {% elseif page.type == "year" %}
     {% assign year = page.url | split: '/' | second %}
     {{ year }}
     {% else %}
