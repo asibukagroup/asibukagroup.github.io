@@ -38,7 +38,7 @@ robots: index, follow
 
 {{ month_name }} {{ year }}
 
-  {% elseif page.type == "year" %}
+  {% elsif page.type == "year" %}
     {% assign year = page.url | split: '/' | second %}
     {{ year }}
     {% else %}
