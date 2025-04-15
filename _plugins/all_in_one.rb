@@ -113,7 +113,7 @@ module Jekyll
     priority :lowest
 
     def generate(site)
-      markdown_exts = [".md", ".markdown", ".html"]
+      markdown_exts = [".md", ".markdown"]
 
       site.pages.each do |page|
         next if page.url.include?("/amp/")
