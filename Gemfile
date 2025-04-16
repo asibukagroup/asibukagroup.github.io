@@ -5,3 +5,5 @@ gem "jekyll-sitemap"
 gem 'jekyll-archives'
 gem "nokogiri"
 gem "tzinfo"
+gem "yaml"
+gem "fileutils"
