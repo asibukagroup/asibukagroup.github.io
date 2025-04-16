@@ -47,6 +47,9 @@ module Jekyll
       else
         # If it's in a subfolder, keep the subfolder structure
         amp_file_path = File.join(site.source, page.dir, amp_file_name)
+
+        # Ensure the directory exists
+        FileUtils.mkdir_p(File.dirname(amp_file_path)) unless File.directory?(File.dirname(amp_file_path))
       end
 
       # Write the new AMP file with updated front matter and HTML content
