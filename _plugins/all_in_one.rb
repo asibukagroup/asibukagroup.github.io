@@ -8,13 +8,13 @@ module Jekyll
       doc = Nokogiri::HTML(html)
       html = doc.to_html
     
-      # Only remove whitespace between tags, not inside tags or attributes
       html.gsub(/>\s+</, '><')                     # collapse space between tags
-          .gsub(/\n+/, ' ')                        # collapse newlines into space
+          .gsub(/\n+/, ' ')                        # replace newlines with space
           .gsub(/\s{2,}/, ' ')                     # reduce multiple spaces
           .gsub(/<!--.*?-->/m, '')                 # remove HTML comments
-          .gsub(/;}/, '}')                         # clean up CSS
-          .gsub(/\/\*.*?\*\//m, '')                # remove CSS/JS comments
+          .gsub(/;}/, '}')                         # clean CSS blocks
+          .gsub(/\/\*.*?\*\//m, '')                # remove CSS/JS block comments
+          .gsub(/(\[\w+\])\s*=\s*"/, '\1="')       # preserve AMP bindings like [class]="..."
           .strip
     end
 
