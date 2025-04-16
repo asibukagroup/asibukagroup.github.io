@@ -1,21 +1,20 @@
 require "jekyll"
 require "nokogiri"
-require "nokogiri/html5"
 
 # Utility module for HTML, CSS, and JS minification
 module Jekyll
   module HTMLUtils
     def self.minify_html(html)
-      # Use HTML5 parser to preserve custom AMP attributes like [class]
-      doc = Nokogiri::HTML5.fragment(html)
+      doc = Nokogiri::HTML(html)
       html = doc.to_html
     
-      html.gsub(/>\s+</, '><')
-          .gsub(/\n+/, ' ')
-          .gsub(/\s{2,}/, ' ')
-          .gsub(/<!--.*?-->/m, '')
-          .gsub(/;}/, '}')
-          .gsub(/\/\*.*?\*\//m, '')
+      html.gsub(/>\s+</, '><')                     # collapse space between tags
+          .gsub(/\n+/, ' ')                        # replace newlines with space
+          .gsub(/\s+/, ' ')                        # reduce multiple spaces
+          .gsub(/<!--.*?-->/m, '')                 # remove HTML comments
+          .gsub(/;}/, '}')                         # clean CSS blocks
+          .gsub(/\/\*.*?\*\//m, '')                # remove CSS/JS block comments
+          .gsub(/(\[\w+\])\s*=\s*"/, '\1="')       # preserve AMP bindings like [class]="..."
           .strip
     end
 
@@ -116,12 +115,13 @@ module Jekyll
     def generate(site)
       markdown_exts = [".md", ".markdown"]
   
+      # Generate AMP for all regular pages
       site.pages.each do |page|
         next if page.url.include?("/amp/")
-        is_archive = %w[year month day tag category].include?(page.data["type"])
-        is_html = page.extname == ".html"
+        next if page.data["skip_amp"] == true # ✅ Skip if skip_amp is true
   
-        next unless markdown_exts.include?(page.extname) || is_archive
+        is_archive = %w[year month day tag category].include?(page.data["type"])
+        next unless page.output && (markdown_exts.include?(page.extname) || is_archive)
   
         amp_permalink = File.join((page.data["permalink"] || page.url).sub(%r!/$!, ""), "amp", "/")
         output_dir = page.url == "/" ? "amp" : amp_permalink.sub(%r!^/!, "").chomp("/")
@@ -135,8 +135,11 @@ module Jekyll
         )
       end
   
+      # Generate AMP for all posts
       site.posts.docs.each do |post|
         next if post.url.include?("/amp/")
+        next if post.data["skip_amp"] == true # ✅ Skip if skip_amp is true
+  
         amp_permalink = File.join(post.url.sub(%r!/$!, ""), "amp", "/")
         output_dir = amp_permalink.sub(%r!^/!, "").chomp("/")
   
@@ -149,11 +152,14 @@ module Jekyll
         )
       end
   
+      # Generate AMP for all documents in collections
       site.collections.each do |name, collection|
         next if %w[drafts].include?(name)
   
         collection.docs.each do |doc|
           next if doc.url.include?("/amp/")
+          next if doc.data["skip_amp"] == true # ✅ Skip if skip_amp is true
+  
           amp_permalink = File.join(doc.url.sub(%r!/$!, ""), "amp", "/")
           output_dir = amp_permalink.sub(%r!^/!, "").chomp("/")
   

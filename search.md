@@ -8,6 +8,7 @@ author: ASIBUKA Group
 robots: index, follow
 keywords: search, cari
 lang: id
+skip_amp: true
 ---
 <h1 class="main-heading">Hasil Pencarian</h1>
 <div id="results" class="post-containers"></div>
