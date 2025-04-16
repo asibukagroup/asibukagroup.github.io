@@ -6,7 +6,7 @@ module Jekyll
     def generate(site)
       collections = site.config['collections'].keys
 
-      # Process collection documents
+      # Process collection docs (e.g., posts, products)
       site.collections.each_value do |collection|
         collection.docs.each do |doc|
           next unless valid_md_doc?(doc, collections)
@@ -16,7 +16,7 @@ module Jekyll
         end
       end
 
-      # Process standalone .md files in root
+      # Process .md files in root directory
       site.pages.each do |page|
         next unless valid_md_page?(page)
         next if page.data['is_amp']
@@ -31,7 +31,6 @@ module Jekyll
       doc.path.end_with?('.md') && collections.any? { |c| doc.path.include?("_#{c}/") }
     end
 
-    # Match any .md file in the root directory
     def valid_md_page?(page)
       page.path.end_with?('.md') && File.dirname(page.path) == '.'
     end
@@ -42,10 +41,11 @@ module Jekyll
       amp_data['layout'] ||= 'amp'
       amp_data['permalink'] = original.url.sub(/\/$/, '') + '/amp/'
 
-      filename = File.basename(original.path, File.extname(original.path)) + '-amp.md'
-      dir = File.dirname(original.path.sub(site.source, ''))
+      basename = File.basename(original.path, File.extname(original.path))
+      amp_filename = "#{basename}-amp.md"
+      amp_dir = File.dirname(original.path.sub(site.source, ''))
 
-      amp_page = PageWithoutAFile.new(site, site.source, dir, filename)
+      amp_page = PageWithoutAFile.new(site, site.source, amp_dir, amp_filename)
       amp_page.content = original.content
       amp_page.data = amp_data
 
