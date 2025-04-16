@@ -1,74 +1,81 @@
+require 'yaml'
+require 'fileutils'
+
 module Jekyll
   class AmpGenerator < Generator
     safe true
+    priority :low
 
     def generate(site)
-      collections = site.config['collections'].keys
-
-      site.pages.each do |page|
-        process_md_file(page, site) if valid_md_page?(page, site, collections)
-      end
-
-      site.posts.docs.each do |post|
-        process_md_file(post, site) if valid_md_page?(post, site, collections)
-      end
+      @site = site
+      @collections = site.config['collections'].keys
 
       site.collections.each_value do |collection|
         collection.docs.each do |doc|
-          process_md_file(doc, site) if valid_md_page?(doc, site, collections)
+          next unless valid_md_doc?(doc)
+          next if doc.data['is_amp']
+
+          create_amp_version(doc, collection.label)
         end
+      end
+
+      site.pages.each do |page|
+        next unless valid_md_page?(page)
+        next if page.data['is_amp']
+
+        create_amp_version(page)
       end
     end
 
     private
 
-    def valid_md_page?(page, site, collections)
-      page.extname == ".md" && (root_directory?(page, site) || valid_collection?(page, collections))
+    def valid_md_doc?(doc)
+      doc.path.end_with?('.md') && in_collection?(doc)
     end
 
-    def root_directory?(page, site)
-      File.dirname(page.path) == site.source
+    def valid_md_page?(page)
+      page.path.end_with?('.md') && File.dirname(page.path) == @site.source
     end
 
-    def valid_collection?(page, collections)
-      collections.any? { |collection| page.path.include?("/#{collection}/") }
+    def in_collection?(doc)
+      @collections.any? { |name| doc.path.include?("_#{name}/") }
     end
 
-    def process_md_file(page, site)
-      return if page.data['is_amp']
+    def create_amp_version(item, collection_label = nil)
+      amp_data = item.data.dup
+      amp_data['is_amp'] = true
+      amp_data['permalink'] = item.url.sub(/\/$/, '') + '/amp/'
 
-      original_path = page.path
-      dirname = File.dirname(original_path)
-      basename = File.basename(original_path, '.md')
-      amp_basename = "#{basename}-amp.md"
-      amp_path = File.join(dirname, amp_basename)
+      # Create new AMP filename (e.g., post-amp.md)
+      amp_filename = item.basename_without_ext + '-amp.md'
 
-      return if File.exist?(amp_path)
+      # Determine directory
+      dir = File.dirname(item.path)
+      amp_path = File.join(dir, amp_filename)
 
-      # Read original Markdown content
-      content = File.read(original_path)
-      front_matter, body = split_front_matter(content)
+      # Write AMP markdown file
+      FileUtils.mkdir_p(dir) unless Dir.exist?(dir)
+      File.open(amp_path, 'w') do |f|
+        f.puts front_matter(amp_data)
+        f.puts item.content
+      end
 
-      # Modify front matter
-      front_matter["is_amp"] = true
-      front_matter["permalink"] = (page.url.sub(/\/$/, '') + '/amp/')
-
-      # Write AMP file
-      File.open(amp_path, 'w') do |file|
-        file.puts front_matter_to_yaml(front_matter)
-        file.puts body
+      # Register AMP file as a document so Jekyll renders it
+      if item.is_a?(Jekyll::Document)
+        collection = collection_label ? @site.collections[collection_label] : nil
+        amp_doc = Jekyll::Document.new(amp_path, :site => @site, :collection => collection)
+        amp_doc.read
+        collection.docs << amp_doc if collection
+      else
+        amp_page = PageWithoutAFile.new(@site, @site.source, dir, amp_filename)
+        amp_page.data = amp_data
+        amp_page.content = item.content
+        @site.pages << amp_page
       end
     end
 
-    def split_front_matter(content)
-      parts = content.split(/^---\s*$\n?/).reject(&:empty?)
-      front_matter = parts[0] ? SafeYAML.load(parts[0]) : {}
-      body = parts[1..].join("---\n")
-      [front_matter, body]
-    end
-
-    def front_matter_to_yaml(data)
-      "---\n#{data.to_yaml.strip}\n---"
+    def front_matter(data)
+      "---\n" + data.to_yaml.strip + "\n---"
     end
   end
 end
