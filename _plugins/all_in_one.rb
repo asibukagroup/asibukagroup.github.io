@@ -7,13 +7,14 @@ module Jekyll
     def self.minify_html(html)
       doc = Nokogiri::HTML(html)
       html = doc.to_html
-
-      html.gsub(/>\s+</, '><')
-          .gsub(/\n+/, ' ')
-          .gsub(/\s{2,}/, ' ')
-          .gsub(/<!--.*?-->/m, '')
-          .gsub(/;}/, '}')
-          .gsub(/\/\*.*?\*\//m, '')
+    
+      # Only remove whitespace between tags, not inside tags or attributes
+      html.gsub(/>\s+</, '><')                     # collapse space between tags
+          .gsub(/\n+/, ' ')                        # collapse newlines into space
+          .gsub(/\s{2,}/, ' ')                     # reduce multiple spaces
+          .gsub(/<!--.*?-->/m, '')                 # remove HTML comments
+          .gsub(/;}/, '}')                         # clean up CSS
+          .gsub(/\/\*.*?\*\//m, '')                # remove CSS/JS comments
           .strip
     end
 
