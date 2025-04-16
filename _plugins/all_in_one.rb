@@ -16,7 +16,7 @@ module Jekyll
       end
 
       site.pages.each do |page|
-        next unless valid_md_page?(page, site)
+        next unless valid_md_page?(page)
         next if page.data['is_amp']
 
         site.pages << generate_amp_page(site, page)
@@ -29,8 +29,12 @@ module Jekyll
       doc.path.end_with?('.md') && collections.any? { |c| doc.path.include?("_#{c}/") }
     end
 
-    def valid_md_page?(page, site)
-      page.path.end_with?('.md') && File.dirname(page.path) == site.source
+    def valid_md_page?(page)
+      page.path.end_with?('.md') &&
+        (
+          File.basename(page.path) == 'index.md' || # ensure homepage is included
+          File.dirname(page.path) == '.' || File.dirname(page.path) == ''
+        )
     end
 
     def generate_amp_page(site, original)
