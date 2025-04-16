@@ -1,4 +1,6 @@
 # _plugins/amp_generator.rb
+require 'nokogiri'
+
 module Jekyll
   class AmpGenerator < Generator
     safe true
@@ -49,7 +51,7 @@ module Jekyll
       amp_dir = File.dirname(original.path.sub(site.source, ''))
 
       amp_page = PageWithoutAFile.new(site, site.source, amp_dir, amp_filename)
-      amp_page.content = original.content
+      amp_page.content = convert_images_to_amp(original.content)
       amp_page.data = amp_data
 
       amp_page
@@ -60,13 +62,29 @@ module Jekyll
       amp_data['is_amp'] = true
       amp_data['permalink'] = original.url.sub(/\/$/, '') + '/amp/'
 
-      # Duplicate already-rendered HTML output
       amp_page = PageWithoutAFile.new(site, site.source, original.dir, 'index-amp.html')
-      amp_page.output = original.output
-      amp_page.content = original.content # fallback for safety
+      amp_page.output = convert_images_to_amp(original.output)
+      amp_page.content = original.content
       amp_page.data = amp_data
 
       amp_page
+    end
+
+    def convert_images_to_amp(html)
+      doc = Nokogiri::HTML.fragment(html)
+      doc.css('img').each do |img|
+        amp_img = Nokogiri::XML::Node.new('amp-img', doc)
+
+        amp_img['src'] = img['data-src'] || img['src'] || '/assets/img/ASIBUKA-Blue.webp'
+        amp_img['alt'] = img['alt'] || img['title'] || 'image'
+        amp_img['title'] = img['alt'] || img['title'] || ''
+        amp_img['width'] = img['width'] || '1600'
+        amp_img['height'] = img['height'] || '900'
+        amp_img['layout'] = img['layout'] || 'responsive'
+
+        img.replace(amp_img)
+      end
+      doc.to_html
     end
   end
 end
