@@ -8,45 +8,41 @@ module Jekyll
 
       # Loop through all pages, posts, and collections to find .md files
       site.pages.each do |page|
-        process_page(page, site, collections) if page_is_markdown?(page) && in_valid_collection?(page, collections, site)
+        process_page(page, site, collections) if valid_md_page?(page, site, collections)
       end
 
       site.posts.docs.each do |post|
-        process_page(post, site, collections) if page_is_markdown?(post) && in_valid_collection?(post, collections, site)
+        process_page(post, site, collections) if valid_md_page?(post, site, collections)
       end
 
       site.collections.each do |name, collection|
         collection.docs.each do |doc|
-          process_page(doc, site, collections) if page_is_markdown?(doc) && in_valid_collection?(doc, collections, site)
+          process_page(doc, site, collections) if valid_md_page?(doc, site, collections)
         end
       end
     end
 
     private
 
-    def page_is_markdown?(page)
-      # Only process .md files
-      page.extname == ".md"
+    # Check if the page is a valid .md file in the root directory or a valid collection
+    def valid_md_page?(page, site, collections)
+      # The file must be a markdown file
+      page.extname == ".md" && (root_directory?(page, site) || valid_collection?(page, collections, site))
     end
 
-    def in_valid_collection?(page, collections, site)
-      # Check if the page is in the root directory or in one of the specified collections
-      root_directory?(page, site) || valid_collection?(page, collections)
-    end
-
+    # Check if the page is in the root directory
     def root_directory?(page, site)
-      # Check if the page is in the root directory
       File.dirname(page.path) == site.source
     end
 
-    def valid_collection?(page, collections)
-      # Check if the page is in one of the valid collections based on the config
+    # Check if the page is in one of the valid collections
+    def valid_collection?(page, collections, site)
       collections.any? { |collection| File.dirname(page.path).include?(collection) }
     end
 
     def process_page(page, site, collections)
-      # Skip if the page is already an AMP version or not a markdown file
-      return if page.data['is_amp'] || !page_is_markdown?(page)
+      # Skip if the page is already an AMP version
+      return if page.data['is_amp']
 
       # Duplicate front matter and content from the original page
       amp_page_data = page.data.dup
