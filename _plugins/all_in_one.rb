@@ -1,20 +1,21 @@
 require "jekyll"
 require "nokogiri"
+require "nokogiri/html5"
 
 # Utility module for HTML, CSS, and JS minification
 module Jekyll
   module HTMLUtils
     def self.minify_html(html)
-      doc = Nokogiri::HTML(html)
+      # Use HTML5 parser to preserve custom AMP attributes like [class]
+      doc = Nokogiri::HTML5.fragment(html)
       html = doc.to_html
     
-      html.gsub(/>\s+</, '><')                     # collapse space between tags
-          .gsub(/\n+/, ' ')                        # replace newlines with space
-          .gsub(/\s{2,}/, ' ')                     # reduce multiple spaces
-          .gsub(/<!--.*?-->/m, '')                 # remove HTML comments
-          .gsub(/;}/, '}')                         # clean CSS blocks
-          .gsub(/\/\*.*?\*\//m, '')                # remove CSS/JS block comments
-          .gsub(/(\[\w+\])\s*=\s*"/, '\1="')       # preserve AMP bindings like [class]="..."
+      html.gsub(/>\s+</, '><')
+          .gsub(/\n+/, ' ')
+          .gsub(/\s{2,}/, ' ')
+          .gsub(/<!--.*?-->/m, '')
+          .gsub(/;}/, '}')
+          .gsub(/\/\*.*?\*\//m, '')
           .strip
     end
 
