@@ -40,13 +40,16 @@ module Jekyll
       # Create a new AMP version file name (e.g., "post.md" becomes "post-amp.md")
       amp_file_name = page.basename + '-amp' + page.extname
 
+      # Get the directory of the page (for posts and documents, use the `path` method)
+      page_dir = page.is_a?(Jekyll::Document) ? File.dirname(page.path) : page.dir
+
       # Check if the page is in the root directory (no subfolder)
-      if page.dir == '.'
+      if page_dir == '.'
         # If it's in the root, create the AMP file in the root directory
         amp_file_path = File.join(site.source, amp_file_name)
       else
         # If it's in a subfolder, keep the subfolder structure
-        amp_file_path = File.join(site.source, page.dir, amp_file_name)
+        amp_file_path = File.join(site.source, page_dir, amp_file_name)
 
         # Ensure the directory exists
         FileUtils.mkdir_p(File.dirname(amp_file_path)) unless File.directory?(File.dirname(amp_file_path))
