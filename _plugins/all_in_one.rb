@@ -3,18 +3,21 @@ module Jekyll
     safe true
 
     def generate(site)
+      # Fetch collections from the site's configuration file
+      collections = site.config['collections'].keys
+
       # Loop through all pages, posts, and collections to find .md files
       site.pages.each do |page|
-        process_page(page, site) if page_is_markdown?(page)
+        process_page(page, site, collections) if page_is_markdown?(page) && in_valid_collection?(page, collections)
       end
 
       site.posts.docs.each do |post|
-        process_page(post, site) if page_is_markdown?(post)
+        process_page(post, site, collections) if page_is_markdown?(post) && in_valid_collection?(post, collections)
       end
 
       site.collections.each do |name, collection|
         collection.docs.each do |doc|
-          process_page(doc, site) if page_is_markdown?(doc)
+          process_page(doc, site, collections) if page_is_markdown?(doc) && in_valid_collection?(doc, collections)
         end
       end
     end
@@ -22,12 +25,28 @@ module Jekyll
     private
 
     def page_is_markdown?(page)
+      # Only process .md files
       page.extname == ".md"
     end
 
-    def process_page(page, site)
-      # Skip if the page is already an AMP version
-      return if page.data['is_amp']
+    def in_valid_collection?(page, collections)
+      # Check if the page is in the root directory or in one of the specified collections
+      root_directory?(page) || valid_collection?(page, collections)
+    end
+
+    def root_directory?(page)
+      # Check if the page is in the root directory
+      File.dirname(page.path) == site.source
+    end
+
+    def valid_collection?(page, collections)
+      # Check if the page is in one of the valid collections based on the config
+      collections.any? { |collection| File.dirname(page.path).include?(collection) }
+    end
+
+    def process_page(page, site, collections)
+      # Skip if the page is already an AMP version or not a markdown file
+      return if page.data['is_amp'] || !page_is_markdown?(page)
 
       # Duplicate front matter and content from the original page
       amp_page_data = page.data.dup
