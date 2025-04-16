@@ -9,7 +9,7 @@ module Jekyll
       html = doc.to_html
     
       html.gsub(/>\s+</, '><')                     # collapse space between tags
-          .gsub(/\n+/, ' ')                        # replace newlines with space
+          .gsub(/\n+/, '')                        # replace newlines with space
           .gsub(/\s+/, ' ')                        # reduce multiple spaces
           .gsub(/<!--.*?-->/m, '')                 # remove HTML comments
           .gsub(/;}/, '}')                         # clean CSS blocks
@@ -115,13 +115,12 @@ module Jekyll
     def generate(site)
       markdown_exts = [".md", ".markdown"]
   
-      # Generate AMP for all regular pages
       site.pages.each do |page|
         next if page.url.include?("/amp/")
-        next if page.data["skip_amp"] == true # ✅ Skip if skip_amp is true
-  
         is_archive = %w[year month day tag category].include?(page.data["type"])
-        next unless page.output && (markdown_exts.include?(page.extname) || is_archive)
+        is_html = page.extname == ".html"
+  
+        next unless markdown_exts.include?(page.extname) || is_archive
   
         amp_permalink = File.join((page.data["permalink"] || page.url).sub(%r!/$!, ""), "amp", "/")
         output_dir = page.url == "/" ? "amp" : amp_permalink.sub(%r!^/!, "").chomp("/")
@@ -135,11 +134,8 @@ module Jekyll
         )
       end
   
-      # Generate AMP for all posts
       site.posts.docs.each do |post|
         next if post.url.include?("/amp/")
-        next if post.data["skip_amp"] == true # ✅ Skip if skip_amp is true
-  
         amp_permalink = File.join(post.url.sub(%r!/$!, ""), "amp", "/")
         output_dir = amp_permalink.sub(%r!^/!, "").chomp("/")
   
@@ -152,14 +148,11 @@ module Jekyll
         )
       end
   
-      # Generate AMP for all documents in collections
       site.collections.each do |name, collection|
         next if %w[drafts].include?(name)
   
         collection.docs.each do |doc|
           next if doc.url.include?("/amp/")
-          next if doc.data["skip_amp"] == true # ✅ Skip if skip_amp is true
-  
           amp_permalink = File.join(doc.url.sub(%r!/$!, ""), "amp", "/")
           output_dir = amp_permalink.sub(%r!^/!, "").chomp("/")
   
