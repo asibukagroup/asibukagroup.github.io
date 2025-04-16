@@ -1,4 +1,4 @@
-{% if page.url contains '/amp/' %}
+{% if page.is_amp %}
 <amp-iframe width="600" height="400" sandbox="allow-scripts allow-same-origin" layout="responsive" frameborder="0" src="/comments.html"></amp-iframe>
 {% else %}
 <div id='disqus_thread' class="hide-on-print"></div>

@@ -8,8 +8,6 @@ description: Halaman yang berisi pengenalan tentang apa itu ASIBUKA Group, visi 
 keywords: ASIBUKA, ASIBUKA Group
 robots: index, follow
 author: ASIBUKA Group
-categories: [Official]
-tags: [official, asibuka, asibuka group]
 lang: id
 ---
 Selamat datang di halaman Tentang Kami. Di halaman ini, akan dijabarkan sedikit tentang apa itu ASIBUKA Group? Siapa saja yang berjuang di dalamnya? Dan apa yang dilakukan oleh orang-orang di dalam ASIBUKA. Jika kamu tertarik untuk mengetahui lebih jauh tentang ASIBUKA, silahkan baca pengenalan berikut.
@@ -17,5 +15,5 @@ Selamat datang di halaman Tentang Kami. Di halaman ini, akan dijabarkan sedikit 
 ## Apa itu ASIBUKA?
 ASIBUKA adalah sebuah digagas dari sebuah frasa "Aku bisa!" yang dibaca terbalik. Frasa tersebut sekaligus menjadi sebuah acuan dan prinsip optimisme bagi semua yang berada dalam ASIBUKA dalam mencapai sesuatu.
 
-## Apa itu ASIBUKA Group
+## Apa itu ASIBUKA Group?
 Secara sederhana, ASIBUKA Group adalah usaha yang bergerak di bidang investasi di bidang UMKM baik offline maupun online, berbasis teknologi ataupun konvensional.
