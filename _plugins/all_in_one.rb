@@ -1,78 +1,108 @@
-# _plugins/amp_generator.rb
+require "nokogiri"
+require "yaml"
+require "fileutils"
+
 module Jekyll
   class AmpGenerator < Generator
     safe true
     priority :low
 
     def generate(site)
-      # Generate AMP for root .md pages
-      site.pages.each do |page|
-        generate_amp_page(site, page) if root_md_page?(site, page)
-      end
+      collections = site.config['collections'].keys
 
-      # Generate AMP for posts and other docs
-      site.posts.docs.each { |post| generate_amp_doc(site, post) }
-      site.collections.each do |name, collection|
-        next if name == "posts"
-        collection.docs.each { |doc| generate_amp_doc(site, doc) }
-      end
+      # Go through all markdown files from root, pages, posts, and collections
+      candidates = site.pages + site.posts.docs + collections.flat_map { |key| site.collections[key].docs }
 
-      # Generate AMP for archives
-      generate_amp_archives(site)
-    end
+      candidates.each do |page|
+        next unless valid_md_page?(page, site, collections)
+        next if page.data['is_amp']
 
-    def root_md_page?(site, page)
-      page.extname == ".md" && File.dirname(page.path) == site.source
-    end
-
-    def generate_amp_page(site, page)
-      return if page.data["is_amp"]
-
-      amp_page = page.dup
-      amp_page.data = page.data.dup
-      amp_page.data["is_amp"] = true
-      amp_page.data["permalink"] = ensure_trailing_slash(page.url) + "amp/"
-      site.pages << amp_page
-    end
-
-    def generate_amp_doc(site, doc)
-      return if doc.data["is_amp"]
-
-      amp_doc = doc.dup
-      amp_doc.merge_data!(doc.data) # safely copy data
-      amp_doc.data["is_amp"] = true
-      amp_doc.data["permalink"] = ensure_trailing_slash(doc.url) + "amp/"
-      site.collections[doc.collection.label].docs << amp_doc
-    end
-
-    def generate_amp_archives(site)
-      site.pages.each do |page|
-        next unless archive_layout?(page)
-        next if page.data["is_amp"]
-
-        amp_page = page.dup
-        amp_page.data = page.data.dup
-        amp_page.data["is_amp"] = true
-        amp_page.data["permalink"] = ensure_trailing_slash(page.url) + "amp/"
-        amp_page.data["posts"] = page.data["posts"]
-        amp_page.data["type"] = page.data["type"]
-        site.pages << amp_page
+        generate_amp_page(site, page)
       end
     end
 
-    def archive_layout?(page)
-      layout = page.data["layout"]
-      layout == "archive" || layout == "archives"
+    private
+
+    def valid_md_page?(page, site, collections)
+      page.extname == ".md" &&
+        (in_root_directory?(page, site) || in_valid_collection?(page, collections, site))
     end
 
-    def ensure_trailing_slash(url)
-      url.end_with?("/") ? url : "#{url}/"
+    def in_root_directory?(page, site)
+      path = page.respond_to?(:path) ? page.path : page.relative_path
+      File.dirname(File.expand_path(path, site.source)) == site.source
     end
-  end
 
-  class Jekyll::Document
-    def merge_data!(new_data)
-      new_data.each { |k, v| self.data[k] = v }
+    def in_valid_collection?(page, collections, site)
+      path = page.respond_to?(:path) ? page.path : page.relative_path
+      collections.any? { |c| File.expand_path(path, site.source).include?("/_#{c}/") }
+    end
+
+    def generate_amp_page(site, original)
+      amp_data = original.data.dup
+      amp_data['is_amp'] = true
+      amp_data['permalink'] = original.url.sub(%r{/$}, "") + "/amp/"
+
+      # Handle archives (tags, categories, year, month)
+      if amp_data['layout'] == 'archive' && amp_data['type']
+        amp_data['posts'] = fetch_archive_posts(amp_data, site)
+      end
+
+      amp_content = original.output
+      amp_filename = amp_filename_for(original)
+
+      amp_path = File.join(site.source, amp_filename)
+      FileUtils.mkdir_p(File.dirname(amp_path))
+
+      File.open(amp_path, 'w') do |f|
+        f.puts front_matter(amp_data)
+        f.puts amp_content
+      end
+    end
+
+    def fetch_archive_posts(data, site)
+      type = data['type']
+      title = data['title']
+      url_parts = data['permalink'] ? data['permalink'].split("/") : []
+
+      case type
+      when 'tag'
+        site.posts.docs.select { |p| p.data['tags']&.include?(title) }
+      when 'category'
+        site.posts.docs.select { |p| p.data['categories']&.include?(title) }
+      when 'year'
+        year = url_parts[1].to_i
+        site.posts.docs.select { |p| p.date.year == year }
+      when 'month'
+        year = url_parts[1].to_i
+        month = url_parts[2].to_i
+        site.posts.docs.select { |p| p.date.year == year && p.date.month == month }
+      else
+        []
+      end
+    end
+
+    def amp_filename_for(page)
+      dir = if page.respond_to?(:path)
+              File.dirname(page.path)
+            else
+              page.dir
+            end
+
+      name = if page.respond_to?(:basename_without_ext)
+               page.basename_without_ext
+             else
+               File.basename(page.name, File.extname(page.name))
+             end
+
+      ext = page.extname || File.extname(page.name)
+      amp_name = "#{name}-amp#{ext}"
+
+      dir == '.' ? amp_name : File.join(dir, amp_name)
+    end
+
+    def front_matter(data)
+      "---\n" + data.to_yaml.sub(/\A---\s*\n/, '') + "---"
     end
   end
 end
