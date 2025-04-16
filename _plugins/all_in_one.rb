@@ -1,177 +1,58 @@
-require "jekyll"
-require "nokogiri"
-
-# Utility module for HTML, CSS, and JS minification
 module Jekyll
-  module HTMLUtils
-    def self.minify_html(html)
-      doc = Nokogiri::HTML(html)
-      html = doc.to_html
-    
-      html.gsub(/>\s+</, '><')                     # collapse space between tags
-          .gsub(/\n+/, '')                        # replace newlines with space
-          .gsub(/\s+/, ' ')                        # reduce multiple spaces
-          .gsub(/<!--.*?-->/m, '')                 # remove HTML comments
-          .gsub(/;}/, '}')                         # clean CSS blocks
-          .gsub(/\/\*.*?\*\//m, '')                # remove CSS/JS block comments
-          .gsub(/(\[\w+\])\s*=\s*"/, '\1="')       # preserve AMP bindings like [class]="..."
-          .strip
-    end
+  class AmpGenerator < Generator
+    safe true
 
-    def self.minify_css(css)
-      css.gsub(/\/\*.*?\*\//m, '')
-         .gsub(/\s+/, ' ')
-         .gsub(/\s*([{:;}])\s*/, '\1')
-         .gsub(/;}/, '}')
-         .strip
-    end
+    def generate(site)
+      # Loop through all pages, posts, and collections to find .md files
+      site.pages.each do |page|
+        process_page(page, site) if page_is_markdown?(page)
+      end
 
-    def self.minify_js(js)
-      js.gsub(/\/\/.*$/, '')
-         .gsub(/\/\*.*?\*\//m, '')
-         .gsub(/\s+/, ' ')
-         .strip
-    end
-  end
+      site.posts.docs.each do |post|
+        process_page(post, site) if page_is_markdown?(post)
+      end
 
-  class AmpPage < Page
-    def initialize(site:, base:, original:, permalink:, output_dir:)
-      @site = site
-      @base = base
-      @dir  = output_dir
-      @name = "index.html"
-      process(@name)
-      @relative_path = original.relative_path
-
-      self.data = original.data.dup
-      self.data["layout"] ||= original.data["layout"] # Use original layout
-      self.data["permalink"] = permalink
-      self.data["canonical_url"] = original.url
-      self.data["is_amp"] = true
-
-      html = if original.content.strip.empty? || original.output.to_s.strip != ''
-               original.output.to_s
-             else
-               markdown_converter = site.find_converter_instance(Jekyll::Converters::Markdown)
-               payload = { "page" => original.data, "site" => site.site_payload["site"] }
-
-               liquid = site.liquid_renderer.file(original.path).parse(original.content)
-               rendered_liquid = liquid.render!(payload, registers: { site: site, page: original })
-
-               markdown_converter.convert(rendered_liquid)
-             end
-
-      self.content = convert_to_amp(html)
+      site.collections.each do |name, collection|
+        collection.docs.each do |doc|
+          process_page(doc, site) if page_is_markdown?(doc)
+        end
+      end
     end
 
     private
 
-    def convert_to_amp(html)
-      doc = Nokogiri::HTML::DocumentFragment.parse(html)
-
-      doc.css("img").each do |img|
-        amp_img = Nokogiri::XML::Node.new("amp-img", doc)
-        amp_img["src"] = img["data-src"] || img["src"]
-        amp_img["alt"] = img["alt"] if img["alt"]
-        amp_img["width"] = img["width"] || "600"
-        amp_img["height"] = img["height"] || "400"
-        amp_img["layout"] = img["layout"] || "responsive"
-        img.replace(amp_img)
-      end
-
-      doc.css("iframe").each do |iframe|
-        amp_iframe = Nokogiri::XML::Node.new("amp-iframe", doc)
-        %w[src width height layout sandbox].each { |attr| amp_iframe[attr] = iframe[attr] if iframe[attr] }
-        amp_iframe["width"] ||= "600"
-        amp_iframe["height"] ||= "400"
-        amp_iframe["layout"] ||= "responsive"
-        amp_iframe["sandbox"] ||= "allow-scripts allow-same-origin"
-        iframe.replace(amp_iframe)
-      end
-
-      doc.css("script").each do |script|
-        if script["src"]&.include?("https://cdn.ampproject.org/")
-          next
-        elsif script.children.any?
-          cleaned_js = HTMLUtils.minify_js(script.content)
-          script.content = cleaned_js
-        else
-          script.remove
-        end
-      end
-
-      doc.css("style").each do |style|
-        style.content = HTMLUtils.minify_css(style.content)
-      end
-
-      HTMLUtils.minify_html(doc.to_html)
+    def page_is_markdown?(page)
+      page.extname == ".md"
     end
-  end
 
-  class AmpGenerator < Generator
-    safe false
-    priority :lowest
-  
-    def generate(site)
-      markdown_exts = [".md", ".markdown"]
-  
-      site.pages.each do |page|
-        next if page.url.include?("/amp/")
-        is_archive = %w[year month day tag category].include?(page.data["type"])
-        is_html = page.extname == ".html"
-  
-        next unless markdown_exts.include?(page.extname) || is_archive
-  
-        amp_permalink = File.join((page.data["permalink"] || page.url).sub(%r!/$!, ""), "amp", "/")
-        output_dir = page.url == "/" ? "amp" : amp_permalink.sub(%r!^/!, "").chomp("/")
-  
-        site.pages << AmpPage.new(
-          site: site,
-          base: site.source,
-          original: page,
-          permalink: amp_permalink,
-          output_dir: output_dir
-        )
-      end
-  
-      site.posts.docs.each do |post|
-        next if post.url.include?("/amp/")
-        amp_permalink = File.join(post.url.sub(%r!/$!, ""), "amp", "/")
-        output_dir = amp_permalink.sub(%r!^/!, "").chomp("/")
-  
-        site.pages << AmpPage.new(
-          site: site,
-          base: site.source,
-          original: post,
-          permalink: amp_permalink,
-          output_dir: output_dir
-        )
-      end
-  
-      site.collections.each do |name, collection|
-        next if %w[drafts].include?(name)
-  
-        collection.docs.each do |doc|
-          next if doc.url.include?("/amp/")
-          amp_permalink = File.join(doc.url.sub(%r!/$!, ""), "amp", "/")
-          output_dir = amp_permalink.sub(%r!^/!, "").chomp("/")
-  
-          site.pages << AmpPage.new(
-            site: site,
-            base: site.source,
-            original: doc,
-            permalink: amp_permalink,
-            output_dir: output_dir
-          )
-        end
+    def process_page(page, site)
+      # Skip if the page is already an AMP version
+      return if page.data['is_amp']
+
+      # Duplicate front matter and content from the original page
+      amp_page_data = page.data.dup
+      amp_page_data['is_amp'] = true
+      amp_page_data['permalink'] = page.url.sub(/\/$/, '') + '/amp/'
+
+      # Process the HTML content from the original page
+      html_content = page.output
+
+      # Create a new AMP version file name (e.g., "post.md" becomes "post-amp.md")
+      amp_file_name = page.basename + '-amp' + page.extname
+      amp_file_path = File.join(page.dir, amp_file_name)
+
+      # Write the new AMP file with updated front matter and HTML content
+      File.open(amp_file_path, 'w') do |file|
+        file.puts front_matter(amp_page_data)
+        file.puts html_content
       end
     end
-  end
-  
 
-  # Hook: Minify final HTML output for all pages and documents
-  Jekyll::Hooks.register [:pages, :documents], :post_render do |item|
-    next unless item.output_ext == ".html"
-    item.output = Jekyll::HTMLUtils.minify_html(item.output)
+    def front_matter(data)
+      # Convert front matter data to YAML
+      yaml_data = data.to_yaml
+      # Ensure that the front matter is formatted properly
+      "---\n" + yaml_data.gsub(/^---\n/, '').strip + "\n---"
+    end
   end
 end
