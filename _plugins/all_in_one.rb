@@ -39,7 +39,15 @@ module Jekyll
 
       # Create a new AMP version file name (e.g., "post.md" becomes "post-amp.md")
       amp_file_name = page.basename + '-amp' + page.extname
-      amp_file_path = File.join(page.dir, amp_file_name)
+
+      # Check if the page is in the root directory (no subfolder)
+      if page.dir == '.'
+        # If it's in the root, create the AMP file in the root directory
+        amp_file_path = File.join(site.source, amp_file_name)
+      else
+        # If it's in a subfolder, keep the subfolder structure
+        amp_file_path = File.join(site.source, page.dir, amp_file_name)
+      end
 
       # Write the new AMP file with updated front matter and HTML content
       File.open(amp_file_path, 'w') do |file|
