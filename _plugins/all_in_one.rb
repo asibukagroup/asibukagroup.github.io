@@ -26,7 +26,7 @@ module Jekyll
 
     # Check if the page is a valid .md file in the root directory or a valid collection
     def valid_md_page?(page, site, collections)
-      # The file must be a markdown file
+      # The file must be a markdown file and either be in the root or a valid collection folder
       page.extname == ".md" && (root_directory?(page, site) || valid_collection?(page, collections, site))
     end
 
@@ -58,17 +58,14 @@ module Jekyll
       # Get the directory of the page (for posts and documents, use the `path` method)
       page_dir = page.is_a?(Jekyll::Document) ? File.dirname(page.path) : page.dir
 
-      # Check if the page is in the root directory (no subfolder)
-      if page_dir == '.'
-        # If it's in the root, create the AMP file in the root directory
-        amp_file_path = File.join(site.source, amp_file_name)
-      else
-        # If it's in a subfolder, keep the subfolder structure
-        amp_file_path = File.join(site.source, page_dir, amp_file_name)
+      # Determine AMP file path
+      amp_file_path = determine_amp_file_path(page, page_dir, site, amp_file_name)
 
-        # Ensure the directory exists
-        FileUtils.mkdir_p(File.dirname(amp_file_path)) unless File.directory?(File.dirname(amp_file_path))
-      end
+      # Skip file creation if the AMP version already exists
+      return if File.exist?(amp_file_path)
+
+      # Ensure the directory exists
+      FileUtils.mkdir_p(File.dirname(amp_file_path)) unless File.directory?(File.dirname(amp_file_path))
 
       # Write the new AMP file with updated front matter and HTML content
       File.open(amp_file_path, 'w') do |file|
@@ -77,10 +74,20 @@ module Jekyll
       end
     end
 
+    # Determine where the AMP file should be saved (root or subfolder)
+    def determine_amp_file_path(page, page_dir, site, amp_file_name)
+      if page_dir == '.'
+        # If it's in the root, create the AMP file in the root directory
+        File.join(site.source, amp_file_name)
+      else
+        # If it's in a subfolder, keep the subfolder structure
+        File.join(site.source, page_dir, amp_file_name)
+      end
+    end
+
+    # Convert front matter data to YAML
     def front_matter(data)
-      # Convert front matter data to YAML
       yaml_data = data.to_yaml
-      # Ensure that the front matter is formatted properly
       "---\n" + yaml_data.gsub(/^---\n/, '').strip + "\n---"
     end
   end
