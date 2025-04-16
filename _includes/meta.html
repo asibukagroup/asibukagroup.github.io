@@ -62,3 +62,5 @@
     <!-- Canonical -->
     <link rel="canonical" hreflang='{{ page.lang | default: site.lang }}' href="{{ site.url }}{{ page.url | replace:'index.html','' }}">{% unless page.url contains '/amp/' %}<link rel='amphtml' href="{{ site.url }}{{ page.url | replace:'index.html','' }}amp/">{% endunless %}
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <!-- Preload / DNS Prefetch -->
+    {% if page.url == "/" or page.url == "/amp/" %}<link rel="preload" fetchpriority="high" as="image" href="/assets/img/ASIBUKA-Blue.webp" type="image/webp">{% endif %}
