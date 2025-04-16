@@ -1,3 +1,7 @@
+require "nokogiri"
+require "yaml"
+require "fileutils"
+
 module Jekyll
   class AmpGenerator < Generator
     safe true
@@ -6,103 +10,99 @@ module Jekyll
     def generate(site)
       collections = site.config['collections'].keys
 
-      # Process .md files in the root (index.md, blog.md, etc.)
-      site.pages.each do |page|
-        next unless valid_md_page?(page)
-        next if page.data['is_amp']
-        site.pages << generate_amp_page(site, page)
-      end
+      # Go through all markdown files from root, pages, posts, and collections
+      candidates = site.pages + site.posts.docs + collections.flat_map { |key| site.collections[key].docs }
 
-      # Process collection documents (e.g., posts)
-      site.collections.each_value do |collection|
-        collection.docs.each do |doc|
-          next unless valid_md_doc?(doc, collections)
-          next if doc.data['is_amp']
-          site.pages << generate_amp_page(site, doc)
-        end
-      end
-
-      # Process archive pages from jekyll-archives
-      site.pages.each do |page|
-        next unless archive_page?(page)
+      candidates.each do |page|
+        next unless valid_md_page?(page, site, collections)
         next if page.data['is_amp']
-        site.pages << generate_amp_archive(site, page)
+
+        generate_amp_page(site, page)
       end
     end
 
     private
 
-    def valid_md_doc?(doc, collections)
-      doc.path.end_with?('.md') && collections.any? { |c| doc.path.include?("_#{c}/") }
+    def valid_md_page?(page, site, collections)
+      page.extname == ".md" &&
+        (in_root_directory?(page, site) || in_valid_collection?(page, collections, site))
     end
 
-    def valid_md_page?(page)
-      page.path.end_with?('.md') && File.dirname(page.path) == '.'
+    def in_root_directory?(page, site)
+      path = page.respond_to?(:path) ? page.path : page.relative_path
+      File.dirname(File.expand_path(path, site.source)) == site.source
     end
 
-    def archive_page?(page)
-      # Check if this is a jekyll-archives generated page (based on layout or other criteria)
-      page.data['layout'] == 'archive' && !page.data['is_amp']
+    def in_valid_collection?(page, collections, site)
+      path = page.respond_to?(:path) ? page.path : page.relative_path
+      collections.any? { |c| File.expand_path(path, site.source).include?("/_#{c}/") }
     end
 
     def generate_amp_page(site, original)
       amp_data = original.data.dup
       amp_data['is_amp'] = true
-      amp_data['permalink'] = original.url.sub(/\/$/, '') + '/amp/'
+      amp_data['permalink'] = original.url.sub(%r{/$}, "") + "/amp/"
 
-      basename = File.basename(original.path, File.extname(original.path))
-      amp_filename = "#{basename}-amp.md"
-      amp_dir = File.dirname(original.path.sub(site.source, ''))
-
-      amp_page = PageWithoutAFile.new(site, site.source, amp_dir, amp_filename)
-      amp_page.content = original.content
-      amp_page.data = amp_data
-
-      amp_page
-    end
-
-    def generate_amp_archive(site, page)
-      amp_data = page.data.dup
-      amp_data['is_amp'] = true
-      amp_data['permalink'] = page.url.sub(/\/$/, '') + '/amp/'
-
-      # Create a new AMP page for the archive
-      amp_page = PageWithoutAFile.new(site, site.source, page.dir, 'index-amp.html')
-      amp_page.content = generate_archive_content(site, page) # Generate content for the archive
-      amp_page.data = amp_data
-
-      amp_page
-    end
-
-    def generate_archive_content(site, page)
-      # Gather the posts based on the current archive's filter (tags, categories, year, month)
-      posts = get_posts_for_archive(site, page)
-
-      # Loop through the posts and render them
-      content = ""
-      posts.each do |post|
-        content += "<article><h2><a href='#{post.url}'>#{post.data['title']}</a></h2></article>"
+      # Handle archives (tags, categories, year, month)
+      if amp_data['layout'] == 'archive' && amp_data['type']
+        amp_data['posts'] = fetch_archive_posts(amp_data, site)
       end
 
-      content
+      amp_content = original.output
+      amp_filename = amp_filename_for(original)
+
+      amp_path = File.join(site.source, amp_filename)
+      FileUtils.mkdir_p(File.dirname(amp_path))
+
+      File.open(amp_path, 'w') do |f|
+        f.puts front_matter(amp_data)
+        f.puts amp_content
+      end
     end
 
-    def get_posts_for_archive(site, page)
-      # Check if the page is a tag archive or category archive
-      if page.data['tags']
-        # Posts tagged with any of the tags listed in the page's data
-        site.posts.docs.select { |post| (post.data['tags'] & page.data['tags']).any? }
-      elsif page.data['category']
-        # Posts in the specified category
-        site.posts.docs.select { |post| post.data['category'] == page.data['category'] }
-      elsif page.data['year'] && page.data['month']
-        # Posts within the specified year and month
-        site.posts.docs.select do |post|
-          post.date.year == page.data['year'] && post.date.month == page.data['month']
-        end
+    def fetch_archive_posts(data, site)
+      type = data['type']
+      title = data['title']
+      url_parts = data['permalink'] ? data['permalink'].split("/") : []
+
+      case type
+      when 'tag'
+        site.posts.docs.select { |p| p.data['tags']&.include?(title) }
+      when 'category'
+        site.posts.docs.select { |p| p.data['categories']&.include?(title) }
+      when 'year'
+        year = url_parts[1].to_i
+        site.posts.docs.select { |p| p.date.year == year }
+      when 'month'
+        year = url_parts[1].to_i
+        month = url_parts[2].to_i
+        site.posts.docs.select { |p| p.date.year == year && p.date.month == month }
       else
-        site.posts.docs # If no filter is applied, return all posts
+        []
       end
+    end
+
+    def amp_filename_for(page)
+      dir = if page.respond_to?(:path)
+              File.dirname(page.path)
+            else
+              page.dir
+            end
+
+      name = if page.respond_to?(:basename_without_ext)
+               page.basename_without_ext
+             else
+               File.basename(page.name, File.extname(page.name))
+             end
+
+      ext = page.extname || File.extname(page.name)
+      amp_name = "#{name}-amp#{ext}"
+
+      dir == '.' ? amp_name : File.join(dir, amp_name)
+    end
+
+    def front_matter(data)
+      "---\n" + data.to_yaml.sub(/\A---\s*\n/, '') + "---"
     end
   end
 end
