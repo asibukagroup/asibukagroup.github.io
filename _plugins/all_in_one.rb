@@ -8,16 +8,16 @@ module Jekyll
 
       # Loop through all pages, posts, and collections to find .md files
       site.pages.each do |page|
-        process_page(page, site, collections) if page_is_markdown?(page) && in_valid_collection?(page, collections)
+        process_page(page, site, collections) if page_is_markdown?(page) && in_valid_collection?(page, collections, site)
       end
 
       site.posts.docs.each do |post|
-        process_page(post, site, collections) if page_is_markdown?(post) && in_valid_collection?(post, collections)
+        process_page(post, site, collections) if page_is_markdown?(post) && in_valid_collection?(post, collections, site)
       end
 
       site.collections.each do |name, collection|
         collection.docs.each do |doc|
-          process_page(doc, site, collections) if page_is_markdown?(doc) && in_valid_collection?(doc, collections)
+          process_page(doc, site, collections) if page_is_markdown?(doc) && in_valid_collection?(doc, collections, site)
         end
       end
     end
@@ -29,12 +29,12 @@ module Jekyll
       page.extname == ".md"
     end
 
-    def in_valid_collection?(page, collections)
+    def in_valid_collection?(page, collections, site)
       # Check if the page is in the root directory or in one of the specified collections
-      root_directory?(page) || valid_collection?(page, collections)
+      root_directory?(page, site) || valid_collection?(page, collections)
     end
 
-    def root_directory?(page)
+    def root_directory?(page, site)
       # Check if the page is in the root directory
       File.dirname(page.path) == site.source
     end
