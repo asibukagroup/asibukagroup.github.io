@@ -24,16 +24,13 @@ robots: index, follow
     const embedResult = document.getElementById('EmbedResult');
     const embedTitle = document.getElementById('EmbedTitle');
 
-    // Set document title
     document.title = title;
 
-    // Set visible title content
     if (embedTitle) {
       embedTitle.textContent = '';
       embedTitle.append(title);
     }
 
-    // Create iframe only if both short and id are provided
     if (id1 && gid1 && EmbedDetails) {
         const csvDetails = 'https://docs.google.com/spreadsheets/d/e/' + id1 + '/pub?gid='+gid1+'&single=true&output=csv';
         fetch(csvDetails)
@@ -80,10 +77,8 @@ robots: index, follow
     const embedResult = document.getElementById('EmbedResult');
     embedResult.innerHTML = '';
 
-    // Remove hidden attribute if present
     embedResult.removeAttribute('hidden');
 
-    // Create and insert heading before #EmbedResult
     const heading = document.createElement('h2');
     heading.className = 'main-heading';
     heading.textContent = 'Detil Transaksi';
@@ -94,17 +89,14 @@ robots: index, follow
   .catch(err => {
     const embedResult = document.getElementById('EmbedResult');
     embedResult.textContent = 'Failed to load data.';
-    embedResult.removeAttribute('hidden'); // Also show the element on error
+    embedResult.removeAttribute('hidden');
     console.error('CSV fetch error:', err);
   });
     }
-
-    // Remove elements with class .hide-on-embed entirely
     document.querySelectorAll('.hide-on-embed').forEach(el => {
       el.remove();
     });
 
-    // Clear URL parameters from the address bar
     if (window.history.replaceState) {
       const cleanUrl = window.location.origin + window.location.pathname;
       window.history.replaceState({}, title, cleanUrl);
