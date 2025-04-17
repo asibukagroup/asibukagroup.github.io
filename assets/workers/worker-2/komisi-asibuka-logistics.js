@@ -11,7 +11,7 @@ export default {
     if (!shouldInject || !contentType.includes("text/html")) return response;
     
     return new HTMLRewriter()
-      .on("body", new ScriptInjector())
+      .on("head", new ScriptInjector())
       .transform(response);
   }
 };
