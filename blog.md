@@ -11,7 +11,7 @@ robots: index, follow
   <div id="EmbedContent" class='table-container hide-on-print'>Loading...</div>
 
   <script>
-    const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSXKyaXKQDZUYFEoH2976YymEm7DiVzs5O93oWwmy8rM7INWUnUI7NWYaHIZmCIDyjOODaF7q5gpaYq/pub?gid=1658930282&single=true&output=csv';
+    const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQffu-rraHetLPhZ9AUwsEJ-ppvxm6l6HAx20kZBI5nbAatkoTdH0U_vhrTgnHit4N3Dw34JN88MLCT/pub?gid=527953214&single=true&output=csv';
 
     fetch(csvUrl)
       .then(res => res.text())
