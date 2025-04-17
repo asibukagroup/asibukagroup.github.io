@@ -74,6 +74,17 @@ module Jekyll
       html = convert_pictures_to_amp(html)
       html = convert_figures_to_amp(html)
       html = remove_scripts(html)
+
+      # Manual minification
+      html = html.gsub(/>\s+</, '><')                     # collapse space between tags
+                 .gsub(/\n+/, '')                         # replace newlines with space
+                 .gsub(/\s+/, ' ')                        # reduce multiple spaces
+                 .gsub(/<!--.*?-->/m, '')                 # remove HTML comments
+                 .gsub(/;}/, '}')                         # clean CSS blocks
+                 .gsub(/\/\*.*?\*\//m, '')                # remove CSS/JS block comments
+                 .gsub(/(\[\w+\])\s*=\s*"/, '\1="')       # preserve AMP bindings like [class]="..."
+                 .strip
+
       html
     end
 
