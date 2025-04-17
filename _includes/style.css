@@ -100,8 +100,10 @@ table{border-collapse:collapse;width:100%;background-color:var(--white);color:va
 th,td{text-align:left;padding:12px;border-bottom:1px solid var(--white)}
 th{background-color:var(--theme-color);color:var(--white)}
 tr:nth-child(even){background-color:var(--white)}
+tr:nth-child(odd){background-color:#f9f9f9}
 body.dark table{background-color:var(--darkgrey);color:var(--white)}
 body.dark tr:nth-child(even){background-color:var(--darkgrey)}
+body.dark tr:nth-child(odd){background-color:#2a2a2a}
 {% endif %}
 {% if content contains "post-containers" %}
 .post-containers{display:flex;flex-direction:column;gap:1.5rem;margin-top:2rem}
