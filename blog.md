@@ -30,11 +30,11 @@ robots: index, follow
           });
           table.appendChild(tr);
         });
-        document.getElementById('EmbedContent').innerHTML = '';
-        document.getElementById('EmbedContent').appendChild(table);
+        document.getElementById('EmbedDetails').innerHTML = '';
+        document.getElementById('EmbedDetails').appendChild(table);
       })
       .catch(err => {
-        document.getElementById('EmbedContent').textContent = 'Failed to load data.';
+        document.getElementById('EmbedDetails').textContent = 'Failed to load data.';
         console.error('CSV fetch error:', err);
       });
     fetch(csvResult)
