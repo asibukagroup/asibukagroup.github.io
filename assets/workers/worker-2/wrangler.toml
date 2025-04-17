@@ -1,10 +1,10 @@
-name = "inject-sheet-komisi-asibuka-logistics"
+name = "inject-komisi-logistics"
 type = "module"
 main = "komisi-asibuka-logistics.js"
 account_id = "dc642e62b4202987af42afb3a2aadb25"
 zone_id = "4618ae3dc797aca34490a22f06ecaba0"
-compatibility_date = "2024-04-17"
+compatibility_date = "2024-04-18"
 
 routes = [
-  "https://www.asibuka.com/*"
+  "https://www.asibuka.com/blog/*"
 ]
