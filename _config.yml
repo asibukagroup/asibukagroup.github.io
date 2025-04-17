@@ -88,11 +88,13 @@ plugins_dir: _plugins
 plugins:
   - jekyll-archives
   - jekyll-sitemap
-  - ./_plugins/all_in_one.rb
+  - ./_plugins/amp_generator.rb
+  - ./_plugins/minifier.rb
 whitelist:
   - jekyll-archives
   - jekyll-sitemap
-  - ./_plugins/all_in_one.rb
+  - ./_plugins/amp_generator.rb
+  - ./_plugins/minifier.rb
 # ------------------------------
 # Jekyll Archives
 # ------------------------------

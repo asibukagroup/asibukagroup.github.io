@@ -199,16 +199,5 @@ module Jekyll
       end
       doc.to_html
     end
-
-    def minify_html(html)
-      html.gsub(/>\s+</, '><')                     # collapse space between tags
-          .gsub(/\n+/, '')                         # remove newlines
-          .gsub(/\s+/, ' ')                        # reduce multiple spaces
-          .gsub(/<!--.*?-->/m, '')                 # remove HTML comments
-          .gsub(/;}/, '}')                         # clean CSS blocks
-          .gsub(/\/\*.*?\*\//m, '')                # remove CSS/JS block comments
-          .gsub(/(\[\w+\])\s*=\s*"/, '\1="')       # preserve AMP bindings
-          .strip
-    end
   end
 end
