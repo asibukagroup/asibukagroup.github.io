@@ -8,8 +8,6 @@ robots: index, follow
 ---
 <h1 class="main-heading" id='EmbedTitle'>{{ page.title }}</h1>
 <p class='text-center hide-on-embed'>{{ page.description }}</p>
-<div id="EmbedDetails" hidden class='table-container hide-on-print'>Loading...</div>
-<div id="EmbedResult" hidden class='table-container hide-on-print'>Loading...</div>
 <div class='hide-on-embed' itemscope itemtype="https://schema.org/ItemList">
 {% for post in site.posts %}
 <article class="post-container" itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement">

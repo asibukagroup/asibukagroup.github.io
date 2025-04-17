@@ -6,5 +6,5 @@ zone_id = "4618ae3dc797aca34490a22f06ecaba0"
 compatibility_date = "2024-04-17"
 
 routes = [
-  "https://www.asibuka.com/diskusi/*"
+  "https://www.asibuka.com/*"
 ]

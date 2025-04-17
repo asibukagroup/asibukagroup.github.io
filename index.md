@@ -11,6 +11,9 @@ robots: index, follow
 lang: id
 ---
 <h1 class='main-heading' id='EmbedTitle'>{{ page.title }}</h1>
+<div class='media-container' hidden id='EmbedContent'></div>
+<div id="EmbedDetails" hidden class='table-container hide-on-print'>Loading...</div>
+<div id="EmbedResult" hidden class='table-container hide-on-print'>Loading...</div>
 <div class='hide-on-embed'>
 <p>{{ page.description }}</p>
 <img src='https://asibuka.com/assets/img/ASIBUKA-Blue.webp' width='300' height='300' alt='Logo ASIUBKA' title='Logo ASIUBKA'>
