@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: default
 title: Diskusi
 date: 2025-04-02 00:00:04
 permalink: /diskusi/
@@ -10,4 +10,8 @@ author: ASIBUKA Group
 robots: index, follow
 lang: id
 ---
+<h1 class='main-heading' id='EmbedTitle'>Kolom Diskusi</h1>
+<div class='media-container' id='EmbedContent'></div>
+<div class='hide-on-embed'>
 {% include disqus.html %}
+</div>
