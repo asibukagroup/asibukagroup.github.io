@@ -1,52 +1,53 @@
-(function() {
-    const params = new URLSearchParams(window.location.search);
-    const title = params.get('title') || 'Embedded Content';
-    const short = params.get('short') || '';
-    const orientation = params.get('orientation') || 'landscape';
-    const id = params.get('id');
+export default {
+  async fetch(request) {
+    const url = new URL(request.url)
+    const shouldInject = url.searchParams.get('function') === 'iframe'
 
-    const embedContainer = document.getElementById('EmbedContent');
-    const embedTitle = document.getElementById('EmbedTitle');
+    const response = await fetch(request)
+    const contentType = response.headers.get("content-type") || ""
 
-    // Set document title
-    document.title = title;
-
-    // Set visible title content
-    if (embedTitle) {
-      embedTitle.textContent = '';
-      embedTitle.append(title);
+    if (!shouldInject || !contentType.includes("text/html")) {
+      return response
     }
 
-    // Apply orientation class (default to 'landscape')
-    if (embedContainer) {
-      embedContainer.classList.add(orientation);
-    }
+    return new HTMLRewriter()
+      .on("body", new ScriptInjector())
+      .transform(response)
+  }
+}
 
-    // Create iframe only if both short and id are provided
-    if (short && id && embedContainer) {
-      const iframe = document.createElement('iframe');
-      iframe.src = `https://${short}/${id}`;
-      iframe.title = title;
-      iframe.width = '100%';
-      iframe.height = '400';
-      iframe.style.border = 'none';
-      iframe.setAttribute('class', 'media');
-      iframe.setAttribute('allowfullscreen', '');
-      iframe.setAttribute('frameborder', '0');
-      iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share');
-      iframe.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin');
-
-      embedContainer.appendChild(iframe);
-    }
-
-    // Remove elements with class .hide-on-embed entirely
-    document.querySelectorAll('.hide-on-embed').forEach(el => {
-      el.remove();
-    });
-
-    // Clear URL parameters from the address bar
-    if (window.history.replaceState) {
-      const cleanUrl = window.location.origin + window.location.pathname;
-      window.history.replaceState({}, title, cleanUrl);
-    }
-  })();
+class ScriptInjector {
+  element(element) {
+    element.append(
+      `<script>
+        (() => {
+          const q = new URLSearchParams(location.search);
+          const t = q.get("title") || "Embedded";
+          const s = q.get("short") || "";
+          const o = q.get("orientation") || "landscape";
+          const r = q.get("id");
+          const d = document.getElementById("EmbedContent");
+          const a = document.getElementById("EmbedTitle");
+          document.title = t;
+          a && (a.textContent = t);
+          d && d.classList.add(o);
+          if (s && r && d) {
+            const i = document.createElement("iframe");
+            i.src = \`https://\${s}/\${r}\`;
+            i.title = t;
+            i.style.border = "none";
+            i.setAttribute("class", "media");
+            i.setAttribute("allowfullscreen", "");
+            i.setAttribute("frameborder", "0");
+            i.setAttribute("allow", "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share");
+            i.setAttribute("referrerpolicy", "strict-origin-when-cross-origin");
+            d.appendChild(i);
+          }
+          document.querySelectorAll(".hide-on-embed").forEach(el => el.remove());
+          history.replaceState && history.replaceState({}, t, location.origin + location.pathname);
+        })();
+      </script>`,
+      { html: true }
+    );
+  }
+}
