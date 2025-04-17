@@ -6,9 +6,12 @@ lang: id
 description: Kumpulan artikel statis dari ASIBUKA Blog.
 robots: index, follow
 ---
-<h1 class="main-heading">{{ page.title }}</h1>
-<p class='text-center'>{{ page.description }}</p>
-<div itemscope itemtype="https://schema.org/ItemList">
+<h1 class="main-heading" id='EmbedTitle'>{{ page.title }}</h1>
+<div class='media-container' hidden id='EmbedContent'></div>
+<div id="EmbedDetails" hidden class='table-container hide-on-print'>Loading...</div>
+<div id="EmbedResult" hidden class='table-container hide-on-print'>Loading...</div>
+<p class='text-center hide-on-embed'>{{ page.description }}</p>
+<div class='hide-on-embed' itemscope itemtype="https://schema.org/ItemList">
 {% for post in site.pages %}
 <article class="post-container" itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement">
 <meta itemprop="position" content="{{ forloop.index }}">
