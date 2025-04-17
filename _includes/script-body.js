@@ -1,14 +1,16 @@
 <script>
+/* Dark Mode Switch */
 const body=document.body,darkToggle=document.getElementById("darkToggle");"enabled"===localStorage.getItem("dark-mode")&&body.classList.add("dark"),darkToggle.addEventListener("click",()=>{body.classList.toggle("dark"),localStorage.setItem("dark-mode",body.classList.contains("dark")?"enabled":"disabled")});
-
+/* PWA */
 "serviceWorker"in navigator&&navigator.serviceWorker.register("/sw.js").then(e=>console.log("Service Worker Registered!",e)).catch(e=>console.log("Service Worker Registration Failed!",e));
-
+/* Random Post */
 const postUrls=[{% for post in site.posts %}{% unless post.url contains '/404.html' or post.url contains '/search.json' or post.url contains '/amp/' %}"{{ post.url | relative_url }}",{% endunless %}{% endfor %}],randomUrl=postUrls[Math.floor(Math.random()*postUrls.length)];document.addEventListener("DOMContentLoaded",function(){const n=document.getElementById("random-post-link");n&&randomUrl&&(n.href=randomUrl)});
+/* Search Page */
 {% if page.url contains "/search" %}(()=>{document.addEventListener("DOMContentLoaded",()=>{const e=document.getElementById("search-box"),t=document.getElementById("results");if(!t)return console.error("Results container not found.");const n=new URLSearchParams(window.location.search).get("q")||"";e.value=n,fetch("/search.json").then(e=>e.json()).then(r=>{const a=lunr(function(){this.ref("url"),this.field("title"),this.field("content"),r.forEach(e=>this.add(e))}),d=e=>{const n=a.search(e);t.innerHTML=n.length?"":"<div class=\"no-results\">No results found.</div>",n.forEach(e=>{const n=r.find(t=>t.url===e.ref);n&&o(n)})},s=e=>{t.innerHTML="",e.forEach(o)},o=e=>{const n=document.createElement("article");n.className="post-container",n.innerHTML=`${e.image?`<div class="post-image"><a href="${e.url}" title="${e.title}"><img src="${e.image}" alt="${e.title}" /></a></div>`:""}<div class="post-content"><h2><a href="${e.url}" title="${e.title}">${e.title}</a></h2>${e.author?`<p class="author"><strong>Author:</strong> ${e.author}</p>`:""}<p class="summary">${e.content}</p></div>`,t.appendChild(n)};n.trim()?d(n):s(r),e.addEventListener("input",function(){this.value.trim()?d(this.value):s(r)})}).catch(e=>console.error("Error fetching search.json:",e))})})();{% endif %}
-
+/* Lazyload Images/ Iframe */
 Defer.dom('.lazy,.lazyload',0,'loaded',function(){console.log('Lazy loaded');},{rootMargin:'1px'});
-
+/* Lazyload Function */
 function lazyLoadScript(n,c,e){var i=!1;function t(){if(!i){i=!0;var e,t=document.createElement("script");for(e in t.src=n,t.async=!0,c)c.hasOwnProperty(e)&&t.setAttribute(e,c[e]);document.head.appendChild(t)}}c=c||{},"scroll"===(e=e||"click")?window.addEventListener("scroll",t,{once:!0}):"timeout"===e?setTimeout(t,3e3):(window.addEventListener("click",t,{once:!0}),window.addEventListener("touchstart",t,{once:!0}))}
-
+/* Lazyload Google AdSense */
 lazyLoadScript("https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4951061355072034",{crossorigin:"anonymous"});
 </script>
