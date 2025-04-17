@@ -3,7 +3,9 @@ export default {
     const url = new URL(request.url);
     const shouldInject = url.searchParams.get('function') === 'komisi-asibuka-logistics';
     
-    const response = await fetch(request);
+    const response = await fetch(request.url, {
+      cf: { cacheEverything: true },
+    });
     const contentType = response.headers.get("content-type") || "";
     
     if (!shouldInject || !contentType.includes("text/html")) return response;
