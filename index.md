@@ -10,6 +10,7 @@ keywords: ASIBUKA, ASIBUKA Group, Bisnis, Investasi, UMKM
 robots: index, follow
 lang: id
 ---
-<h1 class='main-heading'>{{ page.title }}</h1>
-<p>{{ page.description }}</p>
-<img src='https://asibuka.com/assets/img/ASIBUKA-Blue.webp' width='300' height='300' alt='Logo ASIUBKA' title='Logo ASIUBKA'>
+<h1 class='main-heading' id='EmbedTitle'>{{ page.title }}</h1>
+<div class='media-container' id='EmbedContent'></div>
+<p class='hide-on-embed'>{{ page.description }}</p>
+<img class='hide-on-embed' src='https://asibuka.com/assets/img/ASIBUKA-Blue.webp' width='300' height='300' alt='Logo ASIUBKA' title='Logo ASIUBKA'>

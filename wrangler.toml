@@ -6,5 +6,5 @@ main = "src/index.js"
 compatibility_date = "2024-04-17"
 
 routes = [
-  "https://www.asibuka.com/diskusi/*"
+  "https://www.asibuka.com/?function=iframe*"
 ]
