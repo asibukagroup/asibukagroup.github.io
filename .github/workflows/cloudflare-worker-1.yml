@@ -4,9 +4,9 @@ on:
   push:
     branches: [main]
     paths:
-      - "src/**"
-      - "wrangler.toml"
-      - ".github/workflows/deploy-worker.yml"
+      - "assets/workers/worker-1/**"
+      - "assets/workers/worker-1/wrangler.toml"
+      - ".github/workflows/cloudflare-worker-1.yml"
 
 jobs:
   deploy:
