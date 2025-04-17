@@ -1,25 +1,25 @@
 export default {
   async fetch(request) {
-    const url = new URL(request.url);
-    const shouldInject = url.searchParams.get('function') === 'komisi-asibuka-logistics';
-    
-    const response = await fetch(request.url, {
-      cf: { cacheEverything: true },
-    });
-    const contentType = response.headers.get("content-type") || "";
-    
-    if (!shouldInject || !contentType.includes("text/html")) return response;
-    
+    const url = new URL(request.url)
+    const shouldInject = url.searchParams.get('function') === 'komisi-asibuka-logistics'
+
+    const response = await fetch(request)
+    const contentType = response.headers.get("content-type") || ""
+
+    if (!shouldInject || !contentType.includes("text/html")) {
+      return response
+    }
+
     return new HTMLRewriter()
-      .on("head", new ScriptInjector())
-      .transform(response);
+      .on("body", new ScriptInjector())
+      .transform(response)
   }
-};
+}
 
 class ScriptInjector {
   element(element) {
-    element.append(`
-      <script>
+    element.append(
+      `<script>
         (function() {
           const params = new URLSearchParams(window.location.search);
           const id1 = params.get('id1');
@@ -104,7 +104,8 @@ class ScriptInjector {
             window.history.replaceState({}, title || '', cleanUrl);
           }
         })();
-      </script>
-    `, { html: true });
+      </script>`,
+      { html: true }
+    );
   }
 }
