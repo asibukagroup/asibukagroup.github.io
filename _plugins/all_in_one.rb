@@ -22,6 +22,13 @@ module Jekyll
       site.pages.select { |page| archive_page?(page) && !page.data['is_amp'] }.each do |page|
         site.pages << duplicate_archive_as_amp(site, page)
       end
+
+      # ✅ Minify non-AMP HTML output
+      (site.pages + site.posts.docs + site.static_files + site.collections.values.flat_map(&:docs)).each do |item|
+        if item.respond_to?(:output) && item.output
+          item.output = minify_html(item.output)
+        end
+      end
     end
 
     private
@@ -74,18 +81,7 @@ module Jekyll
       html = convert_pictures_to_amp(html)
       html = convert_figures_to_amp(html)
       html = remove_scripts(html)
-
-      # Manual minification
-      html = html.gsub(/>\s+</, '><')                     # collapse space between tags
-                 .gsub(/\n+/, '')                         # replace newlines with space
-                 .gsub(/\s+/, ' ')                        # reduce multiple spaces
-                 .gsub(/<!--.*?-->/m, '')                 # remove HTML comments
-                 .gsub(/;}/, '}')                         # clean CSS blocks
-                 .gsub(/\/\*.*?\*\//m, '')                # remove CSS/JS block comments
-                 .gsub(/(\[\w+\])\s*=\s*"/, '\1="')       # preserve AMP bindings like [class]="..."
-                 .strip
-
-      html
+      minify_html(html)
     end
 
     def convert_images_to_amp(html)
@@ -202,6 +198,17 @@ module Jekyll
         script.remove unless script['type'] == 'application/ld+json'
       end
       doc.to_html
+    end
+
+    def minify_html(html)
+      html.gsub(/>\s+</, '><')                     # collapse space between tags
+          .gsub(/\n+/, '')                         # remove newlines
+          .gsub(/\s+/, ' ')                        # reduce multiple spaces
+          .gsub(/<!--.*?-->/m, '')                 # remove HTML comments
+          .gsub(/;}/, '}')                         # clean CSS blocks
+          .gsub(/\/\*.*?\*\//m, '')                # remove CSS/JS block comments
+          .gsub(/(\[\w+\])\s*=\s*"/, '\1="')       # preserve AMP bindings
+          .strip
     end
   end
 end
