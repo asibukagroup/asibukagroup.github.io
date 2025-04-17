@@ -2,9 +2,9 @@ name: Deploy Cloudflare Worker
 
 on:
   push:
-    branches: [main] # change this if needed
+    branches: [main]
     paths:
-      - "src/**" # where your Worker code is
+      - "src/**"
       - "wrangler.toml"
       - ".github/workflows/deploy-worker.yml"
 
@@ -14,7 +14,7 @@ jobs:
     name: Deploy Worker
 
     steps:
-      - name: Checkout repo
+      - name: Checkout Repository
         uses: actions/checkout@v3
 
       - name: Publish to Cloudflare Workers
