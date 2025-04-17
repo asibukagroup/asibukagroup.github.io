@@ -10,5 +10,6 @@ author: ASIBUKA Group
 robots: index, follow
 lang: id
 ---
-<h1 class='main-heading'>Kolom Diskusi</h1>
+<h1 class='main-heading' id='EmbedTitle'>Kolom Diskusi</h1>
+<div class='media-container' hidden id='EmbedContent'></div>
 {% include disqus.html %}
