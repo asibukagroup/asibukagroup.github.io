@@ -75,7 +75,7 @@ module Jekyll
       doc.css('img').each do |img|
         amp_img = Nokogiri::XML::Node.new('amp-img', doc)
 
-        amp_img['src'] = img['data-src'] || img['src'] || '/assets/img/ASIBUKA-Blue.webp'
+        amp_img['src'] = img['data-src'] || img['src']
         amp_img['alt'] = img['alt'] || img['title'] || 'image'
         amp_img['title'] = img['alt'] || img['title'] || ''
         amp_img['width'] = img['width'] || '1600'
