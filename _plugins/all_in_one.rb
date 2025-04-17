@@ -71,7 +71,7 @@ module Jekyll
     end
 
     def convert_images_to_amp(html)
-      doc = Nokogiri::HTML.fragment(html)
+      doc = Nokogiri::HTML5.fragment(html)
       doc.css('img').each do |img|
         amp_img = Nokogiri::XML::Node.new('amp-img', doc)
 
