@@ -8,12 +8,15 @@ robots: index, follow
 ---
 <h1 class="main-heading">{{ page.title }}</h1>
 <p class='text-center'>{{ page.description }}</p>
-  <div id="EmbedContent" class='table-container hide-on-print'>Loading...</div>
+  <div id="EmbedDetails" class='table-container hide-on-print'>Loading...</div>
+  <h2 class='main-heading'>Details</h2>
+  <div id="EmbedResult" class='table-container hide-on-print'>Loading...</div>
 
   <script>
-    const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQffu-rraHetLPhZ9AUwsEJ-ppvxm6l6HAx20kZBI5nbAatkoTdH0U_vhrTgnHit4N3Dw34JN88MLCT/pub?gid=527953214&single=true&output=csv';
+    const csvDetails = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQffu-rraHetLPhZ9AUwsEJ-ppvxm6l6HAx20kZBI5nbAatkoTdH0U_vhrTgnHit4N3Dw34JN88MLCT/pub?gid=527953214&single=true&output=csv';
+    const csvResult = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQffu-rraHetLPhZ9AUwsEJ-ppvxm6l6HAx20kZBI5nbAatkoTdH0U_vhrTgnHit4N3Dw34JN88MLCT/pub?gid=93981574&single=true&output=csv';
 
-    fetch(csvUrl)
+    fetch(csvDetails)
       .then(res => res.text())
       .then(csv => {
         const rows = csv.trim().split('\n').map(r => r.split(','));
@@ -32,6 +35,27 @@ robots: index, follow
       })
       .catch(err => {
         document.getElementById('EmbedContent').textContent = 'Failed to load data.';
+        console.error('CSV fetch error:', err);
+      });
+    fetch(csvResult)
+      .then(res => res.text())
+      .then(csv => {
+        const rows = csv.trim().split('\n').map(r => r.split(','));
+        const table = document.createElement('table');
+        rows.forEach((row, i) => {
+          const tr = document.createElement('tr');
+          row.forEach(cell => {
+            const el = document.createElement(i === 0 ? 'th' : 'td');
+            el.textContent = cell;
+            tr.appendChild(el);
+          });
+          table.appendChild(tr);
+        });
+        document.getElementById('EmbedResult').innerHTML = '';
+        document.getElementById('EmbedResult').appendChild(table);
+      })
+      .catch(err => {
+        document.getElementById('EmbedResult').textContent = 'Failed to load data.';
         console.error('CSV fetch error:', err);
       });
   </script>
