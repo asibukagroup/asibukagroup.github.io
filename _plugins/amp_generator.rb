@@ -48,9 +48,16 @@ module Jekyll
       amp_dir = File.dirname(original.path.sub(site.source, ''))
 
       amp_page = PageWithoutAFile.new(site, site.source, amp_dir, amp_filename)
-      amp_page.content = original.content
-      amp_page.data = amp_data
 
+      rendered_html = original.respond_to?(:output) ? original.output : nil
+      if rendered_html && !rendered_html.strip.empty?
+        amp_page.output = convert_html_for_amp(rendered_html)
+        amp_page.content = original.content
+      else
+        amp_page.content = convert_html_for_amp(original.content)
+      end
+
+      amp_page.data = amp_data
       amp_page
     end
 
@@ -75,6 +82,7 @@ module Jekyll
       html = convert_figures_to_amp(html)
       html = convert_internal_links_to_amp(html)
       html = remove_scripts(html)
+      html
     end
 
     def convert_images_to_amp(html)
@@ -193,7 +201,6 @@ module Jekyll
         next if href =~ /^https?:\/\//  # external link
         next if href.include?('/amp')   # already AMP link
 
-        # clean trailing slash and append /amp/
         amp_href = href.sub(/\/$/, '') + '/amp/'
         a['href'] = amp_href
       end
