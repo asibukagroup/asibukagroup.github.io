@@ -17,7 +17,7 @@
 <main aria-label="Main Wrapper" class="content-wrapper hide-on-print" id="content-wrapper">
 {{ content }}
 </main>
-{% include right-sidebar.html %}
+{% unless page.layout == "default" %}{% include right-sidebar.html %}{% endunless %}
 </div>
 {% include noprint.html %}
 {% if page.is_amp %}<amp-auto-ads type="adsense" data-ad-client="ca-pub-4951061355072034">
