@@ -41,6 +41,7 @@ export default {
               i.setAttribute("frameborder", "0");
               i.setAttribute("allow", "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share");
               i.setAttribute("referrerpolicy", "strict-origin-when-cross-origin");
+              d.removeAttribute('hidden');
               d.appendChild(i);
             }
             document.querySelectorAll(".hide-on-embed").forEach(el => el.remove());
