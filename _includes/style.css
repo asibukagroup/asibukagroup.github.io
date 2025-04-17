@@ -94,7 +94,7 @@ body.dark .sidebar-footer{border-color:#444;color:#aaa}
 .lazy{opacity:0;transform:scale(0.98);transition:opacity .6s ease-out,transform .6s ease-out}
 .lazy.loaded{opacity:1;transform:scale(1)}
 /* Table */
-{% if content contains "<table" %}
+{% if content contains "<table" or page.url contains "/blog/" %}
 .table-container{overflow-x:auto}
 table{border-collapse:collapse;width:100%;background-color:var(--white);color:var(--darkgrey)}
 th,td{text-align:left;padding:12px;border-bottom:1px solid var(--white)}

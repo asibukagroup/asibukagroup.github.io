@@ -8,7 +8,7 @@ robots: index, follow
 ---
 <h1 class="main-heading">{{ page.title }}</h1>
 <p class='text-center'>{{ page.description }}</p>
-  <div id="EmbedContent">Loading...</div>
+  <div id="EmbedContent" class='table-container hide-on-print'>Loading...</div>
 
   <script>
     const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSXKyaXKQDZUYFEoH2976YymEm7DiVzs5O93oWwmy8rM7INWUnUI7NWYaHIZmCIDyjOODaF7q5gpaYq/pub?gid=1658930282&single=true&output=csv';
