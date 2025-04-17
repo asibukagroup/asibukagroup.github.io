@@ -49,6 +49,7 @@ lang: id
       iframe.width = '100%';
       iframe.height = '400';
       iframe.style.border = 'none';
+      iframe.setAttribute('class', 'media');
       iframe.setAttribute('allowfullscreen', '');
       iframe.setAttribute('frameborder', '0');
       iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share');
