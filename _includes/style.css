@@ -78,8 +78,9 @@ body.dark .sidebar-footer{border-color:#444;color:#aaa}
 #sidebar-toggle:checked ~ .overlay{display:block}
 .overlay,.search-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.6);z-index:999}
 /* Content Layout */
-.layout{display:flex;flex-direction:{% unless page.layout == "default" %}row{% else %}column{% endunless %};min-height:100vh}
-{% unless page.layout == "default" %}.content-wrapper{padding:.5rem;width: calc(100% - 300px);transition:margin-left .3s ease}
+{% assign column_layouts = "default,archive" | split: "," %}
+.layout{display:flex;flex-direction:{% unless column_layouts contains page.layout %}row{% else %}column{% endunless %};min-height:100vh}
+{% unless column_layouts contains page.layout %}.content-wrapper{padding:.5rem;width: calc(100% - 300px);transition:margin-left .3s ease}
 .right-sidebar{padding:.5rem}
 .right-sidebar > div{margin:.5rem auto}
 .right-sidebar .sticky-box{position:sticky;top:3.5rem;width:300px}{% endunless %}
