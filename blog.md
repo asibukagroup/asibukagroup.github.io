@@ -14,7 +14,7 @@ robots: index, follow
 <meta itemprop="position" content="{{ forloop.index }}">
 <div class="post-image">
 <a href="{{ post.url }}" title="{{ post.title }}" itemprop="url">
-<img  src="{{ post.image }}" width="1600" height="900" loading="lazy"  class="lazy"  alt="{{ post.title }}" title="{{ post.title }}">
+<img  data-src="{{ post.image }}" src="{{ post.image }}" width="1600" height="900" loading="lazy"  class="lazy"  alt="{{ post.title }}" title="{{ post.title }}">
 </a>
 </div>
 <div class="post-content">
