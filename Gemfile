@@ -6,4 +6,5 @@ gem 'jekyll-archives'
 gem 'nokogiri', '>= 1.12'
 gem "tzinfo"
 gem "yaml"
+gem "fastimage"
 gem "fileutils"

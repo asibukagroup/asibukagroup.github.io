@@ -1,5 +1,6 @@
 # _plugins/amp_generator.rb
 require 'nokogiri'
+require 'fastimage'
 
 module Jekyll
   class AmpGenerator < Generator
@@ -48,16 +49,9 @@ module Jekyll
       amp_dir = File.dirname(original.path.sub(site.source, ''))
 
       amp_page = PageWithoutAFile.new(site, site.source, amp_dir, amp_filename)
-
-      rendered_html = original.respond_to?(:output) ? original.output : nil
-      if rendered_html && !rendered_html.strip.empty?
-        amp_page.output = convert_html_for_amp(rendered_html)
-        amp_page.content = original.content
-      else
-        amp_page.content = convert_html_for_amp(original.content)
-      end
-
+      amp_page.content = original.content
       amp_page.data = amp_data
+
       amp_page
     end
 
@@ -82,7 +76,6 @@ module Jekyll
       html = convert_figures_to_amp(html)
       html = convert_internal_links_to_amp(html)
       html = remove_scripts(html)
-      html
     end
 
     def convert_images_to_amp(html)
@@ -91,11 +84,19 @@ module Jekyll
         amp_img = Nokogiri::XML::Node.new('amp-img', doc)
 
         src = img['data-src'] || img['src']
-        amp_img['src'] = src.nil? || src.strip.empty? ? '/assets/img/ASIBUKA-Blue.webp' : src
+        src = '/assets/img/ASIBUKA-Blue.webp' if src.nil? || src.strip.empty?
+
+        if img['width'] && img['height']
+          width, height = img['width'], img['height']
+        else
+          width, height = FastImage.size(src) rescue [1600, 900]
+        end
+
+        amp_img['src'] = src
         amp_img['alt'] = img['alt'] || img['title'] || 'image'
         amp_img['title'] = img['alt'] || img['title'] || ''
-        amp_img['width'] = img['width'] || '1600'
-        amp_img['height'] = img['height'] || '900'
+        amp_img['width'] = width.to_s
+        amp_img['height'] = height.to_s
         amp_img['layout'] = img['layout'] || 'responsive'
 
         img.replace(amp_img)
@@ -155,11 +156,17 @@ module Jekyll
         img = picture.at_css('img') || picture.at_css('source')
         src = img['srcset'] || img['src']
 
+        if img['width'] && img['height']
+          width, height = img['width'], img['height']
+        else
+          width, height = FastImage.size(src) rescue [1600, 900]
+        end
+
         amp_img = Nokogiri::XML::Node.new('amp-img', doc)
         amp_img['src'] = src || '/assets/img/ASIBUKA-Blue.webp'
         amp_img['alt'] = img['alt'] || 'image'
-        amp_img['width'] = img['width'] || '1600'
-        amp_img['height'] = img['height'] || '900'
+        amp_img['width'] = width.to_s
+        amp_img['height'] = height.to_s
         amp_img['layout'] = 'responsive'
 
         picture.replace(amp_img)
@@ -174,10 +181,18 @@ module Jekyll
           amp_img = Nokogiri::XML::Node.new('amp-img', doc)
 
           src = img['data-src'] || img['src']
-          amp_img['src'] = src.nil? || src.strip.empty? ? '/assets/img/ASIBUKA-Blue.webp' : src
+          src = '/assets/img/ASIBUKA-Blue.webp' if src.nil? || src.strip.empty?
+
+          if img['width'] && img['height']
+            width, height = img['width'], img['height']
+          else
+            width, height = FastImage.size(src) rescue [1600, 900]
+          end
+
+          amp_img['src'] = src
           amp_img['alt'] = img['alt'] || 'image'
-          amp_img['width'] = img['width'] || '1600'
-          amp_img['height'] = img['height'] || '900'
+          amp_img['width'] = width.to_s
+          amp_img['height'] = height.to_s
           amp_img['layout'] = 'responsive'
 
           figcaption = figure.at_css('figcaption')
