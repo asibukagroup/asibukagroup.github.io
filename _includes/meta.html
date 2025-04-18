@@ -60,7 +60,8 @@
     <!-- Verification -->
     <meta name='dmca-site-verification' content='OWJ0Vk5lWTVjNzRLMWxFcis4NythQT090'>
     <!-- Canonical -->
-    <link rel="canonical" hreflang='{{ page.lang | default: site.lang }}' href="{{ site.url }}{{ page.url | replace:'index.html','' }}">{% unless page.url contains '/amp/' %}<link rel='amphtml' href="{{ site.url }}{{ page.url | replace:'index.html','' }}amp/">{% endunless %}
+    {% if page.is_amp %}<link rel="canonical" hreflang='{{ page.lang | default: site.lang }}' href="{{ site.url }}{{ page.url | replace:'/amp/','' }}">{% else %}<link rel="canonical" hreflang='{{ page.lang | default: site.lang }}' href="{{ site.url }}{{ page.url | replace:'index.html','' }}">{% endif %}
+    {% unless page.url contains '/amp/' %}<link rel='amphtml' href="{{ site.url }}{{ page.url | replace:'index.html','' }}amp/">{% endunless %}
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
     <!-- Preload / DNS Prefetch -->
     {% if page.url == "/" or page.url == "/amp/" %}<link rel="preload" fetchpriority="high" as="image" href="/assets/img/ASIBUKA-Blue.webp" type="image/webp">{% endif %}
