@@ -128,10 +128,14 @@ body.dark .post-container .summary{color:#ddd}
 .media-container.square{padding-bottom:100%}
 /* Back to Top Button */
 html:has(body:not(:is(:hover,:focus-within)) > .back-to-top) .back-to-top{opacity:0;pointer-events:none;transform:translateY(20px)}
-.back-to-top{position:fixed;bottom:2rem;right:2rem;display:flex;justify-content:center;align-items:center;background:#fff;border:2px solid var(--theme-color);border-radius:50%;width:clamp(44px,4vw,60px);height:clamp(44px,4vw,60px);z-index:1000;box-shadow:0 4px 10px #0000001a;opacity:1;transition:opacity .3s ease,transform .3s ease}
+.back-to-top{position:fixed;bottom:1rem;right:1rem;display:flex;justify-content:center;align-items:center;background:#fff;border:2px solid var(--theme-color);border-radius:50%;width:clamp(44px,4vw,60px);height:clamp(44px,4vw,60px);z-index:1000;box-shadow:0 4px 10px #0000001a;opacity:1;transition:opacity .3s ease,transform .3s ease}
 .back-to-top:hover{background:var(--theme-color)}
-.back-to-top:hover .arrow-icon{stroke:#fff}
+.back-to-top:hover .arrow-icon{stroke:var(--white)}
 .arrow-icon{width:50%;height:50%;transition:stroke .3s ease}
+.dark .back-to-top{background:#111;border-color:var(--theme-color);box-shadow:0 4px 10px #0000004d}
+.dark .back-to-top:hover{background:var(--theme-color)}
+.dark .back-to-top:hover .arrow-icon{stroke:var(--white)}
+.dark .arrow-icon{stroke:var(--white)}
 /* Table of Contents */
 {% if content contains "<h2" %}
 .toc{background:#f8f9fa;padding:15px;border-left:4px solid var(--theme-color);margin-bottom:20px;transition:background 0.3s,color .3s}
