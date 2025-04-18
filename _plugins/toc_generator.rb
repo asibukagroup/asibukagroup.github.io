@@ -1,13 +1,14 @@
 Jekyll::Hooks.register [:pages, :posts], :post_render do |doc|
     # Skip non-collection pages like 404.html or root-level files
     next unless doc.respond_to?(:collection) && doc.collection # Ensure it belongs to a collection
-    
-    # Skip root-level .md or .html files (non-collection pages)
     next if doc.path.include?('/_posts/') || doc.path.include?('/_collection/') # Customize based on your collections
     
     # Skip if the TOC is explicitly disabled
     next unless doc.data['toc'] != false
     
+    # Check if this is an AMP version
+    is_amp = doc.path.include?('/amp/') # Adjust this based on your AMP URL structure
+  
     # Use only content from the Markdown file, converted to HTML
     site = doc.site
     converter = site.find_converter_instance(Jekyll::Converters::Markdown)
@@ -60,6 +61,15 @@ Jekyll::Hooks.register [:pages, :posts], :post_render do |doc|
     final_html = Nokogiri::HTML::DocumentFragment.parse(doc.output)
     first_h2 = final_html.at("h2")
     first_h2.add_previous_sibling(toc_html) if first_h2
+    
+    # Only include the TOC in AMP if it's an AMP page
+    if is_amp
+      # Ensure that the TOC is AMP-compliant (for example, remove any non-AMP elements)
+      toc_html.css('details').each do |details|
+        details['amp'] = 'true'  # Make sure the details element is AMP-compliant if necessary
+      end
+    end
+  
     doc.output = final_html.to_html
   end
   
