@@ -17,12 +17,16 @@ Jekyll::Hooks.register [:pages, :posts], :post_render do |doc|
     toc_ul = toc_html.at("ul")
     current_li = nil
   
+    # Define generate_id locally
+    generate_id = ->(text, index) do
+      slug = text.downcase.strip.gsub(/\s+/, "-").gsub(/[^a-z0-9\-]/, "")
+      "toc-#{index}-#{slug}"
+    end
+  
     headings.each_with_index do |heading, index|
       level = heading.name.downcase
       text = heading.text.strip
-      id = heading['id'] || generate_id(text, index)
-  
-      # Set id only if it's missing from the final output (optional)
+      id = heading['id'] || generate_id.call(text, index)
       heading['id'] = id
   
       anchor_icon = <<~SVG.strip
