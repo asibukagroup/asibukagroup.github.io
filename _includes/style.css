@@ -138,16 +138,23 @@ html:has(body:not(:is(:hover,:focus-within)) > .back-to-top) .back-to-top{opacit
 .dark .arrow-icon{stroke:var(--white)}
 /* Table of Contents */
 {% if content contains "<h2" %}
-.toc{background:#f8f9fa;padding:15px;border-left:4px solid var(--theme-color);margin-bottom:20px;transition:background 0.3s,color .3s}
-.toc h2{font-size:1.2rem;margin-bottom:10px}
-.toc ul{list-style:none;padding-left:15px}
-.toc ul li{margin-bottom:5px}
-.toc ul ul{padding-left:15px;font-size:.9rem}
-.dark .toc{background:#1e1e1e;color:#f8f9fa;border-left:4px solid #0af}
-.dark .toc h2{color:#f8f9fa}
-.dark .toc ul li{color:#ddd}
-.dark .toc a{color:#0af}
-.dark .toc a:hover{color:#fa0}
+.toc{margin-bottom:1.5rem;border-left:4px solid #ccc;padding-left:1em;background-color:#f9f9f9;font-size:.95em;transition:background-color .3s ease,border-color .3s ease;border-radius:4px;overflow:hidden}
+.toc summary{font-weight:700;cursor:pointer;list-style:none;outline:none;padding:.5em 0;display:flex;align-items:center;position:relative}
+.toc summary::before{content:'';display:inline-block;width:.8em;height:.8em;margin-right:.6em;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' fill='none' stroke='%23555' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' xmlns='http://www.w3.org/2000/svg'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:center;background-size:contain;transform:rotate(0deg);transition:transform .3s ease}
+.toc[open] summary::before{transform:rotate(180deg)}
+.toc ul{max-height:1000px;overflow:hidden;transition:max-height .4s ease}
+.toc:not([open]) ul{max-height:0;padding:0;margin:0}
+.toc ul{margin:.5em 0 0;padding-left:1.2em}
+.toc li{margin-bottom:.3em}
+.toc li ul{margin-top:.3em;padding-left:1.2em}
+.toc a{text-decoration:none;color:#0366d6}
+.toc a:hover{text-decoration:underline}
+.toc-icon{vertical-align:middle;margin-right:.4em;stroke:#555;height:1em}
+body.dark .toc{background-color:#1c1c1c;border-left-color:#333}
+body.dark .toc summary{color:#e0e0e0}
+body.dark .toc a{color:#58a6ff}
+body.dark .toc a:hover{color:#84c4ff}
+body.dark .toc summary::before{background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' fill='none' stroke='%23ccc' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' xmlns='http://www.w3.org/2000/svg'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E")}
 {% endif %}
 /* Media Queries */
 @media (min-width: 769px){

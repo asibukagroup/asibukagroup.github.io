@@ -89,11 +89,13 @@ plugins:
   - jekyll-sitemap
   - ./_plugins/amp_generator.rb
   - ./_plugins/minifier.rb
+  - ./_plugins/toc_generator.rb
 whitelist:
   - jekyll-archives
   - jekyll-sitemap
   - ./_plugins/amp_generator.rb
   - ./_plugins/minifier.rb
+  - ./_plugins/toc_generator.rb
 # ------------------------------
 # Jekyll Archives
 # ------------------------------
