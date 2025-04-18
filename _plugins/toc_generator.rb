@@ -1,8 +1,8 @@
 Jekyll::Hooks.register [:pages, :posts], :post_render do |doc|
-    # Skip if it's not a page or post belonging to a collection (e.g., posts, projects, etc.)
-    next if doc.collection.nil?
+    # Skip non-collection pages like 404.html or root-level files
+    next unless doc.respond_to?(:collection) && doc.collection # Ensure it belongs to a collection
     
-    # Skip root-level .md or .html files
+    # Skip root-level .md or .html files (non-collection pages)
     next if doc.path.include?('/_posts/') || doc.path.include?('/_collection/') # Customize based on your collections
     
     # Skip if the TOC is explicitly disabled
