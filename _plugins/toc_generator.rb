@@ -12,7 +12,7 @@ Jekyll::Hooks.register [:pages, :posts], :post_render do |doc|
     next if headings.empty?
   
     toc_html = Nokogiri::HTML::DocumentFragment.parse(
-      "<details class='toc' open><summary>📑 Table of Contents</summary><ul></ul></details>"
+      "<details class='toc' open><summary>📑 Daftar Isi</summary><ul></ul></details>"
     )
     toc_ul = toc_html.at("ul")
     current_li = nil

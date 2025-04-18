@@ -144,7 +144,7 @@ html:has(body:not(:is(:hover,:focus-within)) > .back-to-top) .back-to-top{opacit
 .toc[open] summary::before{transform:rotate(180deg)}
 .toc ul{max-height:1000px;overflow:hidden;transition:max-height .4s ease}
 .toc:not([open]) ul{max-height:0;padding:0;margin:0}
-.toc ul{margin:.5em 0 0;padding-left:1.2em}
+.toc ul{margin:.5em 0 0;padding-left:1.2em;list-style:none}
 .toc li{margin-bottom:.3em}
 .toc li ul{margin-top:.3em;padding-left:1.2em}
 .toc a{text-decoration:none;color:#0366d6}
