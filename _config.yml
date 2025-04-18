@@ -73,7 +73,6 @@ defaults:
 nav_links:
   Beranda: "/"
   Blog: "/blog/"
-  Info Resmi: "/page/"
   Hak Cipta: "/hak-cipta/"
   Hubungi Kami: "/hubungi-kami/"
   Kebijakan Privasi: "/kebijakan-privasi/"

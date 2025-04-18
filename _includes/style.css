@@ -126,17 +126,24 @@ body.dark .post-container .summary{color:#ddd}
 .media-container.landscape{padding-bottom:56.25%}
 .media-container.portrait{padding-bottom:177%}
 .media-container.square{padding-bottom:100%}
+/* Back to Top Button */
+html:has(body:not(:is(:hover,:focus-within)) > .back-to-top) .back-to-top{opacity:0;pointer-events:none;transform:translateY(20px)}
+.back-to-top{position:fixed;bottom:2rem;right:2rem;display:flex;justify-content:center;align-items:center;background:#fff;border:2px solid var(--theme-color);border-radius:50%;width:clamp(44px,4vw,60px);height:clamp(44px,4vw,60px);z-index:1000;box-shadow:0 4px 10px #0000001a;opacity:1;transition:opacity .3s ease,transform .3s ease}
+.back-to-top:hover{background:var(--theme-color)}
+.back-to-top:hover .arrow-icon{stroke:#fff}
+.arrow-icon{width:50%;height:50%;transition:stroke .3s ease}
+/* Table of Contents */
 {% if content contains "<h2" %}
 .toc{background:#f8f9fa;padding:15px;border-left:4px solid var(--theme-color);margin-bottom:20px;transition:background 0.3s,color .3s}
 .toc h2{font-size:1.2rem;margin-bottom:10px}
 .toc ul{list-style:none;padding-left:15px}
 .toc ul li{margin-bottom:5px}
 .toc ul ul{padding-left:15px;font-size:.9rem}
-.dark-mode .toc{background:#1e1e1e;color:#f8f9fa;border-left:4px solid #0af}
-.dark-mode .toc h2{color:#f8f9fa}
-.dark-mode .toc ul li{color:#ddd}
-.dark-mode .toc a{color:#0af}
-.dark-mode .toc a:hover{color:#fa0}
+.dark .toc{background:#1e1e1e;color:#f8f9fa;border-left:4px solid #0af}
+.dark .toc h2{color:#f8f9fa}
+.dark .toc ul li{color:#ddd}
+.dark .toc a{color:#0af}
+.dark .toc a:hover{color:#fa0}
 {% endif %}
 /* Media Queries */
 @media (min-width: 769px){
