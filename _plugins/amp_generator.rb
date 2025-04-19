@@ -34,18 +34,19 @@ module HTMLUtils
 end
 
 class AmpPage < Jekyll::Page
-  def initialize(site, base, dir, page)
+  def initialize(site, base, dir, page_or_post, output)
     @site = site
     @base = base
     @dir  = File.join(dir, 'amp')
-    @name = page.name
+    @name = 'index.html'
 
     self.process(@name)
-    self.content = page.content.dup
-    self.data = page.data.dup
+    self.content = page_or_post.content.dup
+    self.output = output
+    self.data = page_or_post.data.dup
     self.data['layout'] = 'amp'
     self.data['is_amp'] = true
-    self.data['canonical_url'] = page.url
+    self.data['canonical_url'] = page_or_post.url
   end
 end
 
@@ -55,36 +56,21 @@ class AmpGenerator < Jekyll::Generator
 
   def initialize(config)
     super
-    @config = config
     @markdown_converter = Jekyll::Converters::Markdown.new(config)
   end
 
   def generate(site)
     amp_pages = []
 
-    site.pages.each do |page|
-      next if skip_amp?(page)
+    (site.pages + site.posts.docs).each do |item|
+      next if item.data['is_amp'] || item.data['layout'] == 'amp'
 
-      amp_page = AmpPage.new(site, site.source, page.dir, page)
-      amp_page.output = convert_to_amp(amp_page)
+      output = convert_to_amp(item)
+      amp_page = AmpPage.new(site, site.source, item.dir, item, output)
       amp_pages << amp_page
     end
 
-    site.posts.docs.each do |post|
-      next if skip_amp?(post)
-
-      amp_post = post.dup
-      amp_post.data = post.data.dup
-      amp_post.data['layout'] = 'amp'
-      amp_post.data['is_amp'] = true
-      amp_post.data['canonical_url'] = post.url
-      amp_post.output = convert_to_amp(amp_post)
-      amp_post.url = File.join(post.url, 'amp', '/')
-      amp_pages << amp_post
-    end
-
-    site.pages.concat(amp_pages.select { |p| p.is_a?(Jekyll::Page) })
-    site.posts.docs.concat(amp_pages.select { |p| p.is_a?(Jekyll::Document) })
+    site.pages.concat(amp_pages)
   end
 
   def convert_to_amp(page)
@@ -98,10 +84,6 @@ class AmpGenerator < Jekyll::Generator
     insert_toc(doc, toc)
 
     HTMLUtils.minify_html(doc)
-  end
-
-  def skip_amp?(page)
-    page.data['is_amp'] || page.data['layout'] == 'amp'
   end
 
   def generate_toc(doc)

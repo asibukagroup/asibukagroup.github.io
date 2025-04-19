@@ -171,7 +171,7 @@ body.dark .toc summary::before{background-image:url("data:image/svg+xml,%3Csvg v
 .layout{flex-direction:column}
 .content-wrapper,.right-sidebar .sticky-box{position:static;top:0;width:100%}
 {% if content contains "post-containers" %}
-.post-container{flex-direction:column}
+.post-container{flex-direction:column;margin:1rem auto}
 .post-container .post-image{flex:0 0 100%;max-width:100%;padding-top:56.25%}
 .post-container .post-content{max-width:100%;flex:1}}
 body.dark .post-container .post-content a{color:var(--white)
