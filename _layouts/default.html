@@ -20,10 +20,10 @@
 {% assign column_layouts = "default,archive" | split: "," %}
 {% unless column_layouts contains page.layout %}{% include right-sidebar.html %}{% endunless %}
 </div>
-{% include noprint.html %}
 {% if page.is_amp %}<amp-auto-ads type="adsense" data-ad-client="ca-pub-4951061355072034">
 </amp-auto-ads>{% endif %}
-<a href="#top" class="back-to-top" aria-label="Back to Top">
+{% include noprint.html %}
+<a href="#top" class="back-to-top hide-on-print" aria-label="Back to Top">
 <svg viewBox="0 0 24 24" class="arrow-icon" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#004AAD" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
 <polyline points="18 15 12 9 6 15" />
 </svg>
