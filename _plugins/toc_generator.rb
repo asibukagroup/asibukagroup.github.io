@@ -10,13 +10,19 @@ module Jekyll
     end
   end
 
+  # Hook after rendering
   Hooks.register [:pages, :documents], :post_render do |doc|
     next unless doc.output_ext == '.html'
     next if doc.data['is_amp']
 
+    # Skip if the source file is a Markdown file at the root (e.g., about.md)
+    relative_path = doc.relative_path || doc.path
+    next if relative_path =~ %r{^/?[^/]+\.md$}
+
     doc.output = insert_toc(doc.output)
   end
 
+  # ToC insertion logic
   def self.insert_toc(html)
     doc = Nokogiri::HTML5.fragment(html)
     headings = doc.css('h2, h3, h4, h5, h6')
@@ -41,7 +47,7 @@ module Jekyll
     end
 
     toc_container = Nokogiri::XML::Node.new('nav', doc)
-    toc_container['class'] = 'toc-container'
+    toc_container['class'] = 'toc'
     toc_container.add_child(toc_list)
 
     first_h2 = doc.at_css('h2')

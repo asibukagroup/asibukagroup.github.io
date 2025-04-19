@@ -4,7 +4,7 @@ require 'fastimage'
 module Jekyll
   class AmpGenerator < Generator
     safe true
-    priority :lowest
+    priority :low
 
     def generate(site)
       collections = site.config['collections'].keys
