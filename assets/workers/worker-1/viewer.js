@@ -52,7 +52,7 @@ class IframeScriptInjector {
             i.setAttribute("frameborder", "0");
             i.setAttribute("allow", "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share");
             i.setAttribute("referrerpolicy", "strict-origin-when-cross-origin");
-            d.removeAttribute('hidden');
+            d.removeAttribute("hidden");
             d.appendChild(i);
           }
           document.querySelectorAll(".hide-on-embed").forEach(el => el.remove());
@@ -68,91 +68,91 @@ class KomisiScriptInjector {
   element(element) {
     element.append(
       `<script>
-        (function() {
-          const params = new URLSearchParams(window.location.search);
-          const id1 = params.get('id1');
-          const gid1 = params.get('gid1');
-          const id2 = params.get('id2');
-          const gid2 = params.get('gid2');
-          const title = params.get('title');
-          const embedDetails = document.getElementById('EmbedDetails');
-          const embedResult = document.getElementById('EmbedResult');
-          const embedTitle = document.getElementById('EmbedTitle');
+(function () {
+  const params = new URLSearchParams(window.location.search);
+  const id1 = params.get('id1');
+  const gid1 = params.get('gid1');
+  const id2 = params.get('id2');
+  const gid2 = params.get('gid2');
+  const title = params.get('title');
+  const embedDetails = document.getElementById('EmbedDetails');
+  const embedResult = document.getElementById('EmbedResult');
+  const embedTitle = document.getElementById('EmbedTitle');
 
-          if (title) {
-            document.title = title;
-            if (embedTitle) {
-              embedTitle.textContent = '';
-              embedTitle.append(title);
-            }
-          }
+  if (title) {
+    document.title = title;
+    if (embedTitle) {
+      embedTitle.textContent = '';
+      embedTitle.append(title);
+    }
+  }
 
-          if (id1 && gid1 && embedDetails) {
-            const csvDetails = \`https://docs.google.com/spreadsheets/d/e/\${id1}/pub?gid=\${gid1}&single=true&output=csv\`;
-            fetch(csvDetails)
-              .then(res => res.text())
-              .then(csv => {
-                const rows = csv.trim().split('\\n').map(r => r.split(','));
-                const table = document.createElement('table');
-                rows.forEach((row, i) => {
-                  const tr = document.createElement('tr');
-                  row.forEach(cell => {
-                    const el = document.createElement(i === 0 ? 'th' : 'td');
-                    el.textContent = cell;
-                    tr.appendChild(el);
-                  });
-                  table.appendChild(tr);
-                });
-                embedDetails.innerHTML = '';
-                embedDetails.removeAttribute('hidden');
-                embedDetails.appendChild(table);
-              })
-              .catch(err => {
-                embedDetails.textContent = 'Failed to load data.';
-                console.error('CSV fetch error:', err);
-              });
-          }
+  if (id1 && gid1 && embedDetails) {
+    const csvDetails = \`https://docs.google.com/spreadsheets/d/e/\${id1}/pub?gid=\${gid1}&single=true&output=csv\`;
+    fetch(csvDetails)
+      .then(res => res.text())
+      .then(csv => {
+        const rows = csv.trim().split('\\n').map(r => r.split(','));
+        const table = document.createElement('table');
+        rows.forEach((row, i) => {
+          const tr = document.createElement('tr');
+          row.forEach(cell => {
+            const el = document.createElement(i === 0 ? 'th' : 'td');
+            el.innerHTML = cell;
+            tr.appendChild(el);
+          });
+          table.appendChild(tr);
+        });
+        embedDetails.innerHTML = '';
+        embedDetails.removeAttribute('hidden');
+        embedDetails.appendChild(table);
+      })
+      .catch(err => {
+        embedDetails.textContent = 'Failed to load data.';
+        console.error('CSV fetch error:', err);
+      });
+  }
 
-          if (id2 && gid2 && embedResult) {
-            const csvResult = \`https://docs.google.com/spreadsheets/d/e/\${id2}/pub?gid=\${gid2}&single=true&output=csv\`;
-            fetch(csvResult)
-              .then(res => res.text())
-              .then(csv => {
-                const rows = csv.trim().split('\\n').map(r => r.split(','));
-                const table = document.createElement('table');
-                rows.forEach((row, i) => {
-                  const tr = document.createElement('tr');
-                  row.forEach(cell => {
-                    const el = document.createElement(i === 0 ? 'th' : 'td');
-                    el.textContent = cell;
-                    tr.appendChild(el);
-                  });
-                  table.appendChild(tr);
-                });
-                embedResult.innerHTML = '';
-                embedResult.removeAttribute('hidden');
+  if (id2 && gid2 && embedResult) {
+    const csvResult = \`https://docs.google.com/spreadsheets/d/e/\${id2}/pub?gid=\${gid2}&single=true&output=csv\`;
+    fetch(csvResult)
+      .then(res => res.text())
+      .then(csv => {
+        const rows = csv.trim().split('\\n').map(r => r.split(','));
+        const table = document.createElement('table');
+        rows.forEach((row, i) => {
+          const tr = document.createElement('tr');
+          row.forEach(cell => {
+            const el = document.createElement(i === 0 ? 'th' : 'td');
+            el.innerHTML = cell;
+            tr.appendChild(el);
+          });
+          table.appendChild(tr);
+        });
+        embedResult.innerHTML = '';
+        embedResult.removeAttribute('hidden');
 
-                const heading = document.createElement('h2');
-                heading.className = 'main-heading';
-                heading.textContent = 'Detil Transaksi';
-                embedResult.parentNode.insertBefore(heading, embedResult);
-                embedResult.appendChild(table);
-              })
-              .catch(err => {
-                embedResult.textContent = 'Failed to load data.';
-                embedResult.removeAttribute('hidden');
-                console.error('CSV fetch error:', err);
-              });
-          }
+        const heading = document.createElement('h2');
+        heading.className = 'main-heading';
+        heading.textContent = 'Detil Transaksi';
+        embedResult.parentNode.insertBefore(heading, embedResult);
+        embedResult.appendChild(table);
+      })
+      .catch(err => {
+        embedResult.textContent = 'Failed to load data.';
+        embedResult.removeAttribute('hidden');
+        console.error('CSV fetch error:', err);
+      });
+  }
 
-          document.querySelectorAll('.hide-on-embed').forEach(el => el.remove());
+  document.querySelectorAll('.hide-on-embed').forEach(el => el.remove());
 
-          if (window.history.replaceState) {
-            const cleanUrl = window.location.origin + window.location.pathname;
-            window.history.replaceState({}, title || '', cleanUrl);
-          }
-        })();
-      </script>`,
+  if (window.history.replaceState) {
+    const cleanUrl = window.location.origin + window.location.pathname;
+    window.history.replaceState({}, title || '', cleanUrl);
+  }
+})();
+</script>`,
       { html: true }
     )
   }
