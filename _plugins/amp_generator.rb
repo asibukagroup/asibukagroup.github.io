@@ -1,117 +1,237 @@
 # _plugins/amp_generator.rb
-
-require 'jekyll'
 require 'nokogiri'
 require 'fastimage'
 
-module HTMLUtils
-  def self.convert_img_to_amp(doc)
-    doc.css('img').each do |img|
-      src = img['src'] || img['data-src']
-      next unless src
+module Jekyll
+  class AmpGenerator < Generator
+    safe true
+    priority :lowest
 
-      width, height = FastImage.size(src) rescue [600, 400]
-      next unless width && height
+    def generate(site)
+      collections = site.config['collections'].keys
 
-      amp_img = Nokogiri::XML::Node.new('amp-img', doc)
-      img.attributes.each { |name, attr| amp_img[name] = attr.value }
-      amp_img['width']  = width.to_s
-      amp_img['height'] = height.to_s
-      amp_img['layout'] = 'responsive'
-      amp_img.name = 'amp-img'
+      site.pages.select { |page| valid_md_page?(page) && !page.data['is_amp'] }.each do |page|
+        site.pages << generate_amp_page(site, page)
+      end
 
-      img.replace(amp_img)
-    end
-  end
+      site.collections.each_value do |collection|
+        collection.docs.select { |doc| valid_md_doc?(doc, collections) && !doc.data['is_amp'] }.each do |doc|
+          site.pages << generate_amp_page(site, doc)
+        end
+      end
 
-  def self.remove_scripts(doc)
-    doc.css('script:not([type="application/ld+json"])').remove
-  end
-
-  def self.minify_html(doc)
-    doc.to_html.gsub(/>\s+</, '><').strip
-  end
-end
-
-class AmpPage < Jekyll::Page
-  def initialize(site, base, dir, page_or_post, output)
-    @site = site
-    @base = base
-    @dir  = File.join(dir, 'amp')
-    @name = 'index.html'
-
-    self.process(@name)
-    self.content = page_or_post.content.dup
-    self.output = output
-    self.data = page_or_post.data.dup
-    self.data['layout'] = 'amp'
-    self.data['is_amp'] = true
-    self.data['canonical_url'] = page_or_post.url
-  end
-end
-
-class AmpGenerator < Jekyll::Generator
-  safe true
-  priority :lowest
-
-  def initialize(config)
-    super
-    @markdown_converter = Jekyll::Converters::Markdown.new(config)
-  end
-
-  def generate(site)
-    amp_pages = []
-
-    (site.pages + site.posts.docs).each do |item|
-      next if item.data['is_amp'] || item.data['layout'] == 'amp'
-
-      output = convert_to_amp(item)
-      amp_page = AmpPage.new(site, site.source, item.dir, item, output)
-      amp_pages << amp_page
+      site.pages.select { |page| archive_page?(page) && !page.data['is_amp'] }.each do |page|
+        site.pages << duplicate_archive_as_amp(site, page)
+      end
     end
 
-    site.pages.concat(amp_pages)
-  end
+    private
 
-  def convert_to_amp(page)
-    html = @markdown_converter.convert(page.content)
-    doc = Nokogiri::HTML::DocumentFragment.parse(html)
-
-    HTMLUtils.convert_img_to_amp(doc)
-    HTMLUtils.remove_scripts(doc)
-
-    toc = generate_toc(doc)
-    insert_toc(doc, toc)
-
-    HTMLUtils.minify_html(doc)
-  end
-
-  def generate_toc(doc)
-    toc_items = doc.css('h2').map do |h2|
-      id = h2['id'] || h2.content.strip.downcase.gsub(/\s+/, '-').gsub(/[^a-z0-9\-]/, '')
-      h2['id'] = id
-      "<li><a href='##{id}'>#{h2.content.strip}</a></li>"
+    def valid_md_doc?(doc, collections)
+      doc.path.end_with?('.md') && collections.any? { |c| doc.path.include?("_#{c}/") }
     end
-    return '' if toc_items.empty?
 
-    <<~HTML
-      <div class="toc-container">
-        <details open>
-          <summary>📑 Daftar Isi</summary>
-          <ul class="toc-list">
-            #{toc_items.join("\n")}
-          </ul>
-        </details>
-      </div>
-    HTML
-  end
+    def valid_md_page?(page)
+      page.path.end_with?('.md') && File.dirname(page.path) == '.'
+    end
 
-  def insert_toc(doc, toc_html)
-    first_h2 = doc.at_css('h2')
-    return doc unless first_h2
+    def archive_page?(page)
+      page.data['layout'] == 'archive'
+    end
 
-    toc_node = Nokogiri::HTML::DocumentFragment.parse(toc_html)
-    first_h2.add_previous_sibling(toc_node)
-    doc
+    def generate_amp_page(site, original)
+      amp_data = original.data.dup
+      amp_data['is_amp'] = true
+      amp_data['permalink'] = original.url.sub(/\/$/, '') + '/amp/'
+    
+      basename = File.basename(original.path, File.extname(original.path))
+      amp_filename = "#{basename}-amp.md"
+      amp_dir = File.dirname(original.path.sub(site.source, ''))
+    
+      amp_page = PageWithoutAFile.new(site, site.source, amp_dir, amp_filename)
+      content = site.find_converter_instance(Jekyll::Converters::Markdown).convert(original.content)
+      amp_html = convert_html_for_amp(content)
+    
+      amp_page.content = amp_html
+      amp_page.data = amp_data
+    
+      amp_page
+    end
+    
+
+    def duplicate_archive_as_amp(site, original)
+      amp_data = original.data.dup
+      amp_data['is_amp'] = true
+      amp_data['permalink'] = original.url.sub(/\/$/, '') + '/amp/'
+
+      amp_page = PageWithoutAFile.new(site, site.source, original.dir, 'index-amp.html')
+      amp_page.output = convert_html_for_amp(original.output)
+      amp_page.content = original.content
+      amp_page.data = amp_data
+
+      amp_page
+    end
+
+    def convert_html_for_amp(html)
+      html = convert_images_to_amp(html)
+      html = convert_iframes_to_amp(html)
+      html = convert_videos_to_amp(html)
+      html = convert_pictures_to_amp(html)
+      html = convert_figures_to_amp(html)
+      html = convert_internal_links_to_amp(html)
+      html = remove_scripts(html)
+    end
+
+    def convert_images_to_amp(html)
+      doc = Nokogiri::HTML5.fragment(html)
+      doc.css('img').each do |img|
+        amp_img = Nokogiri::XML::Node.new('amp-img', doc)
+
+        src = img['data-src'] || img['src']
+        src = '/assets/img/ASIBUKA-Blue.webp' if src.nil? || src.strip.empty?
+
+        if img['width'] && img['height']
+          width, height = img['width'], img['height']
+        else
+          width, height = FastImage.size(src) rescue [1600, 900]
+        end
+
+        amp_img['src'] = src
+        amp_img['alt'] = img['alt'] || img['title'] || 'image'
+        amp_img['title'] = img['alt'] || img['title'] || ''
+        amp_img['width'] = width.to_s
+        amp_img['height'] = height.to_s
+        amp_img['layout'] = img['layout'] || 'responsive'
+
+        img.replace(amp_img)
+      end
+      doc.to_html
+    end
+
+    def convert_iframes_to_amp(html)
+      doc = Nokogiri::HTML5.fragment(html)
+      doc.css('iframe').each do |iframe|
+        amp_iframe = Nokogiri::XML::Node.new('amp-iframe', doc)
+
+        amp_iframe['src'] = iframe['src'] || ''
+        amp_iframe['width'] = iframe['width'] || '600'
+        amp_iframe['height'] = iframe['height'] || '400'
+        amp_iframe['layout'] = 'responsive'
+        amp_iframe['sandbox'] = 'allow-scripts allow-same-origin'
+        amp_iframe['title'] = iframe['title'] || 'Embedded content'
+
+        iframe.children.each { |child| amp_iframe.add_child(child) }
+
+        fallback = Nokogiri::XML::Node.new('fallback', doc)
+        fallback.content = 'This content is not available.'
+        amp_iframe.add_child(fallback)
+
+        iframe.replace(amp_iframe)
+      end
+      doc.to_html
+    end
+
+    def convert_videos_to_amp(html)
+      doc = Nokogiri::HTML5.fragment(html)
+      doc.css('video').each do |video|
+        amp_video = Nokogiri::XML::Node.new('amp-video', doc)
+
+        amp_video['src'] = video['src'] if video['src']
+        amp_video['poster'] = video['poster'] if video['poster']
+        amp_video['width'] = video['width'] || '640'
+        amp_video['height'] = video['height'] || '360'
+        amp_video['layout'] = 'responsive'
+        amp_video['controls'] = 'controls'
+
+        video.children.each { |child| amp_video.add_child(child) }
+
+        fallback = Nokogiri::XML::Node.new('fallback', doc)
+        fallback.content = 'This video is not available.'
+        amp_video.add_child(fallback)
+
+        video.replace(amp_video)
+      end
+      doc.to_html
+    end
+
+    def convert_pictures_to_amp(html)
+      doc = Nokogiri::HTML5.fragment(html)
+      doc.css('picture').each do |picture|
+        img = picture.at_css('img') || picture.at_css('source')
+        src = img['srcset'] || img['src']
+
+        if img['width'] && img['height']
+          width, height = img['width'], img['height']
+        else
+          width, height = FastImage.size(src) rescue [1600, 900]
+        end
+
+        amp_img = Nokogiri::XML::Node.new('amp-img', doc)
+        amp_img['src'] = src || '/assets/img/ASIBUKA-Blue.webp'
+        amp_img['alt'] = img['alt'] || 'image'
+        amp_img['width'] = width.to_s
+        amp_img['height'] = height.to_s
+        amp_img['layout'] = 'responsive'
+
+        picture.replace(amp_img)
+      end
+      doc.to_html
+    end
+
+    def convert_figures_to_amp(html)
+      doc = Nokogiri::HTML5.fragment(html)
+      doc.css('figure').each do |figure|
+        if (img = figure.at_css('img'))
+          amp_img = Nokogiri::XML::Node.new('amp-img', doc)
+
+          src = img['data-src'] || img['src']
+          src = '/assets/img/ASIBUKA-Blue.webp' if src.nil? || src.strip.empty?
+
+          if img['width'] && img['height']
+            width, height = img['width'], img['height']
+          else
+            width, height = FastImage.size(src) rescue [1600, 900]
+          end
+
+          amp_img['src'] = src
+          amp_img['alt'] = img['alt'] || 'image'
+          amp_img['width'] = width.to_s
+          amp_img['height'] = height.to_s
+          amp_img['layout'] = 'responsive'
+
+          figcaption = figure.at_css('figcaption')
+          new_figure = Nokogiri::XML::Node.new('figure', doc)
+          new_figure.add_child(amp_img)
+          new_figure.add_child(figcaption) if figcaption
+
+          figure.replace(new_figure)
+        else
+          figure.remove
+        end
+      end
+      doc.to_html
+    end
+
+    def convert_internal_links_to_amp(html)
+      doc = Nokogiri::HTML5.fragment(html)
+      doc.css('a[href]').each do |a|
+        href = a['href']
+        next if href.nil? || href.empty?
+        next if href =~ /^https?:\/\//  # external link
+        next if href.include?('/amp')   # already AMP link
+
+        amp_href = href.sub(/\/$/, '') + '/amp/'
+        a['href'] = amp_href
+      end
+      doc.to_html
+    end
+
+    def remove_scripts(html)
+      doc = Nokogiri::HTML5.fragment(html)
+      doc.css('script').each do |script|
+        script.remove unless script['type'] == 'application/ld+json'
+      end
+      doc.to_html
+    end
   end
 end
