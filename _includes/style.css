@@ -138,23 +138,38 @@ html:has(body:not(:is(:hover,:focus-within)) > .back-to-top) .back-to-top{opacit
 .dark .arrow-icon{stroke:var(--white)}
 /* Table of Contents */
 {% if content contains "<h2" %}
-.toc{margin-bottom:1.5rem;border-left:4px solid #ccc;padding-left:1em;background-color:#f9f9f9;font-size:.95em;transition:background-color .3s ease,border-color .3s ease;border-radius:4px;overflow:hidden}
-.toc summary{font-weight:700;cursor:pointer;list-style:none;outline:none;padding:.5em 0;display:flex;align-items:center;position:relative}
-.toc summary::before{content:'';display:inline-block;width:.8em;height:.8em;margin-right:.6em;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' fill='none' stroke='%23555' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' xmlns='http://www.w3.org/2000/svg'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:center;background-size:contain;transform:rotate(0deg);transition:transform .3s ease}
-.toc[open] summary::before{transform:rotate(180deg)}
-.toc ul{max-height:1000px;overflow:hidden;transition:max-height .4s ease}
-.toc:not([open]) ul{max-height:0;padding:0;margin:0}
-.toc ul{margin:.5em 0 0;padding-left:1.2em;list-style:none}
-.toc li{margin-bottom:.3em}
-.toc li ul{margin-top:.3em;padding-left:1.2em}
-.toc a{text-decoration:none;color:#0366d6}
-.toc a:hover{text-decoration:underline}
-.toc-icon{vertical-align:middle;margin-right:.4em;stroke:#555;height:1em}
-body.dark .toc{background-color:#1c1c1c;border-left-color:#333}
-body.dark .toc summary{color:#e0e0e0}
-body.dark .toc a{color:#58a6ff}
-body.dark .toc a:hover{color:#84c4ff}
-body.dark .toc summary::before{background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' fill='none' stroke='%23ccc' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' xmlns='http://www.w3.org/2000/svg'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E")}
+.toc-container{border:1px solid #ddd;padding:1rem;background-color:#f9f9f9;border-radius:8px;margin-bottom:2rem;font-family:'Arial',sans-serif;box-shadow:0 2px 8px #0000001a}
+body.dark .toc-container{background-color:#333;color:#f1f1f1;border-color:#444;box-shadow:0 2px 8px #ffffff1a}
+.toc-container summary{font-size:1.1rem;font-weight:700;color:#007bff;cursor:pointer;margin-bottom:.5rem;padding:.5rem;background-color:#f1f1f1;border-radius:4px;border:1px solid #ddd;transition:all .3s ease}
+body.dark .toc-container summary{background-color:#444;color:#f1f1f1;border-color:#555}
+body.dark .toc-container summary:hover{background-color:#555;border-color:#666}
+body.dark .toc-container[open] summary{background-color:#555;color:#e9f4fe}
+body.dark .toc-container[open] summary:hover{background-color:#666}
+.toc{list-style:none;padding-left:1.5rem;margin:0;font-size:1rem;color:#333}
+body.dark .toc{color:#f1f1f1}
+.toc li{margin:.25rem 0;line-height:1.5}
+body.dark .toc li{color:#ccc}
+.toc a{text-decoration:none;color:#007bff;font-size:1rem;transition:color .2s ease}
+body.dark .toc a{color:#6af}
+body.dark .toc a:hover{color:#99c2ff;text-decoration:underline}
+.toc-h2 a{font-weight:700}
+body.dark .toc-h2 a{font-weight:700}
+.toc-h3 a{padding-left:1rem;font-weight:500}
+body.dark .toc-h3 a{padding-left:1rem;font-weight:500}
+.toc-h4 a{padding-left:1.5rem;font-weight:400}
+body.dark .toc-h4 a{padding-left:1.5rem;font-weight:400}
+.toc-h5 a{padding-left:2rem;font-weight:400}
+body.dark .toc-h5 a{padding-left:2rem;font-weight:400}
+.toc-h6 a{padding-left:2.5rem;font-weight:300}
+body.dark .toc-h6 a{padding-left:2.5rem;font-weight:300}
+details{padding-left:0}
+details[open]{background-color:#fafafa}
+body.dark details[open]{background-color:#444}
+details > .toc{padding-left:1rem}
+details summary::before{content:'▶ ';display:inline-block;margin-right:.5rem;transition:transform .2s ease}
+body.dark details summary::before{content:'▶ ';color:#f1f1f1}
+details[open] summary::before{transform:rotate(90deg)}
+body.dark details[open] summary::before{transform:rotate(90deg);color:#99c2ff}
 {% endif %}
 /* Media Queries */
 @media (min-width: 769px){
