@@ -8,21 +8,24 @@ module Jekyll
 
     def generate(site)
       collections = site.config['collections'].keys
-
+    
       site.pages.select { |page| valid_md_page?(page) && !page.data['is_amp'] }.each do |page|
+        page.content = insert_toc(page.content)
         site.pages << generate_amp_page(site, page)
       end
-
+    
       site.collections.each_value do |collection|
         collection.docs.select { |doc| valid_md_doc?(doc, collections) && !doc.data['is_amp'] }.each do |doc|
+          doc.content = insert_toc(doc.content)
           site.pages << generate_amp_page(site, doc)
         end
       end
-
+    
       site.pages.select { |page| archive_page?(page) && !page.data['is_amp'] }.each do |page|
+        page.output = insert_toc(page.output)
         site.pages << duplicate_archive_as_amp(site, page)
       end
-    end
+    end    
 
     private
 
