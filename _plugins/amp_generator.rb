@@ -43,21 +43,20 @@ module Jekyll
       amp_data = original.data.dup
       amp_data['is_amp'] = true
       amp_data['permalink'] = original.url.sub(/\/$/, '') + '/amp/'
-    
+
       basename = File.basename(original.path, File.extname(original.path))
       amp_filename = "#{basename}-amp.md"
       amp_dir = File.dirname(original.path.sub(site.source, ''))
-    
+
       amp_page = PageWithoutAFile.new(site, site.source, amp_dir, amp_filename)
       content = site.find_converter_instance(Jekyll::Converters::Markdown).convert(original.content)
-      amp_html = convert_html_for_amp(content)
-    
+      amp_html = convert_html_for_amp(content, amp_data)
+
       amp_page.content = amp_html
       amp_page.data = amp_data
-    
+
       amp_page
     end
-    
 
     def duplicate_archive_as_amp(site, original)
       amp_data = original.data.dup
@@ -65,14 +64,16 @@ module Jekyll
       amp_data['permalink'] = original.url.sub(/\/$/, '') + '/amp/'
 
       amp_page = PageWithoutAFile.new(site, site.source, original.dir, 'index-amp.html')
-      amp_page.output = convert_html_for_amp(original.output)
+      amp_html = convert_html_for_amp(original.output, amp_data)
+
+      amp_page.output = amp_html
       amp_page.content = original.content
       amp_page.data = amp_data
 
       amp_page
     end
 
-    def convert_html_for_amp(html)
+    def convert_html_for_amp(html, data = {})
       html = convert_images_to_amp(html)
       html = convert_iframes_to_amp(html)
       html = convert_videos_to_amp(html)
@@ -80,21 +81,61 @@ module Jekyll
       html = convert_figures_to_amp(html)
       html = convert_internal_links_to_amp(html)
       html = remove_scripts(html)
+      html = inject_amp_toc(html, data) if data['toc'] != false
+      html
+    end
+
+    def inject_amp_toc(html, data)
+      doc = Nokogiri::HTML::DocumentFragment.parse(html)
+      headings = doc.css("h2, h3")
+      return html if headings.empty?
+
+      toc_fragment = Nokogiri::HTML::DocumentFragment.parse(
+        "<amp-accordion class='toc' layout='container'><section><h4>📑 Daftar Isi</h4><ul></ul></section></amp-accordion>"
+      )
+      toc_ul = toc_fragment.at("ul")
+      current_li = nil
+
+      generate_id = ->(text, index) {
+        slug = text.downcase.strip.gsub(/\s+/, "-").gsub(/[^a-z0-9\-]/, "")
+        "toc-#{index}-#{slug}"
+      }
+
+      headings.each_with_index do |heading, index|
+        level = heading.name.downcase
+        text = heading.text.strip
+        id = heading['id'] || generate_id.call(text, index)
+        heading['id'] = id
+
+        link_html = "<a href='##{id}' title='#{text}'>#{text}</a>"
+
+        if level == "h2"
+          current_li = Nokogiri::XML::Node.new("li", doc)
+          current_li.inner_html = link_html
+          toc_ul.add_child(current_li)
+        elsif level == "h3" && current_li
+          sub_ul = current_li.at("ul") || Nokogiri::XML::Node.new("ul", doc)
+          sub_li = Nokogiri::XML::Node.new("li", doc)
+          sub_li.inner_html = link_html
+          sub_ul.add_child(sub_li)
+          current_li.add_child(sub_ul) unless current_li.at("ul")
+        end
+      end
+
+      first_h2 = doc.at("h2")
+      first_h2.add_previous_sibling(toc_fragment) if first_h2
+
+      doc.to_html
     end
 
     def convert_images_to_amp(html)
       doc = Nokogiri::HTML5.fragment(html)
       doc.css('img').each do |img|
         amp_img = Nokogiri::XML::Node.new('amp-img', doc)
-
         src = img['data-src'] || img['src']
         src = '/assets/img/ASIBUKA-Blue.webp' if src.nil? || src.strip.empty?
 
-        if img['width'] && img['height']
-          width, height = img['width'], img['height']
-        else
-          width, height = FastImage.size(src) rescue [1600, 900]
-        end
+        width, height = img['width'] && img['height'] ? [img['width'], img['height']] : FastImage.size(src) rescue [1600, 900]
 
         amp_img['src'] = src
         amp_img['alt'] = img['alt'] || img['title'] || 'image'
@@ -112,7 +153,6 @@ module Jekyll
       doc = Nokogiri::HTML5.fragment(html)
       doc.css('iframe').each do |iframe|
         amp_iframe = Nokogiri::XML::Node.new('amp-iframe', doc)
-
         amp_iframe['src'] = iframe['src'] || ''
         amp_iframe['width'] = iframe['width'] || '600'
         amp_iframe['height'] = iframe['height'] || '400'
@@ -135,7 +175,6 @@ module Jekyll
       doc = Nokogiri::HTML5.fragment(html)
       doc.css('video').each do |video|
         amp_video = Nokogiri::XML::Node.new('amp-video', doc)
-
         amp_video['src'] = video['src'] if video['src']
         amp_video['poster'] = video['poster'] if video['poster']
         amp_video['width'] = video['width'] || '640'
@@ -160,11 +199,7 @@ module Jekyll
         img = picture.at_css('img') || picture.at_css('source')
         src = img['srcset'] || img['src']
 
-        if img['width'] && img['height']
-          width, height = img['width'], img['height']
-        else
-          width, height = FastImage.size(src) rescue [1600, 900]
-        end
+        width, height = img['width'] && img['height'] ? [img['width'], img['height']] : FastImage.size(src) rescue [1600, 900]
 
         amp_img = Nokogiri::XML::Node.new('amp-img', doc)
         amp_img['src'] = src || '/assets/img/ASIBUKA-Blue.webp'
@@ -183,15 +218,10 @@ module Jekyll
       doc.css('figure').each do |figure|
         if (img = figure.at_css('img'))
           amp_img = Nokogiri::XML::Node.new('amp-img', doc)
-
           src = img['data-src'] || img['src']
           src = '/assets/img/ASIBUKA-Blue.webp' if src.nil? || src.strip.empty?
 
-          if img['width'] && img['height']
-            width, height = img['width'], img['height']
-          else
-            width, height = FastImage.size(src) rescue [1600, 900]
-          end
+          width, height = img['width'] && img['height'] ? [img['width'], img['height']] : FastImage.size(src) rescue [1600, 900]
 
           amp_img['src'] = src
           amp_img['alt'] = img['alt'] || 'image'
@@ -217,8 +247,7 @@ module Jekyll
       doc.css('a[href]').each do |a|
         href = a['href']
         next if href.nil? || href.empty?
-        next if href =~ /^https?:\/\//  # external link
-        next if href.include?('/amp')   # already AMP link
+        next if href =~ /^https?:\/\// || href.include?('/amp')
 
         amp_href = href.sub(/\/$/, '') + '/amp/'
         a['href'] = amp_href
