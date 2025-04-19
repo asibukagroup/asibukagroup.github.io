@@ -14,7 +14,7 @@
       {% assign category = page.categories[0] %}
       &nbsp;›&nbsp;
       <span itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
-        <a itemprop="item" href="{{ '/kategori/' | append: category | append: '/' | relative_url }}">
+        <a itemprop="item" href="{{ '/kategori/' | append: category | append: '/' | relative_url | downcase }}">
           <span itemprop="name">{{ category }}</span>
         </a>
         <meta itemprop="position" content="{{ pos }}" />
