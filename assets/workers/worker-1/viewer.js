@@ -98,7 +98,7 @@ class KomisiScriptInjector {
                   const tr = document.createElement('tr');
                   row.forEach(cell => {
                     const el = document.createElement(i === 0 ? 'th' : 'td');
-                    el.textContent = cell;
+                    el.innerHTML = cell; // Render HTML
                     tr.appendChild(el);
                   });
                   table.appendChild(tr);
@@ -124,7 +124,7 @@ class KomisiScriptInjector {
                   const tr = document.createElement('tr');
                   row.forEach(cell => {
                     const el = document.createElement(i === 0 ? 'th' : 'td');
-                    el.textContent = cell;
+                    el.innerHTML = cell; // Render HTML
                     tr.appendChild(el);
                   });
                   table.appendChild(tr);
