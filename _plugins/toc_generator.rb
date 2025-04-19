@@ -64,10 +64,11 @@ module Jekyll
     # Create a <details> element to make the ToC collapsible
     details = Nokogiri::XML::Node.new('details', doc)
     details['class'] = 'toc'
+    details['open'] = 'open'
 
     # Create a <summary> as the clickable title for ToC
     summary = Nokogiri::XML::Node.new('summary', doc)
-    summary.content = 'Table of Contents'
+    summary.content = 'Daftar Isi'
     details.add_child(summary)
 
     # Add the ToC list inside the <details> element
