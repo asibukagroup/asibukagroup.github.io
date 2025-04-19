@@ -1,4 +1,3 @@
-# _plugins/amp_generator.rb
 require 'nokogiri'
 require 'fastimage'
 
@@ -50,7 +49,8 @@ module Jekyll
 
       amp_page = PageWithoutAFile.new(site, site.source, amp_dir, amp_filename)
       content = site.find_converter_instance(Jekyll::Converters::Markdown).convert(original.content)
-      content_with_toc = insert_table_of_contents(content)
+
+      content_with_toc = insert_toc(content)
       amp_html = convert_html_for_amp(content_with_toc)
 
       amp_page.content = amp_html
@@ -65,43 +65,47 @@ module Jekyll
       amp_data['permalink'] = original.url.sub(/\/$/, '') + '/amp/'
 
       amp_page = PageWithoutAFile.new(site, site.source, original.dir, 'index-amp.html')
-      html_with_toc = insert_table_of_contents(original.output)
-      amp_page.output = convert_html_for_amp(html_with_toc)
+      amp_output_with_toc = insert_toc(original.output)
+      amp_page.output = convert_html_for_amp(amp_output_with_toc)
       amp_page.content = original.content
       amp_page.data = amp_data
 
       amp_page
     end
 
-    def insert_table_of_contents(html)
+    def insert_toc(html)
       doc = Nokogiri::HTML5.fragment(html)
       headings = doc.css('h2, h3, h4, h5, h6')
-
       return html if headings.empty?
 
-      toc = Nokogiri::XML::Node.new('nav', doc)
-      toc['class'] = 'toc'
-      list = Nokogiri::XML::Node.new('ul', doc)
+      toc_list = Nokogiri::XML::Node.new('ul', doc)
+      toc_list['class'] = 'toc'
 
-      headings.each_with_index do |heading, index|
-        id = heading['id'] || heading.content.strip.downcase.gsub(/[^\w]+/, '-').gsub(/^-|-$/, '')
+      headings.each do |heading|
+        id = heading['id'] || heading.content.downcase.strip.gsub(/[^\w]+/, '-')
         heading['id'] = id
 
         li = Nokogiri::XML::Node.new('li', doc)
-        li['class'] = heading.name
+        li['class'] = "toc-#{heading.name}"
 
         a = Nokogiri::XML::Node.new('a', doc)
         a['href'] = "##{id}"
-        a.content = heading.content.strip
+        a.content = heading.text
 
         li.add_child(a)
-        list.add_child(li)
+        toc_list.add_child(li)
       end
 
-      toc.add_child(list)
+      toc_container = Nokogiri::XML::Node.new('nav', doc)
+      toc_container['class'] = 'toc-container'
+      toc_container.add_child(toc_list)
 
-      insert_point = doc.at('h2') || doc.children.first
-      insert_point.add_previous_sibling(toc)
+      first_h2 = doc.at_css('h2')
+      if first_h2
+        first_h2.add_previous_sibling(toc_container)
+      else
+        doc.children.first.add_previous_sibling(toc_container)
+      end
 
       doc.to_html
     end
