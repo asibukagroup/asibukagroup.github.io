@@ -43,21 +43,21 @@ module Jekyll
       amp_data = original.data.dup
       amp_data['is_amp'] = true
       amp_data['permalink'] = original.url.sub(/\/$/, '') + '/amp/'
-    
+
       basename = File.basename(original.path, File.extname(original.path))
       amp_filename = "#{basename}-amp.md"
       amp_dir = File.dirname(original.path.sub(site.source, ''))
-    
+
       amp_page = PageWithoutAFile.new(site, site.source, amp_dir, amp_filename)
       content = site.find_converter_instance(Jekyll::Converters::Markdown).convert(original.content)
-      amp_html = convert_html_for_amp(content)
-    
+      content_with_toc = insert_table_of_contents(content)
+      amp_html = convert_html_for_amp(content_with_toc)
+
       amp_page.content = amp_html
       amp_page.data = amp_data
-    
+
       amp_page
     end
-    
 
     def duplicate_archive_as_amp(site, original)
       amp_data = original.data.dup
@@ -65,11 +65,45 @@ module Jekyll
       amp_data['permalink'] = original.url.sub(/\/$/, '') + '/amp/'
 
       amp_page = PageWithoutAFile.new(site, site.source, original.dir, 'index-amp.html')
-      amp_page.output = convert_html_for_amp(original.output)
+      html_with_toc = insert_table_of_contents(original.output)
+      amp_page.output = convert_html_for_amp(html_with_toc)
       amp_page.content = original.content
       amp_page.data = amp_data
 
       amp_page
+    end
+
+    def insert_table_of_contents(html)
+      doc = Nokogiri::HTML5.fragment(html)
+      headings = doc.css('h2, h3, h4, h5, h6')
+
+      return html if headings.empty?
+
+      toc = Nokogiri::XML::Node.new('nav', doc)
+      toc['class'] = 'toc'
+      list = Nokogiri::XML::Node.new('ul', doc)
+
+      headings.each_with_index do |heading, index|
+        id = heading['id'] || heading.content.strip.downcase.gsub(/[^\w]+/, '-').gsub(/^-|-$/, '')
+        heading['id'] = id
+
+        li = Nokogiri::XML::Node.new('li', doc)
+        li['class'] = heading.name
+
+        a = Nokogiri::XML::Node.new('a', doc)
+        a['href'] = "##{id}"
+        a.content = heading.content.strip
+
+        li.add_child(a)
+        list.add_child(li)
+      end
+
+      toc.add_child(list)
+
+      insert_point = doc.at('h2') || doc.children.first
+      insert_point.add_previous_sibling(toc)
+
+      doc.to_html
     end
 
     def convert_html_for_amp(html)
@@ -217,11 +251,10 @@ module Jekyll
       doc.css('a[href]').each do |a|
         href = a['href']
         next if href.nil? || href.empty?
-        next if href =~ /^https?:\/\//  # external link
-        next if href.include?('/amp')   # already AMP link
+        next if href =~ /^https?:\/\//
+        next if href.include?('/amp')
 
-        amp_href = href.sub(/\/$/, '') + '/amp/'
-        a['href'] = amp_href
+        a['href'] = href.sub(/\/$/, '') + '/amp/'
       end
       doc.to_html
     end
