@@ -6,7 +6,7 @@ module Jekyll
     safe true
 
     def generate(site)
-      # Nothing needed here – handled in hooks
+      # No-op
     end
   end
 
@@ -15,14 +15,19 @@ module Jekyll
     next unless doc.output_ext == '.html'
     next if doc.data['is_amp']
 
-    # Skip if the source file is a Markdown file at the root (e.g., about.md)
     relative_path = doc.relative_path || doc.path
-    next if relative_path =~ %r{^/?[^/]+\.md$}
+
+    # Skip if:
+    # 1. It's a Markdown file at the root level (e.g., about.md)
+    # 2. It's a Markdown file inside the _static collection
+    if relative_path =~ %r{^/?[^/]+\.md$} || relative_path.start_with?('_static/')
+      next
+    end
 
     doc.output = insert_toc(doc.output)
   end
 
-  # ToC insertion logic
+  # ToC injection logic
   def self.insert_toc(html)
     doc = Nokogiri::HTML5.fragment(html)
     headings = doc.css('h2, h3, h4, h5, h6')
@@ -46,15 +51,25 @@ module Jekyll
       toc_list.add_child(li)
     end
 
-    toc_container = Nokogiri::XML::Node.new('nav', doc)
-    toc_container['class'] = 'toc'
-    toc_container.add_child(toc_list)
+    # Create a <details> element to make the ToC collapsible
+    details = Nokogiri::XML::Node.new('details', doc)
+    details['class'] = 'toc-container'
+    details['open'] = 'open' # Optional: keeps ToC expanded by default
 
+    # Create a <summary> as the clickable title for ToC
+    summary = Nokogiri::XML::Node.new('summary', doc)
+    summary.content = 'Table of Contents'
+    details.add_child(summary)
+
+    # Add the ToC list inside the <details> element
+    details.add_child(toc_list)
+
+    # Inject ToC into the document
     first_h2 = doc.at_css('h2')
     if first_h2
-      first_h2.add_previous_sibling(toc_container)
+      first_h2.add_previous_sibling(details)
     else
-      doc.children.first.add_previous_sibling(toc_container)
+      doc.children.first.add_previous_sibling(details)
     end
 
     doc.to_html
