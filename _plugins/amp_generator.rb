@@ -53,14 +53,19 @@ module Jekyll
       amp_dir = File.dirname(original.path.sub(site.source, ''))
     
       amp_page = PageWithoutAFile.new(site, site.source, amp_dir, amp_filename)
-      content = site.find_converter_instance(Jekyll::Converters::Markdown).convert(original.content)
-    
-      content_with_toc = insert_toc(content)
-      amp_html = convert_html_for_amp(content_with_toc)
-    
-      amp_page.output = amp_html
       amp_page.content = original.content
       amp_page.data = amp_data
+    
+      # Render full Liquid first
+      liquid_renderer = site.liquid_renderer.file(amp_filename)
+      rendered_html = liquid_renderer.parse(original.content).render!(amp_data, registers: { site: site, page: amp_data })
+    
+      # Convert to AMP after Liquid rendering
+      html_output = site.find_converter_instance(Jekyll::Converters::Markdown).convert(rendered_html)
+      toc_inserted = insert_toc(html_output)
+      amp_output = convert_html_for_amp(toc_inserted)
+    
+      amp_page.output = amp_output
     
       amp_page
     end
