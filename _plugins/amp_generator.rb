@@ -58,7 +58,7 @@ module Jekyll
       content_with_toc = insert_toc(content)
       amp_html = convert_html_for_amp(content_with_toc)
 
-      amp_page.content = amp_html
+      amp_page.content = site.liquid_renderer.file(amp_filename).parse(amp_html).render!(amp_data, registers: { site: site, page: amp_data })
       amp_page.data = amp_data
 
       amp_page
