@@ -81,6 +81,9 @@ module Jekyll
     def insert_toc(html)
       return html if html.nil? || html.include?('class="toc-container"')
 
+      # Preserve {%- include %} tags
+      html = html.gsub(/{% include.*?%}/, '{% raw %}\0{% endraw %}')
+
       doc = Nokogiri::HTML5.fragment(html)
       headings = doc.css('h2, h3, h4, h5, h6')
       return html if headings.empty?
