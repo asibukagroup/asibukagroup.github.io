@@ -47,22 +47,24 @@ module Jekyll
       amp_data = original.data.dup
       amp_data['is_amp'] = true
       amp_data['permalink'] = original.url.sub(/\/$/, '') + '/amp/'
-
+    
       basename = File.basename(original.path, File.extname(original.path))
       amp_filename = "#{basename}-amp.md"
       amp_dir = File.dirname(original.path.sub(site.source, ''))
-
+    
       amp_page = PageWithoutAFile.new(site, site.source, amp_dir, amp_filename)
       content = site.find_converter_instance(Jekyll::Converters::Markdown).convert(original.content)
-
+    
       content_with_toc = insert_toc(content)
       amp_html = convert_html_for_amp(content_with_toc)
-
-      amp_page.content = site.liquid_renderer.file(amp_filename).parse(amp_html).render!(amp_data, registers: { site: site, page: amp_data })
+    
+      amp_page.output = amp_html
+      amp_page.content = original.content
       amp_page.data = amp_data
-
+    
       amp_page
     end
+    
 
     def duplicate_archive_as_amp(site, original)
       amp_data = original.data.dup
