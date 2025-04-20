@@ -1,6 +1,6 @@
 <script>
 /* Dark Mode Switch */
-const body=document.body,darkToggle=document.getElementById("darkToggle");"enabled"===localStorage.getItem("dark-mode")&&body.classList.add("dark"),darkToggle.addEventListener("click",()=>{body.classList.toggle("dark"),localStorage.setItem("dark-mode",body.classList.contains("dark")?"enabled":"disabled")});
+const body=document.body,darkToggle=document.getElementById("darkToggle"),savedMode=localStorage.getItem("dark-mode");savedMode?"enabled"===savedMode&&body.classList.add("dark"):window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches&&(body.classList.add("dark"),localStorage.setItem("dark-mode","enabled")),darkToggle.addEventListener("click",()=>{body.classList.toggle("dark"),localStorage.setItem("dark-mode",body.classList.contains("dark")?"enabled":"disabled")});
 /* PWA */
 "serviceWorker"in navigator&&navigator.serviceWorker.register("/sw.js").then(e=>console.log("Service Worker Registered!",e)).catch(e=>console.log("Service Worker Registration Failed!",e));
 /* Random Post */
