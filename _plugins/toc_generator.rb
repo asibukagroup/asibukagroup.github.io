@@ -10,8 +10,8 @@ module Jekyll
     end
   end
 
-  # Hook after rendering
-  Hooks.register [:pages, :documents], :post_render do |doc|
+  # Hook after rendering only documents (collections, _pages, _posts, etc.)
+  Hooks.register :documents, :post_render do |doc|
     next unless doc.output_ext == '.html'
     next if doc.data['is_amp']
 
@@ -32,6 +32,8 @@ module Jekyll
 
   # ToC injection logic
   def self.insert_toc(html)
+    return html if html.include?('class="toc-container"') # Prevent duplicate injection
+
     doc = Nokogiri::HTML5.parse(html)
     body = doc.at('body')
     return html unless body
