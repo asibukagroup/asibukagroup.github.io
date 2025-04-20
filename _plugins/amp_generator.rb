@@ -58,8 +58,14 @@ module Jekyll
     
       # Render full Liquid first
       liquid_renderer = site.liquid_renderer.file(amp_filename)
-      rendered_html = liquid_renderer.parse(original.content).render!(amp_data, registers: { site: site, page: amp_data })
-    
+      rendered_html = liquid_renderer.parse(original.content).render!(
+        amp_data,
+        registers: {
+        site: site,
+        page: original.data # instead of amp_data
+        }
+      )
+      
       # Convert to AMP after Liquid rendering
       html_output = site.find_converter_instance(Jekyll::Converters::Markdown).convert(rendered_html)
       toc_inserted = insert_toc(html_output)
@@ -70,7 +76,6 @@ module Jekyll
       amp_page
     end
     
-
     def duplicate_archive_as_amp(site, original)
       amp_data = original.data.dup
       amp_data['is_amp'] = true
