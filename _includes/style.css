@@ -14,10 +14,10 @@ body.dark{background:#181818;color:var(--white)}
 /* Main Heading */
 .main-heading{font-size:2.2rem;font-weight:700;text-align:center;margin:2rem 0 1rem;color:var(--theme-color);position:relative;z-index:1;transition:color .3s ease,text-shadow .3s ease}
 .main-heading::after{content:'';position:absolute;bottom:0;left:50%;width:80px;height:4px;background:linear-gradient(90deg,var(--theme-color),#6a82fb);transform:translateX(-50%);border-radius:2px;z-index:-1;opacity:.7}
-.main-heading:hover{text-shadow:0 0 10px #004aad99}
+.main-heading:hover{text-shadow:0 0 10px var(--theme-color)99}
 body.dark .main-heading{color:var(--theme-color)}
 body.dark .main-heading::after{background:linear-gradient(90deg,var(--theme-color),#fff);opacity:.9}
-body.dark .main-heading:hover{text-shadow:0 0 10px #004aadcc}
+body.dark .main-heading:hover{text-shadow:0 0 10px var(--theme-color)cc}
 .one-column-wrapper,.ads{margin:0 auto}
 /* A (Hyperlink) */
 a{background-color:transparent;-webkit-text-decoration-skip:objects;text-decoration:none;color:var(--theme-color)}
@@ -145,10 +145,10 @@ html:has(body:not(:is(:hover,:focus-within)) > .back-to-top) .back-to-top{opacit
 .toc[open] > summary::before{transform:rotate(180deg);background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' fill='%23004AAD' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6 6L18 18M6 18L18 6' stroke='%23004AAD' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E")}
 .toc ul{list-style:none;margin:0;padding:0;padding-left:1rem}
 .toc ul li{margin:.25rem 0;padding-left:1rem;position:relative}
-.toc ul li::before{content:'•';position:absolute;left:0;color:#004AAD}
+.toc ul li::before{content:'•';position:absolute;left:0;color:var(--theme-color)}
 .toc ul li.toc-h3{padding-left:1.5rem}
 .toc ul li.toc-h4{padding-left:2rem}
-.toc ul li a{text-decoration:none;color:#004AAD;transition:color .2s ease}
+.toc ul li a{text-decoration:none;color:var(--theme-color);transition:color .2s ease}
 .toc ul li a:hover{text-decoration:underline;color:#002b70}
 body.dark .toc-container{background:#1e1e1e;border-color:#333;color:#eee}
 body.dark .toc summary{color:#eee}
