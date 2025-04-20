@@ -8,7 +8,7 @@ robots: index, follow
 ---
 <h1 class="main-heading" id='EmbedTitle'>{{ page.title }}</h1>
 <p class='text-center hide-on-embed'>{{ page.description }}</p>
-<div class='hide-on-embed' itemscope itemtype="https://schema.org/ItemList">
+<div class='hide-on-embed post-containers' itemscope itemtype="https://schema.org/ItemList">
 {% for post in site.posts %}
 <article class="post-container" itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement">
 <meta itemprop="position" content="{{ forloop.index }}">
