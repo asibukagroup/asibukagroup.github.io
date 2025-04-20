@@ -8,13 +8,13 @@ module Jekyll
 
     def generate(site)
       collections = site.config['collections'].keys
-    
+
       site.pages.select { |page| valid_md_page?(page) && !page.data['is_amp'] }.each do |page|
         html = site.find_converter_instance(Jekyll::Converters::Markdown).convert(page.content)
         page.output = insert_toc(html)
         site.pages << generate_amp_page(site, page)
       end
-    
+
       site.collections.each_value do |collection|
         collection.docs.select { |doc| valid_md_doc?(doc, collections) && !doc.data['is_amp'] }.each do |doc|
           html = site.find_converter_instance(Jekyll::Converters::Markdown).convert(doc.content)
@@ -22,12 +22,12 @@ module Jekyll
           site.pages << generate_amp_page(site, doc)
         end
       end
-    
+
       site.pages.select { |page| archive_page?(page) && !page.data['is_amp'] }.each do |page|
         page.output = insert_toc(page.output)
         site.pages << duplicate_archive_as_amp(site, page)
       end
-    end    
+    end
 
     private
 
@@ -79,37 +79,53 @@ module Jekyll
     end
 
     def insert_toc(html)
+      return html if html.include?('class="toc-container"')
+
       doc = Nokogiri::HTML5.fragment(html)
       headings = doc.css('h2, h3, h4, h5, h6')
       return html if headings.empty?
 
       toc_list = Nokogiri::XML::Node.new('ul', doc)
       toc_list['class'] = 'toc'
+      toc_list['itemscope'] = 'itemscope'
+      toc_list['itemtype'] = 'http://schema.org/ItemList'
 
-      headings.each do |heading|
+      headings.each_with_index do |heading, index|
         id = heading['id'] || heading.content.downcase.strip.gsub(/[^\w]+/, '-')
         heading['id'] = id
 
         li = Nokogiri::XML::Node.new('li', doc)
         li['class'] = "toc-#{heading.name}"
+        li['itemprop'] = 'itemListElement'
 
         a = Nokogiri::XML::Node.new('a', doc)
         a['href'] = "##{id}"
+        a['title'] = heading.text
+        a['itemprop'] = 'url'
         a.content = heading.text
 
         li.add_child(a)
         toc_list.add_child(li)
       end
 
-      toc_container = Nokogiri::XML::Node.new('nav', doc)
-      toc_container['class'] = 'toc-container'
-      toc_container.add_child(toc_list)
+      summary = Nokogiri::XML::Node.new('summary', doc)
+      summary.content = 'Daftar Isi'
+
+      details = Nokogiri::XML::Node.new('details', doc)
+      details['class'] = 'toc'
+      details['open'] = 'open'
+      details.add_child(summary)
+      details.add_child(toc_list)
+
+      nav = Nokogiri::XML::Node.new('nav', doc)
+      nav['class'] = 'toc-container'
+      nav.add_child(details)
 
       first_h2 = doc.at_css('h2')
       if first_h2
-        first_h2.add_previous_sibling(toc_container)
+        first_h2.add_previous_sibling(nav)
       else
-        doc.children.first.add_previous_sibling(toc_container)
+        doc.children.first.add_previous_sibling(nav)
       end
 
       doc.to_html
@@ -133,11 +149,11 @@ module Jekyll
         src = img['data-src'] || img['src']
         src = '/assets/img/ASIBUKA-Blue.webp' if src.nil? || src.strip.empty?
 
-        if img['width'] && img['height']
-          width, height = img['width'], img['height']
-        else
-          width, height = FastImage.size(src) rescue [1600, 900]
-        end
+        width, height = if img['width'] && img['height']
+                          [img['width'], img['height']]
+                        else
+                          FastImage.size(src) rescue [1600, 900]
+                        end
 
         amp_img['src'] = src
         amp_img['alt'] = img['alt'] || img['title'] || 'image'
@@ -203,11 +219,11 @@ module Jekyll
         img = picture.at_css('img') || picture.at_css('source')
         src = img['srcset'] || img['src']
 
-        if img['width'] && img['height']
-          width, height = img['width'], img['height']
-        else
-          width, height = FastImage.size(src) rescue [1600, 900]
-        end
+        width, height = if img['width'] && img['height']
+                          [img['width'], img['height']]
+                        else
+                          FastImage.size(src) rescue [1600, 900]
+                        end
 
         amp_img = Nokogiri::XML::Node.new('amp-img', doc)
         amp_img['src'] = src || '/assets/img/ASIBUKA-Blue.webp'
@@ -230,11 +246,11 @@ module Jekyll
           src = img['data-src'] || img['src']
           src = '/assets/img/ASIBUKA-Blue.webp' if src.nil? || src.strip.empty?
 
-          if img['width'] && img['height']
-            width, height = img['width'], img['height']
-          else
-            width, height = FastImage.size(src) rescue [1600, 900]
-          end
+          width, height = if img['width'] && img['height']
+                            [img['width'], img['height']]
+                          else
+                            FastImage.size(src) rescue [1600, 900]
+                          end
 
           amp_img['src'] = src
           amp_img['alt'] = img['alt'] || 'image'
@@ -259,9 +275,7 @@ module Jekyll
       doc = Nokogiri::HTML5.fragment(html)
       doc.css('a[href]').each do |a|
         href = a['href']
-        next if href.nil? || href.empty?
-        next if href =~ /^https?:\/\//
-        next if href.include?('/amp')
+        next if href.nil? || href.empty? || href =~ /^https?:\/\// || href.include?('/amp')
 
         a['href'] = href.sub(/\/$/, '') + '/amp/'
       end
