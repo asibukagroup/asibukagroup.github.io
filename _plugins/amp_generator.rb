@@ -79,7 +79,7 @@ module Jekyll
     end
 
     def insert_toc(html)
-      return html if html.include?('class="toc-container"')
+      return html if html.nil? || html.include?('class="toc-container"')
 
       doc = Nokogiri::HTML5.fragment(html)
       headings = doc.css('h2, h3, h4, h5, h6')
