@@ -1,5 +1,5 @@
 <nav aria-label="breadcrumb" itemscope itemtype="https://schema.org/BreadcrumbList" class="breadcrumb hide-on-print">
-<small><!-- Position 1: Home -->
+<small>
 <span itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
 <a itemprop="item" href="{{ "/" | absolute_url }}">
 <span itemprop="name">Beranda</span>
@@ -7,7 +7,6 @@
 <meta itemprop="position" content="1" />
 </span>
 {% assign pos = 2 %} 
-<!-- Position 2: Category (Only first category shown for simplicity) -->
 {% if page.categories and page.categories.size > 0 %}
 {% assign category = page.categories[0] %}
 &nbsp;›&nbsp;
@@ -19,11 +18,9 @@
 </span>
 {% assign pos = pos | plus: 1 %}
 {% endif %}
-<!-- Position 3: Post title -->
 &nbsp;›&nbsp;
 <span itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
 <span itemprop="name">{{ page.title }}</span>
-<meta itemprop="position" content="{{ pos }}" />
-</span>
+<meta itemprop="position" content="{{ pos }}" /></span>
 </small>
 </nav>
