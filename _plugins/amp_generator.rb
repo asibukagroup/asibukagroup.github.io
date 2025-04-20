@@ -137,7 +137,6 @@ module Jekyll
       html = convert_videos_to_amp(html)
       html = convert_pictures_to_amp(html)
       html = convert_figures_to_amp(html)
-      html = convert_internal_links_to_amp(html)
       html = remove_scripts(html)
     end
 
@@ -267,17 +266,6 @@ module Jekyll
         else
           figure.remove
         end
-      end
-      doc.to_html
-    end
-
-    def convert_internal_links_to_amp(html)
-      doc = Nokogiri::HTML5.fragment(html)
-      doc.css('a[href]').each do |a|
-        href = a['href']
-        next if href.nil? || href.empty? || href =~ /^https?:\/\// || href.include?('/amp')
-
-        a['href'] = href.sub(/\/$/, '') + '/amp/'
       end
       doc.to_html
     end
